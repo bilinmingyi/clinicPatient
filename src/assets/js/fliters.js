@@ -22,6 +22,6 @@ const priceFormat = (price, currency, decimals) => {
   return sign + currency + head + mid + _float
 }
 
-export {
+export default {
   priceFormat
 }
