@@ -24,6 +24,7 @@
       </section>
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
+        <Dynamic></Dynamic>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -34,13 +35,15 @@
 import Footer from '@/components/common/Footer.vue'
 import Header from '@/components/common/Header.vue'
 import SmallTitle from '@/components/common/SmallTitle.vue'
+import Dynamic from '@/components/common/Dynamic.vue'
 
 export default {
   name: 'homePage',
   components: {
     Footer,
     Header,
-    SmallTitle
+    SmallTitle,
+    Dynamic
   }
 }
 </script>
