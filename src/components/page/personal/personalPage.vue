@@ -1,16 +1,15 @@
 <template>
-    <div>
-      个人
-      <router-view></router-view>
-      <Footer navtiveIndex="4"></Footer>
-    </div>
+  <div>
+    这是个人中心
+    <Footer navtiveIndex="4"></Footer>
+  </div>
 </template>
 
 <script>
 import Footer from '@/components/common/Footer.vue'
 
 export default {
-  name: 'personal',
+  name: 'personalPage',
   components: {
     Footer
   }

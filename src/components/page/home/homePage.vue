@@ -1,16 +1,15 @@
 <template>
-    <div>
-      商城
-      <router-view></router-view>
-      <Footer navtiveIndex="3"></Footer>
-    </div>
+  <div>
+    这是首页
+    <Footer navtiveIndex="1"></Footer>
+  </div>
 </template>
 
 <script>
 import Footer from '@/components/common/Footer.vue'
 
 export default {
-  name: 'mall',
+  name: 'homePage',
   components: {
     Footer
   }

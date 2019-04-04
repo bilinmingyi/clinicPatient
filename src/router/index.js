@@ -11,49 +11,43 @@ export default new Router({
     },
     {
       path: '/home',
-      component: () => import(/* webpackChunkName: 'home' */'@/components/page/home.vue'),
+      component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/index.vue'),
       children: [
         {
           path: '',
-          meta: {
-            currIndex: 1
-          }
+          name: 'homePage',
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/homePage.vue')
         }
       ]
     },
     {
       path: '/doctor',
-      component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor.vue'),
+      component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/index.vue'),
       children: [
         {
           path: '',
-          meta: {
-            currIndex: 2
-          }
+          name: 'doctorPage',
+          component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/doctorPage.vue')
         }
       ]
     },
     {
       path: '/mall',
-      component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall.vue'),
+      component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/index.vue'),
       children: [
         {
           path: '',
-          meta: {
-            currIndex: 3
-          }
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/mallPage.vue')
         }
       ]
     },
     {
       path: '/personal',
-      component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal.vue'),
+      component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/index.vue'),
       children: [
         {
           path: '',
-          meta: {
-            currIndex: 4
-          }
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/personalPage.vue')
         }
       ]
     }
