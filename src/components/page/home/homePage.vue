@@ -23,7 +23,7 @@
         </div>
       </section>
       <section class="clinic-dynamic">
-
+        <Small-title>平台动态</Small-title>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -33,12 +33,14 @@
 <script>
 import Footer from '@/components/common/Footer.vue'
 import Header from '@/components/common/Header.vue'
+import SmallTitle from '@/components/common/SmallTitle.vue'
 
 export default {
   name: 'homePage',
   components: {
     Footer,
-    Header
+    Header,
+    SmallTitle
   }
 }
 </script>
