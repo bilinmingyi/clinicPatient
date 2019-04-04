@@ -62,4 +62,57 @@ export default {
   .common-footer {
     @include psFixed(bottom, 98px);
   }
+
+  .footer {
+    @extend %displayFlex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100vw;
+    height: 100px;
+    color: $lightTextColor;
+    border-top: 1px solid #D9D9D9;
+    background: #fff;
+  }
+
+  .footer-item {
+    @extend %displayFlex;
+    align-items: center;
+    -ms-flex-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 25vw;
+    height: 100%;
+  }
+
+  .footer-item .yunicon {
+    font-size: 48px;
+    color: $lightTextColor;
+  }
+
+  .footer-item .iconfont {
+    font-size: 48px;
+    color: #7a7a7a;
+  }
+
+  .footer-text {
+    font-size: 22px;
+    color: $lightTextColor;
+    height: 28px;
+    line-height: 30px;
+    font-weight: 400;
+  }
+
+  .footer .cur .footer-text {
+    color: $greenColor;
+  }
+
+  .footer .cur .yunicon,
+  .footer .cur .iconfont {
+    color: $greenColor;
+  }
 </style>
