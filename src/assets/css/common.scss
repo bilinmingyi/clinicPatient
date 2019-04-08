@@ -37,4 +37,40 @@ $lineColor: #d9d9d9;
     bottom: 0px;
   }
 }
+//浅颜色的button 默认24px
+@mixin simpleButton($height, $width, $font-size:24px) {
+  width: $width;
+  height: $height;
+  background: rgba(235, 248, 249, 1);
+  border-radius: 8px;
+  border: 2px solid rgba(8, 186, 198, 1);
+  font-size: $font-size;
+  line-height: $height;
+  text-align: center;
+}
 
+//深色的按钮
+@mixin deepButton($height, $width, $font-size:28px) {
+  width: $width;
+  height: $height;
+  line-height: $height;
+  background: rgba(8, 186, 198, 1);
+  border: 2px solid rgba(8, 186, 198, 1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  font-size: $font-size;
+}
+
+//第三种按钮 消息的按钮
+@mixin newsButton($height, $width, $font-size:28px) {
+  width: $width;
+  height: $height;
+  line-height: $height;
+  text-align: center;
+  font-size: $font-size;
+  color: rgba(8, 186, 198, 1);
+  font-weight: 500;
+  border-radius: 8px;
+  border: 2px solid rgba(8, 186, 198, 1);
+}
