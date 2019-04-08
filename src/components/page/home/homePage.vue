@@ -38,11 +38,7 @@
 </template>
 
 <script>
-import Footer from '@/components/common/Footer.vue'
-import Header from '@/components/common/Header.vue'
-import SmallTitle from '@/components/common/SmallTitle.vue'
-import Dynamic from '@/components/common/Dynamic.vue'
-import LoadMore from '@/components/common/LoadMore.vue'
+import {Footer, Header, SmallTitle, Dynamic, LoadMore} from '@/components/common/index'
 
 export default {
   name: 'homePage',
