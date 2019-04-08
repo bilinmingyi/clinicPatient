@@ -1,23 +1,26 @@
 <template>
-    <div>
-      <Header titleText="诊所医生"></Header>
-      <div class="mt-88px pb-128px">
-        <Search placeholder="请输入药名/产品名称"></Search>
-        这是医生列表页
-      </div>
-      <Footer navtiveIndex="2"></Footer>
+  <div>
+    <Header titleText="诊所医生"></Header>
+    <div class="mt-88px pb-128px">
+      <Search placeholder="请输入药名/产品名称"></Search>
+      <doctor-item></doctor-item>
     </div>
+    <Footer navtiveIndex="2"></Footer>
+  </div>
 </template>
 
 <script>
-import {Footer, Header, Search} from '@/components/common/index'
+import {Footer, Header, Search, doctorItem} from '@/components/common/index'
+import DoctorItem from '../../common/doctorItem'
 
 export default {
   name: 'doctorPage',
   components: {
+    DoctorItem,
     Footer,
     Header,
-    Search
+    Search,
+    doctorItem
   }
 }
 </script>

@@ -43,9 +43,9 @@ $lineColor: #d9d9d9;
   height: $height;
   background: rgba(235, 248, 249, 1);
   border-radius: 8px;
-  border: 2px solid rgba(8, 186, 198, 1);
+  border: 1px solid rgba(8, 186, 198, 1);
   font-size: $font-size;
-  line-height: $height;
+  line-height: $height - 2px;
   text-align: center;
 }
 
@@ -53,9 +53,9 @@ $lineColor: #d9d9d9;
 @mixin deepButton($height, $width, $font-size:28px) {
   width: $width;
   height: $height;
-  line-height: $height;
+  line-height: $height - 2px;
   background: rgba(8, 186, 198, 1);
-  border: 2px solid rgba(8, 186, 198, 1);
+  border: 1px solid rgba(8, 186, 198, 1);
   border-radius: 8px;
   color: rgba(255, 255, 255, 1);
   text-align: center;
@@ -66,11 +66,11 @@ $lineColor: #d9d9d9;
 @mixin newsButton($height, $width, $font-size:28px) {
   width: $width;
   height: $height;
-  line-height: $height;
+  line-height: $height - 2px;
   text-align: center;
   font-size: $font-size;
   color: rgba(8, 186, 198, 1);
-  font-weight: 500;
   border-radius: 8px;
   border: 2px solid rgba(8, 186, 198, 1);
+  background: transparent;
 }
