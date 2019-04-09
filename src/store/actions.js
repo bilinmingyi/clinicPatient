@@ -1,8 +1,9 @@
 import mutationTypes from './mutationTypes'
-import mutations from './mutations'
 
 const actions = {
-
+  set_clinic_info: ({commit}, obj) => {
+    commit(mutationTypes.SET_CLINIC_INFO, obj)
+  }
 }
 
 export default actions

@@ -7,7 +7,19 @@ import mutations from '@/store/mutations.js'
 
 Vue.use(Vuex)
 const state = {
-  test: '11'
+  clinic: {
+    id: '',
+    name: '',
+    customerPhone: '',
+    provinceName: '',
+    provinceCode: '',
+    cityName: '',
+    cityCode: '',
+    countyName: '',
+    countyCode: '',
+    address: '',
+    logo: ''
+  }
 }
 
 const store = new Vuex.Store({
