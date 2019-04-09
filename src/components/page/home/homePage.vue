@@ -3,20 +3,20 @@
     <Header titleText="首页"></Header>
     <div class="mt-88px pb-128px">
       <section class="clinic-infor">
-        <img class="clinic-img" src="../../../assets/img/menzhen@2x.png"/>
+        <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
         <div class="clinic-NP" style="display: flex;flex-direction: column;justify-content: space-around;">
-          <p class="clinic-name">深圳淳道门诊部</p>
+          <p class="clinic-name">{{clinic.name}}</p>
           <div class="clinic-position">
             <img src="../../../assets/img/dingwei@2x.png">
-            <span>深圳市福田区福民路东方欣悦居楼2B</span>
+            <span>{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
           </div>
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <div class="contact-item right-line">
+        <a class="contact-item right-line" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
-        </div>
+        </a>
         <div class="contact-item">
           <img src="../../../assets/img/ly2.png">
           <span>咨询诊所</span>
@@ -35,6 +35,8 @@
 <script>
 import {Footer, Header, SmallTitle, Dynamic, LoadMore} from '@/components/common/index'
 import {getArticleList} from '@/fetch/api.js'
+import clinicImg from '../../../assets/img/menzhen@2x.png'
+import {mapState} from 'vuex'
 
 export default {
   name: 'homePage',
@@ -50,11 +52,17 @@ export default {
       page: 1,
       pageSize: 5,
       articleList: [],
-      canShowAdd: false
+      canShowAdd: false,
+      no_img: clinicImg
     }
   },
   created () {
     this.getList()
+  },
+  computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    })
   },
   methods: {
     async getList () {
@@ -95,6 +103,7 @@ export default {
     .clinic-img {
       width: 112px;
       height: 112px;
+      border-radius: 50%;
     }
   }
 
@@ -131,7 +140,6 @@ export default {
   .clinic-contact {
     @extend %displayFlex;
     background: $backColor;
-    color: $depthTextColor;
     font-size: 32px;
     line-height: 45px;
 
@@ -145,6 +153,7 @@ export default {
       @extend %displayFlex;
       justify-content: center;
       align-items: center;
+      color: $depthTextColor;
 
       img {
         width: 64px;
