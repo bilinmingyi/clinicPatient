@@ -25,7 +25,7 @@
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
         <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"></Dynamic>
-        <Load-more></Load-more>
+        <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -49,7 +49,8 @@ export default {
     return {
       page: 1,
       pageSize: 5,
-      articleList: []
+      articleList: [],
+      canShowAdd: false
     }
   },
   created () {
@@ -65,12 +66,21 @@ export default {
 
         if (res.code === 1000) {
           this.articleList = this.articleList.concat(res.data)
+          if (res.data.length >= this.pageSize) {
+            this.canShowAdd = true
+          } else {
+            this.canShowAdd = false
+          }
         } else {
           this.$Message.infor(res.msg)
         }
       } catch (e) {
         this.$Message.infor('网络出错！')
       }
+    },
+    addMore () {
+      this.page++
+      this.getList()
     }
   }
 }
