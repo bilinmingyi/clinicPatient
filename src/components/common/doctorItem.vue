@@ -4,10 +4,14 @@
       <img :src="itemData.avatar != '' ? itemData.avatar: (itemData.sex == 2 ? woman_img: man_img)">
       <div class="doctor-infor">
         <div>
-          <span class="infor-title">王凯歌</span>
-          <div class="doctor-job color-EDAB15">医师</div>
+          <span class="infor-title">{{itemData.name}}</span>
+          <div :class="['doctor-job',color_list[itemData.title-1]]" v-if="itemData.title!=0">{{itemData.title|doctorTypes}}</div>
         </div>
-        <div>中山大学附属医院/皮肤科</div>
+        <div>
+          {{itemData.hospital}}
+          <span v-if="itemData.hospital!='' && itemData.department!=''">/</span>
+          {{itemData.department}}
+        </div>
       </div>
       <div class="flexVC">
         <button class="appoint-btn">预约</button>
@@ -30,7 +34,7 @@ export default {
           id: '1', // 医生id
           name: '测试', // 医生名称
           avatar: '', // 医生头像
-          title: '主治医师', // 医生职称
+          title: '0', // 医生职称
           hospital: '武警医院', // 所在医院
           department: '胸外科', // 所属部门
           speciality: '啥都会，你敢信？', // 擅长领域
@@ -42,7 +46,8 @@ export default {
   data () {
     return {
       man_img: man,
-      woman_img: woman
+      woman_img: woman,
+      color_list: ['color-4DBC89', 'color-EDAB15', 'color-08BAC6', 'color-29BBFF']
     }
   }
 }
@@ -58,6 +63,7 @@ export default {
     img {
       width: 112px;
       height: 112px;
+      border-radius: 50%;
     }
 
     .doctor-infor {
@@ -69,16 +75,18 @@ export default {
       font-size: 28px;
       padding: 9px 0;
       color: #8c8c8c;
+
       .infor-title {
         color: #3F3F3F;
         font-weight: bold;
         font-size: 32px;
         margin-right: 16px;
       }
+
       .doctor-job {
         display: inline-block;
         color: #ffffff;
-        font-size:20px;
+        font-size: 20px;
         border-radius: 8px;
         padding: 6px 16px;
       }
@@ -89,18 +97,23 @@ export default {
       font-weight: bold;
     }
   }
+
   .color-29BBFF {
     background: #29BBFF;
   }
+
   .color-4DBC89 {
     background: #4DBC89;
   }
+
   .color-08BAC6 {
     background: #08BAC6;
   }
+
   .color-EDAB15 {
     background: #EDAB15;
   }
+
   .flexVC {
     @extend %flexVC;
   }

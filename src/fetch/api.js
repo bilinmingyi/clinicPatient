@@ -25,6 +25,10 @@ const getArticleList = params => fetch('/article/list', params)
 // 获取诊所信息
 const getClinicData = params => fetch('/clinic/detail', params)
 
+// 医生列表
+// 获取医生列表
+const getDoctorList = params => fetch('/doctor/list', params)
+
 // 个人中心
 // 获取预约订单列表
 const getAppointList = params => fetch('/appointOrder/list', params)
@@ -33,5 +37,6 @@ export {
   fetch,
   getAppointList,
   getArticleList,
-  getClinicData
+  getClinicData,
+  getDoctorList
 }

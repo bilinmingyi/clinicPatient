@@ -108,9 +108,22 @@ const dateFormat = function (date, fmt) {
   let d = Date.prototype.isPrototypeOf(date) ? date : new Date(date)
   return d.Format(fmt)
 }
-
+/**
+ * @desc： Format doctor type(过滤医生类型).
+ * @param {Number} type
+ * @example doctorTypes(1) -> '中医师'
+ */
+const doctorTypes = (type) => {
+  let list = [{code: 0, name: '未知'},
+    {code: 1, name: '中医师'},
+    {code: 2, name: '主治医师'},
+    {code: 3, name: '副主任医师'},
+    {code: 4, name: '主任医师'}]
+  return codeToName(list, type)
+}
 export default {
   priceFormat,
   appointStatus,
-  dateFormat
+  dateFormat,
+  doctorTypes
 }
