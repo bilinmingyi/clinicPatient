@@ -1,6 +1,6 @@
 <template>
   <div class="dynamic-item">
-    <img :src="dyItem.img_url == ''?noImg:dyItem.img_url">
+    <img :src="noImg">
     <div class="dynamic-item-right">
       <div class="title">{{dyItem.title}}</div>
       <div class="title-bottom">
@@ -31,6 +31,13 @@ export default {
           img_url: ''
         }
       }
+    }
+  },
+  mounted () {
+    if (this.dyItem.img_url !== '') {
+      setTimeout(() => {
+        this.noImg = this.dyItem.img_url
+      })
     }
   }
 }
@@ -77,6 +84,7 @@ export default {
       line-height: 28px;
       text-align: center;
     }
+
     .title-time {
       padding-top: 5px;
       height: 28px;
