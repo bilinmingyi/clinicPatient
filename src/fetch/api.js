@@ -18,11 +18,16 @@ function fetch (url, params) {
     })
   })
 }
+// 首页
+// 获取文章列表
+const getArticleList = params => fetch('/article/list', params)
 
+// 个人中心
 // 获取预约订单列表
 const getAppointList = params => fetch('/appointOrder/list', params)
 
 export {
   fetch,
-  getAppointList
+  getAppointList,
+  getArticleList
 }

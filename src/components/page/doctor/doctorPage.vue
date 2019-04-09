@@ -2,7 +2,7 @@
   <div>
     <Header titleText="诊所医生"></Header>
     <div class="mt-88px pb-128px">
-      <Search placeholder="请输入药名/产品名称"></Search>
+      <Search placeholder="请输医生名称"></Search>
       <doctor-item></doctor-item>
     </div>
     <Footer navtiveIndex="2"></Footer>

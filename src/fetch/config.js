@@ -1,4 +1,4 @@
-const url = 'http://localhost:55000'
+const url = 'http://0.0.0.0:55000'
 let ROOT
 
 ROOT = '/'

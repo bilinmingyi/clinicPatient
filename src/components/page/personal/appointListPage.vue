@@ -5,7 +5,7 @@
       <div class="list-block" v-for="item in dataList" :key="item.order_seqno">
         <Small-title>
           <div class="patient-label">就诊人</div>
-          <div class="patient-name">赵小朱</div>
+          <div class="patient-name">{{item.patient_name}}</div>
           <div :class="item.status == 'TREAT_WAITING'?'patient-status':'patient-label'">{{item.status|appointStatus}}</div>
         </Small-title>
         <section class="appoint-infor">

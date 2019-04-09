@@ -2,10 +2,10 @@
   <div class="dynamic-item">
     <img :src="dyItem.img_url == ''?noImg:dyItem.img_url">
     <div class="dynamic-item-right">
-      <div class="title">最安全的药输液，也出了大事！</div>
+      <div class="title">{{dyItem.title}}</div>
       <div class="title-bottom">
         <div class="title-type">资讯类别</div>
-        <div class="title-time">2018-10-011</div>
+        <div class="title-time">{{dyItem.pubdate|dateFormat('yyyy-MM-dd')}}</div>
       </div>
     </div>
   </div>

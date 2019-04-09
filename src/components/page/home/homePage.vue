@@ -24,12 +24,7 @@
       </section>
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
-        <Dynamic></Dynamic>
-        <Dynamic></Dynamic>
-        <Dynamic></Dynamic>
-        <Dynamic></Dynamic>
-        <Dynamic></Dynamic>
-        <Dynamic></Dynamic>
+        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"></Dynamic>
         <Load-more></Load-more>
       </section>
     </div>
@@ -39,6 +34,7 @@
 
 <script>
 import {Footer, Header, SmallTitle, Dynamic, LoadMore} from '@/components/common/index'
+import {getArticleList} from '@/fetch/api.js'
 
 export default {
   name: 'homePage',
@@ -48,6 +44,34 @@ export default {
     SmallTitle,
     Dynamic,
     LoadMore
+  },
+  data () {
+    return {
+      page: 1,
+      pageSize: 5,
+      articleList: []
+    }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    async getList () {
+      try {
+        let res = await getArticleList({
+          page: this.page,
+          page_size: this.pageSize
+        })
+
+        if (res.code === 1000) {
+          this.articleList = this.articleList.concat(res.data)
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      } catch (e) {
+        this.$Message.infor('网络出错！')
+      }
+    }
   }
 }
 </script>
@@ -100,15 +124,18 @@ export default {
     color: $depthTextColor;
     font-size: 32px;
     line-height: 45px;
-    .right-line{
+
+    .right-line {
       border-right: 1px solid $lineColor;
     }
+
     .contact-item {
       flex: 1;
       height: 148px;
       @extend %displayFlex;
       justify-content: center;
       align-items: center;
+
       img {
         width: 64px;
         height: 64px;
@@ -117,7 +144,7 @@ export default {
     }
   }
 
-  .clinic-dynamic{
+  .clinic-dynamic {
     background: $backColor;
   }
 </style>
