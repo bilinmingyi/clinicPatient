@@ -23,6 +23,10 @@ $lineColor: #d9d9d9;
   align-items: center;
 }
 
+%fontBlod {
+  font-weight: bold;
+}
+
 
 /* 混合宏 */
 @mixin psFixed($fixSear, $fixHeigjt:88px) {

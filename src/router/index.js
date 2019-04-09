@@ -48,6 +48,16 @@ export default new Router({
         {
           path: '',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/personalPage.vue')
+        },
+        {
+          path: '/recipeListPage',
+          name: 'recipeListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/recipeListPage.vue')
+        },
+        {
+          path: '/appointListPage',
+          name: 'appointListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointListPage.vue')
         }
       ]
     }

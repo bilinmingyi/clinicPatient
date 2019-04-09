@@ -164,6 +164,14 @@ input {
   color: #d9d9d9;
 }
 
+.mb-6px {
+  margin-bottom: 6px;
+}
+
+.mb-8px {
+  margin-bottom: 8px;
+}
+
 .mb-20px {
   margin-bottom: 20px;
 }

@@ -1,13 +1,12 @@
 <template>
-    <div>
-      <router-view></router-view>
-    </div>
+  <div>
+    处方订单列表
+  </div>
 </template>
 
 <script>
-
 export default {
-  name: 'personal'
+  name: 'recipeListPage'
 }
 </script>
 

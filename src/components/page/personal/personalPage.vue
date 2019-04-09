@@ -19,17 +19,17 @@
           <img src="../../../assets/img/qt@2x.png">
           <span>其他就诊人</span>
         </li>
-        <li>
+        <li @click.stop="goRouter(2)">
           <img src="../../../assets/img/yy@2x.png">
           <span>预约订单</span>
         </li>
-        <li>
+        <li @click.stop="goRouter(3)">
           <img src="../../../assets/img/cf@2x.png">
           <span>处方订单</span>
         </li>
         <!--<li>-->
-          <!--<img src="../../../assets/img/dd@2x.png">-->
-          <!--<span>商城订单</span>-->
+        <!--<img src="../../../assets/img/dd@2x.png">-->
+        <!--<span>商城订单</span>-->
         <!--</li>-->
       </ul>
 
@@ -54,6 +54,20 @@ export default {
     return {
       man_img: man,
       woman_img: woman
+    }
+  },
+  methods: {
+    goRouter (type) {
+      switch (type) {
+        case 1:
+          break
+        case 2:
+          this.$router.push({path: '/appointListPage'})
+          break
+        case 3:
+          this.$router.push({path: '/recipeListPage'})
+          break
+      }
     }
   }
 }
@@ -105,15 +119,18 @@ export default {
 
   .person-function {
     background: $backColor;
+
     li {
       @extend %flexV;
       font-weight: 400;
       font-size: 32px;
       padding: 26px 30px;
       border-bottom: 1px solid $lineColor;
+
       &:last-child {
         border-bottom: none;
       }
+
       img {
         width: 40px;
         height: 40px;

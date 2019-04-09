@@ -1,3 +1,12 @@
+const codeToName = (list, code) => {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].code === code) {
+      return list[i].name
+    }
+  }
+  return null
+}
+
 /**
  * @desc： Format price.
  * @param {String} price
@@ -21,7 +30,25 @@ const priceFormat = (price, currency, decimals) => {
   var mid = _int.slice(i).replace(/(\d{3})(?=\d)/g, '$1,')
   return sign + currency + head + mid + _float
 }
+/**
+ * @desc： Format appointStatus.
+ * @param {String} val
+ * @example appointStatus('UNPAID') -> '待支付'
+ */
+const appointStatus = (val) => {
+  let statusList = [
+    {code: 'UNKNOWN', name: '未知'},
+    {code: 'UNPAID', name: '待支付'},
+    {code: 'SIGN_WAITING', name: '待登记'},
+    {code: 'TREAT_WAITING', name: '待就诊'},
+    {code: 'DONE', name: '完成'},
+    {code: 'SZJK_PAYING', name: '深圳健康支付'},
+    {code: 'CANCEL', name: '取消'}
+  ]
+  return codeToName(statusList, val)
+}
 
 export default {
-  priceFormat
+  priceFormat,
+  appointStatus
 }

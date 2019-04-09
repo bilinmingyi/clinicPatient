@@ -1,5 +1,5 @@
 <template>
-  <div class="title-block">
+  <div :class="['title-block', {'bottom-link':hasLine}]">
     <button class="title-btn" v-if="canReturn" @click.stop="goBack"></button>
     <div class="title-text">
       {{titleText}}
@@ -18,6 +18,10 @@ export default {
     canReturn: {
       default: false,
       type: Boolean
+    },
+    hasLine: {
+      default: false,
+      type: Boolean
     }
   },
   methods: {
@@ -29,6 +33,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .bottom-link {
+    border-bottom: 1px solid $lineColor;
+  }
+
   .title-block {
     background: #fafafa;
     text-align: center;
