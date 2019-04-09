@@ -4,13 +4,14 @@
     <div class="mt-88px pb-128px">
       <Search placeholder="请输医生名称"></Search>
       <doctor-item v-for="item in doctorList" :key="item.id" :itemData="item"></doctor-item>
+      <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
     <Footer navtiveIndex="2"></Footer>
   </div>
 </template>
 
 <script>
-import {Footer, Header, Search, doctorItem} from '@/components/common/index'
+import {Footer, Header, Search, doctorItem, LoadMore} from '@/components/common/index'
 import {getDoctorList} from '@/fetch/api.js'
 
 export default {
@@ -19,7 +20,8 @@ export default {
     Footer,
     Header,
     Search,
-    doctorItem
+    doctorItem,
+    LoadMore
   },
   data () {
     return {
@@ -27,7 +29,8 @@ export default {
       queryName: '',
       page: 1,
       pageSize: 10,
-      doctorList: []
+      doctorList: [],
+      canShowAdd: false
     }
   },
   created () {
@@ -42,11 +45,15 @@ export default {
         'page': this.page,
         'page_size': this.pageSize
       }).then(res => {
+        res.data.length >= this.pageSize ? this.canShowAdd = true : this.canShowAdd = false
         this.doctorList = this.doctorList.concat(res.data)
       }).catch(error => {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    addMore () {
+      this.getList(++this.page)
     }
   }
 }
