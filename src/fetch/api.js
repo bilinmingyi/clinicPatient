@@ -32,11 +32,13 @@ const getDoctorList = params => fetch('/doctor/list', params)
 // 个人中心
 // 获取预约订单列表
 const getAppointList = params => fetch('/appointOrder/list', params)
+const fetchRecipeList = params => fetch('/treatOrder/list', params)
 
 export {
   fetch,
   getAppointList,
   getArticleList,
   getClinicData,
-  getDoctorList
+  getDoctorList,
+  fetchRecipeList
 }
