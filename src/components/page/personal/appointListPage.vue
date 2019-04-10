@@ -6,7 +6,8 @@
         <Small-title>
           <div class="patient-label">就诊人</div>
           <div class="patient-name">{{item.patient_name}}</div>
-          <div :class="item.status == 'TREAT_WAITING'?'patient-status':'patient-label'">{{item.status|appointStatus}}</div>
+          <div :class="item.status == 'TREAT_WAITING'?'patient-status':'patient-label'">{{item.status|appointStatus}}
+          </div>
         </Small-title>
         <section class="appoint-infor">
           <div class="mb-6px">
@@ -27,26 +28,29 @@
           </div>
         </section>
       </div>
+      <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '../../common'
+import {Header, SmallTitle, LoadMore} from '../../common'
 import {getAppointList} from '@/fetch/api.js'
 
 export default {
   name: 'appointListPage',
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    LoadMore
   },
   data () {
     return {
       page: 1,
       pageSize: 10,
       status: ['UNPAID', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
-      dataList: []
+      dataList: [],
+      canShowAdd: false
     }
   },
   created () {
@@ -61,6 +65,11 @@ export default {
           'status': this.status
         })
         if (res.code === 1000) {
+          if (res.data.length < this.pageSize) {
+            this.canShowAdd = false
+          } else {
+            this.canShowAdd = true
+          }
           this.dataList = this.dataList.concat(res.data)
         } else {
           this.$Message.infor(res.msg)
@@ -68,6 +77,10 @@ export default {
       } catch (e) {
         this.$Message.infor('网络出错！')
       }
+    },
+    addMore () {
+      this.page++
+      this.getList()
     }
   }
 }
