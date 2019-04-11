@@ -137,11 +137,25 @@ const treatOrderStatus = (status) => {
   ]
   return codeToName(list, status)
 }
+/**
+ * @desc： Format sex(过滤医生类型).
+ * @param {Number} type
+ * @example sexFormat(1) -> '男'
+ */
+const sexFormat = (type) => {
+  let list = [
+    {code: 0, name: '未知'},
+    {code: 1, name: '男'},
+    {code: 2, name: '女'}
+  ]
+  return codeToName(list, type)
+}
 
 export default {
   priceFormat,
   appointStatus,
   dateFormat,
   doctorTypes,
-  treatOrderStatus
+  treatOrderStatus,
+  sexFormat
 }

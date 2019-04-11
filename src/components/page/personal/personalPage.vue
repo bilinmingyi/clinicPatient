@@ -4,10 +4,10 @@
     <div class="pb-128px mt-88px">
       <div class="patient-block">
         <div class="patient">
-          <img class="avatar" :src="man_img">
+          <img class="avatar" :src="user_avatar === '' ? (user_sex === 2 ? woman_img : man_img) : user_avatar">
           <div class="information">
-            <p>张倩倩/女/18</p>
-            <p>帐号ID：12243</p>
+            <p>{{user_name}}/{{user_sex|sexFormat}}/{{user_age}}</p>
+            <p>帐号ID：{{user_id}}</p>
           </div>
           <div class="return-block">
             <img src="../../../assets/img/xiayibu@2x.png">
@@ -43,6 +43,7 @@ import man from '@/assets/img/mhz@2x.png'
 import woman from '@/assets/img/whz@2x.png'
 
 import {Footer, Header} from '@/components/common/index'
+import {fetchUserInfo} from '@/fetch/api.js'
 
 export default {
   name: 'personalPage',
@@ -53,8 +54,17 @@ export default {
   data () {
     return {
       man_img: man,
-      woman_img: woman
+      woman_img: woman,
+      user_name: '',
+      user_sex: '',
+      user_id: '',
+      user_age: '',
+      user_avatar: '',
+      mobile: ''
     }
+  },
+  created () {
+    this.getUser()
   },
   methods: {
     goRouter (type) {
@@ -68,6 +78,20 @@ export default {
           this.$router.push({path: '/recipeListPage'})
           break
       }
+    },
+    getUser () {
+      fetchUserInfo({}).then(res => {
+        this.user_id = res.data.id
+        this.user_name = res.data.name
+        this.user_sex = res.data.sex
+
+        this.user_age = res.data.age
+        this.user_avatar = res.data.avatar
+        this.mobile = res.data.mobile
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }
@@ -104,6 +128,7 @@ export default {
     .avatar {
       width: 112px;
       height: 112px;
+      border-radius: 50%;
     }
 
     .return-block {
