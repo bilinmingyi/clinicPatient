@@ -15,7 +15,7 @@
         </div>
       </div>
       <ul class="person-function">
-        <li>
+        <li @click.stop="goRouter(1)">
           <img src="../../../assets/img/qt@2x.png">
           <span>其他就诊人</span>
         </li>
@@ -70,12 +70,13 @@ export default {
     goRouter (type) {
       switch (type) {
         case 1:
+          this.$router.push({name: 'patientListPage'})
           break
         case 2:
-          this.$router.push({path: '/appointListPage'})
+          this.$router.push({name: 'appointListPage'})
           break
         case 3:
-          this.$router.push({path: '/recipeListPage'})
+          this.$router.push({name: 'recipeListPage'})
           break
       }
     },

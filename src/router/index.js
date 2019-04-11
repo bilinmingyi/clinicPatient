@@ -50,12 +50,17 @@ export default new Router({
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/personalPage.vue')
         },
         {
-          path: '/recipeListPage',
+          path: 'patientListPage',
+          name: 'patientListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/patientListPage.vue')
+        },
+        {
+          path: 'recipeListPage',
           name: 'recipeListPage',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/recipeListPage.vue')
         },
         {
-          path: '/appointListPage',
+          path: 'appointListPage',
           name: 'appointListPage',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointListPage.vue')
         }

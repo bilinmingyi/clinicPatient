@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <router-view/>
   </div>
 </template>
@@ -47,5 +47,4 @@ export default {
 </script>
 
 <style>
-
 </style>

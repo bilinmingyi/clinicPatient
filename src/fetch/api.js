@@ -21,7 +21,6 @@ function fetch (url, params) {
 // 首页
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
-
 // 获取诊所信息
 const getClinicData = params => fetch('/clinic/detail', params)
 
@@ -32,12 +31,12 @@ const getDoctorList = params => fetch('/doctor/list', params)
 // 个人中心
 // 获取预约订单列表
 const getAppointList = params => fetch('/appointOrder/list', params)
-
 // 获取处方订单列表
 const fetchRecipeList = params => fetch('/treatOrder/list', params)
-
 // 获取患者个人信息
 const fetchUserInfo = params => fetch('/user/info', params)
+// 获取患者列表
+const fetchPatientList = params => fetch('/patient/list', params)
 
 export {
   fetch,
@@ -46,5 +45,6 @@ export {
   getClinicData,
   getDoctorList,
   fetchRecipeList,
-  fetchUserInfo
+  fetchUserInfo,
+  fetchPatientList
 }

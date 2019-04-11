@@ -154,6 +154,9 @@ input {
   -moz-osx-font-smoothing: grayscale;
 }
 
+[v-cloak] {
+  display: none;
+}
 
 .full-screen-hr {
   width: 100%;
@@ -169,6 +172,9 @@ input {
 .color-red {
   color: red;
 }
+.ml-24px {
+  margin-left: 24px;
+}
 .mb-6px {
   margin-bottom: 6px;
 }
@@ -179,6 +185,9 @@ input {
 
 .mb-20px {
   margin-bottom: 20px;
+}
+.mb-131px {
+  margin-bottom: 131px;
 }
 
 .mt-88px {

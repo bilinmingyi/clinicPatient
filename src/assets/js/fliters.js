@@ -144,11 +144,21 @@ const treatOrderStatus = (status) => {
  */
 const sexFormat = (type) => {
   let list = [
-    {code: 0, name: '未知'},
+    {code: 0, name: '保密'},
     {code: 1, name: '男'},
     {code: 2, name: '女'}
   ]
   return codeToName(list, type)
+}
+/**
+ * @desc： Format age(过滤医生类型).
+ * @param {Number} str
+ * @example ageFormat('...') -> 5
+ */
+const ageFormat = (str) => {
+  let date = new Date(Number(str))
+  let today = new Date()
+  return today.getFullYear() - date.getFullYear()
 }
 
 export default {
@@ -157,5 +167,6 @@ export default {
   dateFormat,
   doctorTypes,
   treatOrderStatus,
-  sexFormat
+  sexFormat,
+  ageFormat
 }
