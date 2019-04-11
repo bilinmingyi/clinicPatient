@@ -1,5 +1,5 @@
 <template>
-  <div class="item-content">
+  <div :class="['item-content',{'no-border-bottom':noLine}]">
     <div class="mb-8px item-line">
       <span class="flexOne">医生：{{itemData.doctor_name}}</span>
       <span>{{itemData.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
@@ -26,6 +26,10 @@ export default {
           status: ''
         }
       }
+    },
+    noLine: {
+      type: Boolean,
+      default: true
     }
   }
 }
@@ -38,6 +42,9 @@ export default {
     color: $depthTextColor;
     line-height: 42px;
     border-bottom: 1px solid $lineColor;
+  }
+  .no-border-bottom {
+    border-bottom: none;
   }
 
   .item-line {

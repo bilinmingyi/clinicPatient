@@ -2,7 +2,7 @@
   <div>
     <Header :canReturn="true" titleText="处方订单"></Header>
     <div class="mt-88px orderList">
-      <order-item v-for="item in dataList" :itemData="item" :key="item.id"></order-item>
+      <order-item v-for="(item,index) in dataList" :itemData="item" :key="item.id" :noLine="(dataList.length - 1) === index"></order-item>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
   </div>
