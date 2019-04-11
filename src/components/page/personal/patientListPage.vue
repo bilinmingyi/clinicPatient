@@ -5,13 +5,13 @@
       <Small-title :hasBlock="true">
         <span class="title-span">就诊人列表</span>
       </Small-title>
-      <div class="patient-item" v-for="patient in patientList" :key="patient.id">
+      <div class="patient-item" v-for="patient in patientList" :key="patient.id" @click.stop="goRoute(patient)">
         <img :src="patient.sex == 2 ? woman_img : man_img" class="avatar-img">
         <div class="flexOne ml-24px">{{patient.name}}/{{patient.sex|sexFormat}}/{{patient.birthday|ageFormat}}</div>
         <img class="return-icon" src="../../../assets/img/xiayibu@2x.png">
       </div>
     </div>
-    <div class="add_block">
+    <div class="add_block" @click.stop="goRoute">
       <button class="add_btn">添加就诊人</button>
     </div>
   </div>
@@ -51,6 +51,13 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    goRoute (item) {
+      if (item) {
+        this.$router.push({name: 'editPatient', query: {id: item.id, name: item.name, sex: item.sex, birthday: item.birthday}})
+      } else {
+        this.$router.push({name: 'editPatient'})
+      }
     }
   }
 }
@@ -85,11 +92,13 @@ export default {
       border-radius: 50%;
     }
   }
+
   .add_block {
-    @include psFixed(bottom,111px);
+    @include psFixed(bottom, 111px);
     background: $backColor;
     padding: 16px 30px 15px;
   }
+
   .add_btn {
     @include deepButton(80px, 100%)
   }
