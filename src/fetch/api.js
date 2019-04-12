@@ -18,6 +18,7 @@ function fetch (url, params) {
     })
   })
 }
+
 // 首页
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
@@ -37,8 +38,15 @@ const fetchRecipeList = params => fetch('/treatOrder/list', params)
 const fetchUserInfo = params => fetch('/user/info', params)
 // 获取患者列表
 const fetchPatientList = params => fetch('/patient/list', params)
+// 更改就诊人信息
+const changePatientInfo = params => fetch('/patient/update', params)
+// 删除就诊人
+const deletePatient = params => fetch('/patient/delete', params)
+// 添加就诊人
+const addPatient = params => fetch('/patient/add', params)
 
-export {
+export
+{
   fetch,
   getAppointList,
   getArticleList,
@@ -46,5 +54,8 @@ export {
   getDoctorList,
   fetchRecipeList,
   fetchUserInfo,
-  fetchPatientList
+  fetchPatientList,
+  changePatientInfo,
+  deletePatient,
+  addPatient
 }
