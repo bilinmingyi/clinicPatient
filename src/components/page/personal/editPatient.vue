@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="编辑信息"></Header>
+    <Header :canReturn="true" :titleText="isEdit?'编辑信息':'添加就诊人'"></Header>
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
@@ -18,9 +18,12 @@
         <radioGroup :data="sexList" :value="sex" :name="'sex'" @input="changeSex"></radioGroup>
       </div>
     </div>
-    <div class="add-block">
+    <div class="add-block" v-if="isEdit">
       <button class="del-btn" @click.stop="deleteItem">删除</button>
       <button class="sure-btn" @click.stop="saveChange">确定</button>
+    </div>
+    <div class="add-block" v-else>
+      <button class="add-btn" @click.stop="addItem">保存</button>
     </div>
   </div>
 </template>
@@ -41,7 +44,8 @@ export default {
       sex: 0,
       name: '',
       id: '',
-      age: ''
+      age: '',
+      isEdit: true
     }
   },
   created () {
@@ -50,19 +54,20 @@ export default {
     this.name = this.$route.query.name
     let birthday = this.$route.query.birthday
     this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
+    this.isEdit = Boolean(this.id)
   },
   methods: {
     changeSex (val) {
       this.sex = Number(val)
     },
     saveChange () {
-      if (this.name === '') {
+      if (!this.name) {
         this.$Message.infor('请先填写就诊人姓名！')
         return
       } else if (this.age <= 0) {
         this.$Message.infor('请先正确填写就诊人年龄！')
         return
-      } else if (this.sex === 0) {
+      } else if (!this.sex) {
         this.$Message.infor('请先填写就诊人性别！')
         return
       }
@@ -99,7 +104,30 @@ export default {
       })
     },
     addItem () {
-      addPatient({})
+      if (!this.name) {
+        this.$Message.infor('请先填写就诊人姓名！')
+        return
+      } else if (this.age <= 0 || isNaN(this.age)) {
+        this.$Message.infor('请先正确填写就诊人年龄！')
+        return
+      } else if (!this.sex) {
+        this.$Message.infor('请先填写就诊人性别！')
+        return
+      }
+      addPatient({
+        name: this.name,
+        sex: Number(this.sex),
+        age: Number(this.age)
+      }).then(res => {
+        if (res.code === 1000) {
+          this.$router.go(-1)
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }
@@ -122,6 +150,10 @@ export default {
   .sure-btn {
     @include deepButton(80px, 48%);
     margin-left: 4%;
+  }
+
+  .add-btn {
+    @include deepButton(80px, 100%)
   }
 
   .del-btn {
