@@ -1,0 +1,156 @@
+<template>
+  <div>
+    <Header :canReturn="true" titleText="预约订单详情"></Header>
+    <div class="mt-88px">
+      <div class="white-back">
+        <SmallTitle :hasBlock="true">
+          <span class="ml-16px">挂号信息</span>
+        </SmallTitle>
+        <div class="register-item">
+          <div class="mb-8px">
+            <span class="label-three">预约地点：</span>
+            <span
+              class="label-two">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
+          </div>
+          <div class="mb-8px">
+            <span class="label-three">预约时间：</span>
+            <span class="label-two">{{orderInfo.appointDate}}&nbsp;&nbsp;{{day}}&nbsp;&nbsp;{{orderInfo.startTime}}-{{orderInfo.endTime}}</span>
+          </div>
+          <div class="mb-8px">
+            <span class="label-three">预约医生：</span>
+            <span
+              class="label-two">{{orderInfo.doctorName}}</span>
+          </div>
+          <div>
+            <span class="label-three">挂号费用：</span>
+            <span class="label-red">{{orderInfo.price}}元</span>
+          </div>
+        </div>
+      </div>
+      <div class="white-back">
+        <SmallTitle :hasBlock="true">
+          <span class="ml-16px">就诊人信息</span>
+        </SmallTitle>
+        <div class="patient-infor">
+          <div class="line-item">
+            <label class="label-span mr-32px">手机号码</label>
+            <span class="label-span">{{orderInfo.patientMobile}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">姓名</label>
+            <span class="label-span">{{orderInfo.patientName}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">性别</label>
+            <span class="label-span">{{orderInfo.patientSex|sexFormat}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">年龄</label>
+            <span class="label-span">{{orderInfo.patientAge}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {Header, SmallTitle} from '../../common'
+import {mapState} from 'vuex'
+import {fetchAppointDetail} from '@/fetch/api.js'
+
+export default {
+  name: 'appointOrderDetail',
+  props: ['orderSeqno', 'day'],
+  components: {
+    Header,
+    SmallTitle
+  },
+  data () {
+    return {
+      orderInfo: {}
+    }
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic
+    })
+  },
+  created () {
+    this.getDetail()
+  },
+  methods: {
+    getDetail () {
+      fetchAppointDetail({
+        order_seqno: this.orderSeqno
+      }).then(res => {
+        if (res.code === 1000) {
+          this.orderInfo = res.data.order_info
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .white-back {
+    background: $backColor;
+    margin-bottom: 20px;
+  }
+
+  .register-item {
+    padding: 20px 30px;
+  }
+
+  .label-one {
+    font-size: 28px;
+    color: $lightTextColor;
+    line-height: 45px;
+  }
+
+  .label-two {
+    font-size: 30px;
+    color: $depthTextColor;
+    line-height: 42px;
+  }
+
+  .label-three {
+    font-size: 30px;
+    color: $lightTextColor;
+    line-height: 42px;
+  }
+
+  .label-red {
+    color: #EB6262;
+    font-size: 30px;
+    line-height: 42px;
+    font-weight: bold;
+  }
+
+  .line-item {
+    padding: 26px 30px;
+    @extend %displayFlex
+  }
+
+  .line-hr {
+    @extend %lineHr;
+  }
+
+  .label-span {
+    color: $depthTextColor;
+    line-height: 45px;
+    font-size: 32px;
+  }
+  .patient-infor{
+    padding: 0 30px;
+  }
+</style>

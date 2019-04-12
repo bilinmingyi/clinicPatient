@@ -57,8 +57,7 @@ export default new Router({
         {
           path: 'editPatient',
           name: 'editPatient',
-          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/editPatient.vue'),
-          props: (route) => route.query
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/editPatient.vue')
         },
         {
           path: 'recipeListPage',
@@ -66,9 +65,21 @@ export default new Router({
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/recipeListPage.vue')
         },
         {
+          path: 'recipeListPage/recipeOrderDetail',
+          name: 'recipeOrderDetail',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/recipeOrderDetail.vue'),
+          props: (route) => route.query
+        },
+        {
           path: 'appointListPage',
           name: 'appointListPage',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointListPage.vue')
+        },
+        {
+          path: 'appointListPage/appointOrderDetail',
+          name: 'appointOrderDetail',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointOrderDetail.vue'),
+          props: (route) => route.query
         }
       ]
     }

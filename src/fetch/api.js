@@ -44,6 +44,10 @@ const changePatientInfo = params => fetch('/patient/update', params)
 const deletePatient = params => fetch('/patient/delete', params)
 // 添加就诊人
 const addPatient = params => fetch('/patient/add', params)
+// 获取预约订单详情
+const fetchAppointDetail = params => fetch('/appointOrder/detail', params)
+// 获取处方订单详情
+const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
 
 export
 {
@@ -57,5 +61,7 @@ export
   fetchPatientList,
   changePatientInfo,
   deletePatient,
-  addPatient
+  addPatient,
+  fetchAppointDetail,
+  fecthRecipeDetail
 }

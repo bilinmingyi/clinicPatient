@@ -2,7 +2,8 @@
   <div>
     <Header :canReturn="true" titleText="预约订单"></Header>
     <div class="mt-88px">
-      <div class="list-block" v-for="item in dataList" :key="item.order_seqno">
+      <div class="list-block" v-for="item in dataList" :key="item.order_seqno"
+           @click.stop="goRoute(item.order_seqno, item.week_idx)">
         <Small-title>
           <div class="patient-label">就诊人</div>
           <div class="patient-name">{{item.patient_name}}</div>
@@ -16,7 +17,8 @@
           </div>
           <div class="mb-8px">
             <span class="label-three">预约地点：</span>
-            <span class="label-two">深圳市福田区福民路东方欣悦居楼2B</span>
+            <span
+              class="label-two">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
           </div>
           <div>
             <span class="label-three">预约时间：</span>
@@ -36,6 +38,7 @@
 <script>
 import {Header, SmallTitle, LoadMore} from '../../common'
 import {getAppointList} from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'appointListPage',
@@ -43,6 +46,11 @@ export default {
     Header,
     SmallTitle,
     LoadMore
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic
+    })
   },
   data () {
     return {
@@ -81,6 +89,9 @@ export default {
     addMore () {
       this.page++
       this.getList()
+    },
+    goRoute (orderSeqno, week_idx) {
+      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: week_idx}})
     }
   }
 }
