@@ -76,6 +76,7 @@ const dateFormat = function (date, fmt) {
       writable: false,
       value: function (fmt) {
         var f = fmt != null ? fmt : 'yyyy-MM-dd hh:mm:ss'
+        var weekList = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
         var o = {
           'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
           'M+': this.getMonth() + 1, // 月份
@@ -83,6 +84,7 @@ const dateFormat = function (date, fmt) {
           'h+': this.getHours(), // 时
           'm+': this.getMinutes(), // 分
           's+': this.getSeconds(), // 秒
+          W: weekList[this.getDay()],
           S: this.getMilliseconds() // 毫秒
         }
         if (/(y+)/.test(f)) {

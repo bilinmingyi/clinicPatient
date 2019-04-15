@@ -76,9 +76,9 @@ export default {
     RenderComponent (from) {
       // render MessageComponent
       /* 1 诊所 2 患者 */
-      return from == 1 ? clinicMessage : patientMessage
+      return from === 1 ? clinicMessage : patientMessage
     },
-    //发送信息的时候请求数据
+    // 发送信息的时候请求数据
     sendMessage (val) {
       let index = this.allMsgList.length - 1
       let params = {
@@ -99,10 +99,10 @@ export default {
             }
           })
           this.allMsgList.forEach((item, index) => {
-            if (index == 0) {
+            if (index === 0) {
               this.$set(item, 'showTime', true)
             } else if (
-              index != 0 &&
+              index !== 0 &&
               this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
             ) {
               this.$set(item, 'showTime', true)
@@ -114,7 +114,7 @@ export default {
         } else {
           console.log(res)
         }
-        window.scrollTo(0, this.$refs.wrapper + 100) //滑动到底部
+        window.scrollTo(0, this.$refs.wrapper + 100) // 滑动到底部
       })
     },
     showReply () {
@@ -123,17 +123,17 @@ export default {
     closeReply () {
       this.isReply = false
     },
-    //是否显示时间
-    computedTime (start_time, end_time) {
-      let temp1 = new Date(start_time)
-      let temp2 = new Date(end_time)
-      if (temp1.getFullYear() != temp2.getFullYear()) {
+    // 是否显示时间
+    computedTime (startTime, endTime) {
+      let temp1 = new Date(startTime)
+      let temp2 = new Date(endTime)
+      if (temp1.getFullYear() !== temp2.getFullYear()) {
         return true
-      } else if (temp1.getMonth() != temp2.getMonth()) {
+      } else if (temp1.getMonth() !== temp2.getMonth()) {
         return true
-      } else if (temp1.getHours() != temp2.getHours()) {
+      } else if (temp1.getHours() !== temp2.getHours()) {
         return true
-      } else if (temp1.getHours() == temp2.getHours()) {
+      } else if (temp1.getHours() === temp2.getHours()) {
         if (Number(temp2.getMinutes() - temp1.getMinutes()) >= 5) {
           return true
         } else {
@@ -143,7 +143,7 @@ export default {
         return false
       }
     },
-    //一定时间请求数据
+    // 一定时间请求数据
     setIntervalData () {
       let index = this.allMsgList.length - 1
       let params = {
@@ -158,17 +158,17 @@ export default {
         console.log(res)
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
-            if (index == 0) {
+            if (index === 0) {
               return
             } else {
               this.allMsgList.push(item)
             }
           })
           this.allMsgList.forEach((item, index) => {
-            if (index == 0) {
+            if (index === 0) {
               this.$set(item, 'showTime', true)
             } else if (
-              index != 0 &&
+              index !== 0 &&
               this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
             ) {
               this.$set(item, 'showTime', true)
@@ -182,7 +182,7 @@ export default {
         }
       })
     },
-    //初始化数据
+    // 初始化数据
     getChatMsg () {
       let params = {
         direction: 'down',
@@ -192,13 +192,13 @@ export default {
       }
       chatMsgList(params).then(res => {
         console.log(res)
-        if (res.code == 1000) {
+        if (res.code === 1000) {
           this.allMsgList = res.data.msg_list
           this.allMsgList.forEach((item, index) => {
-            if (index == 0) {
+            if (index === 0) {
               this.$set(item, 'showTime', true)
             } else if (
-              index != 0 &&
+              index !== 0 &&
               this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
             ) {
               this.$set(item, 'showTime', true)
@@ -212,7 +212,7 @@ export default {
         }
       })
     },
-    //向上加载的时候的操作数据
+    // 向上加载的时候的操作数据
     getUpLoadData () {
       this.isContinue = false
       this.isShowLoad = true
@@ -225,11 +225,11 @@ export default {
       }
       chatMsgList(params).then(res => {
         this.isShowLoad = false
-        if (res.code == 1000) {
+        if (res.code === 1000) {
           let newObject = []
           res.data.msg_list.forEach((item, index) => {
-            //第一个数据不要
-            if (index == res.data.msg_list.length - 1) {
+            // 第一个数据不要
+            if (index === res.data.msg_list.length - 1) {
               return
             } else {
               newObject.push(item)
@@ -237,10 +237,10 @@ export default {
           })
           this.allMsgList.unshift(...newObject)
           this.allMsgList.forEach((item, index) => {
-            if (index == 0) {
+            if (index === 0) {
               this.$set(item, 'showTime', true)
             } else if (
-              index != 0 &&
+              index !== 0 &&
               this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
             ) {
               this.$set(item, 'showTime', true)
@@ -249,7 +249,7 @@ export default {
             }
           })
           this.last_msgid = this.allMsgList[0].msgid
-          this.isContinue = res.data.msg_list.length == 10 ? true : false
+          this.isContinue = res.data.msg_list.length === 10 ? true : false
         } else {
           console.log(res)
         }
@@ -263,7 +263,7 @@ export default {
         stop: 20 // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
       }
     }
-    //上拉加载数据
+    // 上拉加载数据
     this.scroll = new BScroll(this.$refs.wrapper, options)
 
     this.scroll.on('pullingDown', () => {

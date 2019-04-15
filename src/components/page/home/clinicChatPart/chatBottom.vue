@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     showIcon () {
-      return this.sendContent == ''
+      return this.sendContent === ''
     }
   },
   methods: {
@@ -129,4 +129,3 @@ export default {
   }
 
 </style>
-
