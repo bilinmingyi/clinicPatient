@@ -13,14 +13,16 @@
         <span>{{itemData.treat_time|timeFormat}}</span>
       </div>
       <div class="appoint-time">
-        <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]" v-for="item in itemData.period_infos" :key="item.start_time+item.end_time" @click="select(item.start_time, item.end_time)">
+        <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]"
+             v-for="item in itemData.period_infos" :key="item.start_time+item.end_time"
+             @click="select(item.start_time, item.end_time)">
           {{item.start_time}}~{{item.end_time}}
         </div>
       </div>
       <hr class="line-hr">
       <div class="appoint-btn-block">
         <button class="appoint-delete mr-30px" @click.stop="cancelAppoint">取消</button>
-        <button class="appoint-save">确定</button>
+        <button class="appoint-save" @click="sureAppoint">确定</button>
       </div>
     </div>
   </div>
@@ -75,7 +77,20 @@ export default {
         this.currTime.start = startTime
         this.currTime.end = endTime
       }
-
+    },
+    sureAppoint () {
+      if (this.currTime.start === '' || this.currTime.end === '') {
+        this.$Message.infor('请先选择时间段！')
+        return
+      }
+      this.$router.push({name: 'appointSure',
+        query: {
+          treatDate: this.treatDate,
+          price: this.itemData.price,
+          startTime: this.itemData.start_time,
+          end_time: this.itemData.end_time
+        }
+      })
     }
   }
 }
@@ -155,6 +170,7 @@ export default {
           margin: 0 12px 24px;
           @extend %flexVC;
         }
+
         .select-time {
           color: #ffffff;
           background: $greenColor;

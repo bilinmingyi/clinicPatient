@@ -38,6 +38,12 @@ export default new Router({
           path: 'detail/:id',
           component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/doctorDetail.vue'),
           props: true
+        },
+        {
+          path: 'appointSure',
+          name: 'appointSure',
+          component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/appointSure.vue'),
+          props: (route) => route.query
         }
       ]
     },
