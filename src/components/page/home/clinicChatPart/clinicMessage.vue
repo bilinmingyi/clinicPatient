@@ -46,15 +46,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.mb50{
-  margin-bottom: 50px;
-}
-.mb24{
-  margin-bottom: 24px;
-}
-.ml16{
-  margin-left: 16px;
-}
+
 p {
   text-align: center;
   font-size: 26px;
