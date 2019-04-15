@@ -4,23 +4,22 @@
       <div class="alert-title">预约信息</div>
       <div class="pl-30px pr-30px">
         <div class="alert-infor">
-          <p>预约日期：</p>
-          <p>预约费用：</p>
+          <p>预约日期：{{treatDate|dateFormat('yyyy-MM-dd W')}}</p>
+          <p>预约费用：<span class="alert-price">{{itemData.price}}元</span></p>
         </div>
       </div>
       <div class="small-title">
         <div class="line-block"></div>
-        <span class="">上午</span>
+        <span>{{itemData.treat_time|timeFormat}}</span>
       </div>
       <div class="appoint-time">
-        <div class="time-item">1</div>
-        <div class="time-item">1</div>
-        <div class="time-item">1</div>
-        <div class="time-item">1</div>
+        <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]" v-for="item in itemData.period_infos" :key="item.start_time+item.end_time" @click="select(item.start_time, item.end_time)">
+          {{item.start_time}}~{{item.end_time}}
+        </div>
       </div>
       <hr class="line-hr">
       <div class="appoint-btn-block">
-        <button class="appoint-delete mr-30px">取消</button>
+        <button class="appoint-delete mr-30px" @click.stop="cancelAppoint">取消</button>
         <button class="appoint-save">确定</button>
       </div>
     </div>
@@ -29,7 +28,56 @@
 
 <script>
 export default {
-  name: 'appointBlock'
+  name: 'appointBlock',
+  props: {
+    itemData: {
+      type: Object,
+      default () {
+        return {
+          end_time: '',
+          period_infos: [],
+          price: 0,
+          quota_total: 0,
+          quota_used: 0,
+          start_time: '',
+          treat_time: 1
+        }
+      }
+    },
+    treatDate: {
+      type: Number,
+      default: 0
+    }
+  },
+  data () {
+    return {
+      currTime: {
+        start: '',
+        end: ''
+      }
+    }
+  },
+  filters: {
+    timeFormat (val) {
+      let list = ['上午', '下午', '晚上']
+      return list[Number(val) - 1]
+    }
+  },
+  methods: {
+    cancelAppoint () {
+      this.$emit('canel-appoint')
+    },
+    select (startTime, endTime) {
+      if (this.currTime.start === startTime && this.currTime.end === endTime) {
+        this.currTime.start = ''
+        this.currTime.end = ''
+      } else {
+        this.currTime.start = startTime
+        this.currTime.end = endTime
+      }
+
+    }
+  }
 }
 </script>
 
@@ -68,6 +116,10 @@ export default {
         margin-bottom: 28px;
       }
 
+      .alert-price {
+        color: $redColor;
+      }
+
       .small-title {
         @extend %displayFlex;
         color: $depthTextColor;
@@ -103,14 +155,20 @@ export default {
           margin: 0 12px 24px;
           @extend %flexVC;
         }
+        .select-time {
+          color: #ffffff;
+          background: $greenColor;
+        }
       }
 
       .appoint-btn-block {
         @extend %flexVC;
         height: 144px;
+
         .appoint-delete {
           @include simpleButton(80px, 264px, 28px);
         }
+
         .appoint-save {
           @include deepButton(80px, 264px, 28px);
         }
