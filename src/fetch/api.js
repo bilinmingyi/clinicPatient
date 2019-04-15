@@ -48,6 +48,8 @@ const addPatient = params => fetch('/patient/add', params)
 const fetchAppointDetail = params => fetch('/appointOrder/detail', params)
 // 获取处方订单详情
 const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
+// 更新个人信息
+const changeUser = params => fetch('/user/update', params)
 
 export
 {
@@ -63,5 +65,6 @@ export
   deletePatient,
   addPatient,
   fetchAppointDetail,
-  fecthRecipeDetail
+  fecthRecipeDetail,
+  changeUser
 }

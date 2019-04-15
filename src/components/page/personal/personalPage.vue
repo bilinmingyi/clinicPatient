@@ -9,7 +9,7 @@
             <p>{{user_name}}/{{user_sex|sexFormat}}/{{user_age}}</p>
             <p>帐号ID：{{user_id}}</p>
           </div>
-          <div class="return-block">
+          <div class="return-block" @click.stop="goRouter(5)">
             <img src="../../../assets/img/xiayibu@2x.png">
           </div>
         </div>
@@ -59,6 +59,7 @@ export default {
       user_sex: '',
       user_id: '',
       user_age: '',
+      user_birthday: '',
       user_avatar: '',
       mobile: ''
     }
@@ -78,6 +79,12 @@ export default {
         case 3:
           this.$router.push({name: 'recipeListPage'})
           break
+        case 5:
+          this.$router.push({
+            name: 'editPerson',
+            query: {id: this.user_id, name: this.user_name, sex: this.user_sex, birthday: this.user_birthday}
+          })
+          break
       }
     },
     getUser () {
@@ -85,6 +92,7 @@ export default {
         this.user_id = res.data.id
         this.user_name = res.data.name
         this.user_sex = res.data.sex
+        this.user_birthday = res.data.birthday
 
         this.user_age = res.data.age
         this.user_avatar = res.data.avatar

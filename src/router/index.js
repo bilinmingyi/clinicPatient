@@ -60,6 +60,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/editPatient.vue')
         },
         {
+          path: 'editPerson',
+          name: 'editPerson',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/editPerson.vue')
+        },
+        {
           path: 'recipeListPage',
           name: 'recipeListPage',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/recipeListPage.vue')
