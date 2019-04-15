@@ -5,11 +5,11 @@
       <div class="clinic-chat">
         <div class="wrapper" ref="wrapper">
           <div class="chat-content content" @click="hideFuc" @touchstart="hideFuc">
-            <p v-show="isShowLoad" class="loadData">正在加载数据...</p>
+            <p v-show="isShowLoad" class="loadData">正在加载数据....</p>
             <div class="content-detail">
               <component
                 v-for="(item,index) in allMsgList"
-                :key="item.msgid"
+                :key="index"
                 :is="RenderComponent(item.from)"
                 :chatDetail="item"
               ></component>
