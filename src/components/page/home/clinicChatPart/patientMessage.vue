@@ -38,7 +38,7 @@
               class="reply-content"
         >医生，我想要咨询鼻炎之类的问题呢，最近不舒服医<a href="www.baidu.com">打开</a></div>-->
         <img
-          :src="imgNormalToggle(userInfoState.avatar)"
+          :src="imgNormalToggle(userInfoState.avatar, userInfoState)"
           alt
           class="ml20"
           @error="error(userInfoState,$event)"
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script>
-//添加公共的混入 里面有图片的默认图和错误处理
+// 添加公共的混入 里面有图片的默认图和错误处理
 import imgMixins from '@/assets/js/imgMixins'
 import {mapState} from 'vuex'
 
@@ -158,4 +158,3 @@ export default {
     @extend %flexV;
   }
 </style>
-

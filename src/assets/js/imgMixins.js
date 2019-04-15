@@ -18,17 +18,14 @@ export default {
       switch (index) {
         case 0:
           return this.classifiedImg
-          break
         case 1:
           return this.maleImg
-          break
         case 2:
           return this.femaleImg
-          break
       }
     },
     // 如果有图片传入 就用传入的图片 否则用默认图
-    imgNormalToggle (url) {
+    imgNormalToggle (url, item) {
       return url === '' ? this.getNormalHead(item.sex) : url
     }
   }
