@@ -17,7 +17,7 @@
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
-        <div class="contact-item">
+        <div class="contact-item" @click="goRoute">
           <img src="../../../assets/img/ly2.png">
           <span>咨询诊所</span>
         </div>
@@ -89,6 +89,9 @@ export default {
     addMore () {
       this.page++
       this.getList()
+    },
+    goRoute () {
+      this.$router.push({name: 'chatRoom'})
     }
   }
 }

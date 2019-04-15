@@ -17,6 +17,11 @@ export default new Router({
           path: '',
           name: 'homePage',
           component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/homePage.vue')
+        },
+        {
+          path: 'chatRoom',
+          name: 'chatRoom',
+          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue')
         }
       ]
     },
