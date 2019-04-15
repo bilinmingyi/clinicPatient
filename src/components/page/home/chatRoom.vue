@@ -92,8 +92,7 @@ export default {
       msgSend(params).then(res => {
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
-            if (index == 0) {
-              return
+            if (index === 0) {
             } else {
               this.allMsgList.push(item)
             }
@@ -159,7 +158,6 @@ export default {
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
             if (index === 0) {
-              return
             } else {
               this.allMsgList.push(item)
             }
@@ -188,7 +186,7 @@ export default {
         direction: 'down',
         session_type: 'CLINIC_PATIENT',
         count: 10,
-        last_msgid: this.last_msgid,
+        last_msgid: this.last_msgid
       }
       chatMsgList(params).then(res => {
         console.log(res)
@@ -221,7 +219,7 @@ export default {
         session_type: 'CLINIC_PATIENT',
         count: 10,
         last_msgid: this.last_msgid,
-        to_userid:  this.userInfoState.id
+        to_userid: this.userInfoState.id
       }
       chatMsgList(params).then(res => {
         this.isShowLoad = false
@@ -230,7 +228,6 @@ export default {
           res.data.msg_list.forEach((item, index) => {
             // 第一个数据不要
             if (index === res.data.msg_list.length - 1) {
-              return
             } else {
               newObject.push(item)
             }
@@ -249,7 +246,7 @@ export default {
             }
           })
           this.last_msgid = this.allMsgList[0].msgid
-          this.isContinue = res.data.msg_list.length === 10 ? true : false
+          this.isContinue = (res.data.msg_list.length === 10)
         } else {
           console.log(res)
         }

@@ -90,8 +90,8 @@ export default {
       this.page++
       this.getList()
     },
-    goRoute (orderSeqno, week_idx) {
-      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: week_idx}})
+    goRoute (orderSeqno, weekIdx) {
+      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: weekIdx}})
     }
   }
 }
