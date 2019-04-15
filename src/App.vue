@@ -14,10 +14,11 @@ export default {
     return {}
   },
   created () {
-    this.getCLinic()
+    this.getCLinic();
+    this.getUserInfo();
   },
   methods: {
-    ...mapActions(['set_clinic_info']),
+    ...mapActions(['set_clinic_info','getUserInfo']),
     getCLinic () {
       getClinicData().then(res => {
         if (res.code === 1000) {
