@@ -188,7 +188,7 @@ export default {
         direction: 'down',
         session_type: 'CLINIC_PATIENT',
         count: 10,
-        last_msgid: this.userInfoState.id,
+        last_msgid: this.last_msgid,
       }
       chatMsgList(params).then(res => {
         console.log(res)
@@ -221,7 +221,7 @@ export default {
         session_type: 'CLINIC_PATIENT',
         count: 10,
         last_msgid: this.last_msgid,
-        to_userid: this.queryData.userId
+        to_userid:  this.userInfoState.id
       }
       chatMsgList(params).then(res => {
         this.isShowLoad = false
@@ -276,7 +276,6 @@ export default {
     }, 3000)
   },
   created () {
-    this.queryData = this.$route.query
     this.getChatMsg()
   }
 }
