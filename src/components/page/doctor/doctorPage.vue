@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header titleText="1诊所医生"></Header>
+    <Header titleText="诊所医生"></Header>
     <div class="mt-88px pb-128px">
       <Search placeholder="请输医生名称" @on-search="query"></Search>
       <doctor-item v-for="item in doctorList" :key="item.id" :itemData="item"></doctor-item>

@@ -33,6 +33,11 @@ export default new Router({
           path: '',
           name: 'doctorPage',
           component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/doctorPage.vue')
+        },
+        {
+          path: 'detail/:id',
+          component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/doctorDetail.vue'),
+          props: true
         }
       ]
     },

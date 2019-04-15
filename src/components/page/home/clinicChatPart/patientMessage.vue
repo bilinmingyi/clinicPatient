@@ -49,98 +49,113 @@
 </template>
 <script>
 //添加公共的混入 里面有图片的默认图和错误处理
-import imgMixins from "@/assets/js/imgMixins";
-import { mapState } from "vuex";
+import imgMixins from '@/assets/js/imgMixins'
+import {mapState} from 'vuex'
+
 export default {
   mixins: [imgMixins],
-  props: ["chatDetail"],
-  data() {
-    return {};
+  props: ['chatDetail'],
+  data () {
+    return {}
   },
   computed: {
-    ...mapState(["userInfoState"])
+    ...mapState(['userInfoState'])
   },
   methods: {}
-};
+}
 </script>
 <style lang="scss" scoped>
-p {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 400;
-  color: $simpleGray;
-}
-.chat-content {
-  .reply-content {
-    background: $bgwhite2;
-    border: 1px solid $simpleGray;
-    max-width: 480px;
-    height: auto;
-    border-radius: 16px;
-    padding: 22px 30px;
-    @extend %normalTitle;
+  p {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    color: $simpleGray;
   }
-  a {
-    color: $deepBlue;
-    text-decoration: underline;
-    padding-left: 20px;
-    font-weight: 600;
-  }
-  display: flex;
-  img {
-    border-radius: 100px;
-    @extend %minICon;
-  }
-  .recommond {
-    @extend %flexV;
-    img {
-      @extend %mediumIcon;
-    }
-    &-content {
-      padding-left: 16px;
-      p {
-        text-align: left;
-      }
-    }
-    &-title {
-      @extend %normalTitle;
-      font-weight: 600;
-      span {
-        width: 72px;
-        height: 40px;
-        background: rgba(237, 171, 21, 1);
-        line-height: 40px;
-        text-align: center;
-        margin-left: 16px;
-        color: $bgwhite2;
-        font-size: 20px;
-        font-weight: 400;
-        display: inline-block;
-      }
-    }
-    &-subTitle {
-      padding-top: 6px;
-      font-size: 28px;
-      color: $simpleGray;
-    }
-  }
-}
-.imgMessage {
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-.right-chat {
+
   .chat-content {
-    justify-content: flex-end;
+    .reply-content {
+      background: $bgwhite2;
+      border: 1px solid $simpleGray;
+      max-width: 480px;
+      height: auto;
+      border-radius: 16px;
+      padding: 22px 30px;
+      @extend %normalTitle;
+    }
+
+    a {
+      color: $deepBlue;
+      text-decoration: underline;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
     display: flex;
+
+    img {
+      border-radius: 100px;
+      @extend %minICon;
+    }
+
+    .recommond {
+      @extend %flexV;
+
+      img {
+        @extend %mediumIcon;
+      }
+
+      &-content {
+        padding-left: 16px;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      &-title {
+        @extend %normalTitle;
+        font-weight: 600;
+
+        span {
+          width: 72px;
+          height: 40px;
+          background: rgba(237, 171, 21, 1);
+          line-height: 40px;
+          text-align: center;
+          margin-left: 16px;
+          color: $bgwhite2;
+          font-size: 20px;
+          font-weight: 400;
+          display: inline-block;
+        }
+      }
+
+      &-subTitle {
+        padding-top: 6px;
+        font-size: 28px;
+        color: $simpleGray;
+      }
+    }
   }
-}
-.cancel {
-  color: $gray3;
-  font-size: 28px;
-  @extend %flexV;
-}
+
+  .imgMessage {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .right-chat {
+    .chat-content {
+      justify-content: flex-end;
+      display: flex;
+    }
+  }
+
+  .cancel {
+    color: $gray3;
+    font-size: 28px;
+    @extend %flexV;
+  }
 </style>
 

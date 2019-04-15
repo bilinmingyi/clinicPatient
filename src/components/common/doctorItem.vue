@@ -1,11 +1,13 @@
 <template>
   <div>
-    <div class="doctor-item">
+    <div :class="['doctor-item',{'item-bottom':!canAppoint}]">
       <img :src="itemData.avatar != '' ? itemData.avatar: (itemData.sex == 2 ? woman_img: man_img)">
       <div class="doctor-infor">
         <div>
           <span class="infor-title">{{itemData.name}}</span>
-          <div :class="['doctor-job',color_list[itemData.title-1]]" v-if="itemData.title!=0">{{itemData.title|doctorTypes}}</div>
+          <div :class="['doctor-job',color_list[itemData.title-1]]" v-if="itemData.title!=0">
+            {{itemData.title|doctorTypes}}
+          </div>
         </div>
         <div>
           {{itemData.hospital}}
@@ -13,8 +15,8 @@
           {{itemData.department}}
         </div>
       </div>
-      <div class="flexVC">
-        <button class="appoint-btn">预约</button>
+      <div class="flexVC" v-if="canAppoint">
+        <button class="appoint-btn" @click.stop="goRoute(itemData.id)">预约</button>
       </div>
     </div>
   </div>
@@ -41,6 +43,10 @@ export default {
           sex: 0 // 医生性别，0保密，1男，2女
         }
       }
+    },
+    canAppoint: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -48,6 +54,11 @@ export default {
       man_img: man,
       woman_img: woman,
       color_list: ['color-4DBC89', 'color-EDAB15', 'color-08BAC6', 'color-29BBFF']
+    }
+  },
+  methods: {
+    goRoute (id) {
+      this.$router.push({path: `/doctor/detail/${id}`})
     }
   }
 }

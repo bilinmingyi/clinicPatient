@@ -1,0 +1,139 @@
+<template>
+  <div>
+    <Header :titleText="doctor.name+'医生'" :canReturn="true"></Header>
+    <div class="mt-88px">
+      <doctor-item :itemData="doctor" :canAppoint="false"></doctor-item>
+      <div class="doctor-spec">
+        <div class="spec-content">{{doctor.speciality}}</div>
+      </div>
+      <div class="doctor-schedule">
+        <Small-title :hasBlock="true">
+          <span class="ml-16px">医生排班</span>
+        </Small-title>
+        <div class="schedule-content">
+          <table class="d-table" data-type='2'>
+            <thead>
+            <tr>
+              <th>
+                <div>日期</div>
+              </th>
+              <th>
+                <div>上午</div>
+              </th>
+              <th>
+                <div>下午</div>
+              </th>
+              <th>
+                <div>晚上</div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in scheduleList" :key="item.treat_date">
+              <td>{{item.treat_date|dateFormat('MM/dd W')}}</td>
+              <td v-for="(schedule, index) in item.sched_list" :key="String(index)+schedule.treat_time" :class="{'back-EBF8F9':schedule.quota_used != schedule.quota_total}">
+                <div v-if="schedule.quota_used == 0 && schedule.quota_total == 0"></div>
+                <div v-else-if="schedule.quota_used == schedule.quota_total" class="td-content">挂满</div>
+                <div v-else>{{schedule.quota_used}}/{{schedule.quota_total}}</div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {Header, doctorItem, SmallTitle} from '@/components/common'
+import {fetchDOctorDetail, fetchDoctorSchedule} from '@/fetch/api.js'
+
+export default {
+  name: 'doctorDetail',
+  props: ['id'],
+  components: {
+    Header,
+    doctorItem,
+    SmallTitle
+  },
+  data () {
+    return {
+      doctor: {
+        name: '',
+        speciality: '',
+        department: '',
+        hospital: '',
+        title: -1,
+        avatar: ''
+      },
+      scheduleList: []
+    }
+  },
+  created () {
+    this.getDetail()
+    this.getSchedule()
+  },
+  methods: {
+    getDetail () {
+      fetchDOctorDetail({id: this.id}).then(res => {
+        if (res.code === 1000) {
+          this.doctor.name = res.data.name
+          this.doctor.speciality = res.data.speciality
+          this.doctor.department = res.data.department
+          this.doctor.hospital = res.data.hospital
+          this.doctor.title = res.data.title
+          this.doctor.avatar = res.data.avatar
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    getSchedule () {
+      fetchDoctorSchedule({id: this.id}).then(res => {
+        if (res.code === 1000) {
+          console.log(res.data)
+          this.scheduleList = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .doctor-spec {
+    padding: 0 30px 24px 30px;
+    margin-bottom: 20px;
+    background: $backColor;
+
+    .spec-content {
+      background: #fafafa;
+      padding: 20px;
+      font-size: 28px;
+      color: #232323;
+      line-height: 40px;
+    }
+  }
+
+  .doctor-schedule {
+    background: $backColor;
+    .back-EBF8F9 {
+      background: #EBF8F9;
+    }
+    .schedule-content {
+      padding: 28px 16px 48px;
+    }
+    .td-content {
+      color: #EB6262;
+    }
+  }
+</style>

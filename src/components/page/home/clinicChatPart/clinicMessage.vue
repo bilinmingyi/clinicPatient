@@ -3,7 +3,7 @@
     <div class="left-chat mb50">
       <p class="chat-time mb24" v-show="chatDetail.showTime">{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
       <div class="chat-content">
-        <img  src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)">
+        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)">
         <div
           class="reply-content ml16"
           v-show="chatDetail.msgdata.msg_type=='text'"
@@ -36,95 +36,110 @@
   </div>
 </template>
 <script>
-import imgMixins from "@/assets/js/imgMixins";
+import imgMixins from '@/assets/js/imgMixins'
+
 export default {
-  mixins:[imgMixins],
-  props: ["chatDetail",'patientImg'],
-  data() {
-    return {};
+  mixins: [imgMixins],
+  props: ['chatDetail', 'patientImg'],
+  data () {
+    return {}
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 
-p {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 400;
-  color: $simpleGray;
-}
-.chat-content {
-  .reply-content {
-    background: $bgwhite2;
-    border: 1px solid $simpleGray;
-    max-width: 480px;
-    height: auto;
-    border-radius: 16px;
-    padding: 22px 30px;
-    @extend %normalTitle;
+  p {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    color: $simpleGray;
   }
-  a {
-    color: $deepBlue;
-    text-decoration: underline;
-    padding-left: 20px;
-    font-weight: 600;
-  }
-  display: flex;
-  img {
-    @extend %minICon;
-    border-radius: 100px;
-  }
-  .imgMessage {
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .recommond {
-    @extend %flexV;
-    img {
-      @extend %mediumIcon;
-    }
-    &-content {
-      padding-left: 16px;
-      p {
-        text-align: left;
-      }
-    }
-    &-title {
-      @extend %normalTitle;
-      font-weight: 600;
-      span {
-        width: 72px;
-        height: 40px;
-        background: rgba(237, 171, 21, 1);
-        line-height: 40px;
-        text-align: center;
-        margin-left: 16px;
-        color: $bgwhite2;
-        font-size: 20px;
-        font-weight: 400;
-        display: inline-block;
-      }
-    }
-    &-subTitle {
-      padding-top: 6px;
-      font-size: 28px;
-      color: $simpleGray;
-    }
-  }
-}
-.right-chat {
+
   .chat-content {
-    justify-content: flex-end;
+    .reply-content {
+      background: $bgwhite2;
+      border: 1px solid $simpleGray;
+      max-width: 480px;
+      height: auto;
+      border-radius: 16px;
+      padding: 22px 30px;
+      @extend %normalTitle;
+    }
+
+    a {
+      color: $deepBlue;
+      text-decoration: underline;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
     display: flex;
+
+    img {
+      @extend %minICon;
+      border-radius: 100px;
+    }
+
+    .imgMessage {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .recommond {
+      @extend %flexV;
+
+      img {
+        @extend %mediumIcon;
+      }
+
+      &-content {
+        padding-left: 16px;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      &-title {
+        @extend %normalTitle;
+        font-weight: 600;
+
+        span {
+          width: 72px;
+          height: 40px;
+          background: rgba(237, 171, 21, 1);
+          line-height: 40px;
+          text-align: center;
+          margin-left: 16px;
+          color: $bgwhite2;
+          font-size: 20px;
+          font-weight: 400;
+          display: inline-block;
+        }
+      }
+
+      &-subTitle {
+        padding-top: 6px;
+        font-size: 28px;
+        color: $simpleGray;
+      }
+    }
   }
-}
-.cancel {
-  color: $gray3;
-  font-size: 28px;
-  @extend %flexV;
-}
+
+  .right-chat {
+    .chat-content {
+      justify-content: flex-end;
+      display: flex;
+    }
+  }
+
+  .cancel {
+    color: $gray3;
+    font-size: 28px;
+    @extend %flexV;
+  }
 </style>
 
 
