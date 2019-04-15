@@ -42,11 +42,12 @@
         </div>
       </div>
     </div>
+    <appoint-block></appoint-block>
   </div>
 </template>
 
 <script>
-import {Header, doctorItem, SmallTitle} from '@/components/common'
+import {Header, doctorItem, SmallTitle, appointBlock} from '@/components/common'
 import {fetchDOctorDetail, fetchDoctorSchedule} from '@/fetch/api.js'
 
 export default {
@@ -55,7 +56,8 @@ export default {
   components: {
     Header,
     doctorItem,
-    SmallTitle
+    SmallTitle,
+    appointBlock
   },
   data () {
     return {
