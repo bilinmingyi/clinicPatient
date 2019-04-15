@@ -25,7 +25,7 @@
           v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
         >
           <div class="imgMessage">
-            <img src="@/assets/img/nv@2x.png" alt>
+            <img :src="chatDetail.msgdata.img_url" alt>
           </div>
         </div>
         <div

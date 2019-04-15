@@ -267,9 +267,7 @@ export default {
     this.scroll = new BScroll(this.$refs.wrapper, options);
 
     this.scroll.on("pullingDown", () => {
-      
    this.getUpLoadData();
-  
       this.scroll.finishPullDown();
       // 刷新数据的过程中，回弹停留在距离顶部还有20px的位置
     });
