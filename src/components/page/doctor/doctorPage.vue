@@ -45,6 +45,7 @@ export default {
         'page': this.page,
         'page_size': this.pageSize
       }).then(res => {
+        console.log(res)
         res.data.length >= this.pageSize ? this.canShowAdd = true : this.canShowAdd = false
         this.doctorList = this.doctorList.concat(res.data)
       }).catch(error => {

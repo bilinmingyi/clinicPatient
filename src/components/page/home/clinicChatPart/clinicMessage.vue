@@ -1,20 +1,29 @@
 <template>
   <div>
     <div class="left-chat mb50">
-      <p class="chat-time mb24" v-show="chatDetail.showTime">{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
-      <div class="chat-content">
-        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)">
-        <div
-          class="reply-content ml16"
-          v-show="chatDetail.msgdata.msg_type=='text'"
-        ><span>{{chatDetail.msgdata.text}}</span></div>
-        <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='link'">
+      <p
+        class="chat-time mb24"
+        v-show="chatDetail.showTime"
+      >{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
+
+      <div class="chat-content" >
+        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)" >
+        <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
+          <span>{{chatDetail.msgdata.text}}</span>
+        </div>
+        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'"    @touchstart="goRouter()">
           <div class="recommond">
-            <img src="@/assets/img/nv@2x.png" alt>
+            <img
+              :src="imgNormalToggle(imgDetail.avatar,imgDetail)"
+              alt
+              @error="error(imgDetail,$event)"
+            >
             <div class="recommond-content">
               <p class="recommond-title">
-                王凯歌
-                <span>医师</span>
+                {{imgDetail.name}}
+                <span
+                  :class="color_list[imgDetail.title-1]"
+                >{{imgDetail.title|doctorTypes}}</span>
               </p>
               <p class="recommond-subTitle">请点击进行预约</p>
             </div>
@@ -36,108 +45,141 @@
   </div>
 </template>
 <script>
-import imgMixins from '@/assets/js/imgMixins'
+import imgMixins from "@/assets/js/imgMixins";
 
 export default {
   mixins: [imgMixins],
-  props: ['chatDetail', 'patientImg'],
-  data () {
-    return {}
+  props: ["chatDetail", "patientImg"],
+  data() {
+    return {
+      color_list: [
+        "color-4DBC89",
+        "color-EDAB15",
+        "color-08BAC6",
+        "color-29BBFF"
+      ],
+      imgDetail: ""
+    };
+  },
+  methods: {
+    goRouter() {
+       this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`})
+    }
+  },
+  created() {
+    if (this.chatDetail.msgdata.msg_type == "link") {
+      this.imgDetail = JSON.parse(this.chatDetail.msgdata.link_desc);
+    }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
+p {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 400;
+  color: $simpleGray;
+}
 
-  p {
-    text-align: center;
-    font-size: 26px;
-    font-weight: 400;
-    color: $simpleGray;
+.chat-content {
+  .reply-content {
+    background: $bgwhite2;
+    border: 1px solid $simpleGray;
+    max-width: 480px;
+    height: auto;
+    border-radius: 16px;
+    z-index: 999;
+    padding: 22px 30px;
+    @extend %normalTitle;
   }
 
-  .chat-content {
-    .reply-content {
-      background: $bgwhite2;
-      border: 1px solid $simpleGray;
-      max-width: 480px;
-      height: auto;
-      border-radius: 16px;
-      padding: 22px 30px;
-      @extend %normalTitle;
-    }
+  a {
+    color: $deepBlue;
+    text-decoration: underline;
+    padding-left: 20px;
+    font-weight: 600;
+  }
 
-    a {
-      color: $deepBlue;
-      text-decoration: underline;
-      padding-left: 20px;
-      font-weight: 600;
-    }
+  display: flex;
 
-    display: flex;
+  img {
+    @extend %minICon;
+    border-radius: 100px;
+  }
+
+  .imgMessage {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .recommond {
+    @extend %flexV;
 
     img {
-      @extend %minICon;
-      border-radius: 100px;
+      @extend %mediumIcon;
     }
 
-    .imgMessage {
-      img {
-        width: 100%;
-        height: 100%;
+    &-content {
+      padding-left: 16px;
+
+      p {
+        text-align: left;
       }
     }
 
-    .recommond {
-      @extend %flexV;
+    &-title {
+      @extend %normalTitle;
+      font-weight: 600;
 
-      img {
-        @extend %mediumIcon;
+      span {
+        min-width: 72px;
+        height: 40px;
+        padding: 0px 10px;
+        border-radius: 8px;
+        line-height: 40px;
+        text-align: center;
+        margin-left: 16px;
+        color: $bgwhite2;
+        font-size: 20px;
+        font-weight: 400;
+        display: inline-block;
       }
-
-      &-content {
-        padding-left: 16px;
-
-        p {
-          text-align: left;
-        }
-      }
-
-      &-title {
-        @extend %normalTitle;
-        font-weight: 600;
-
-        span {
-          width: 72px;
-          height: 40px;
-          background: rgba(237, 171, 21, 1);
-          line-height: 40px;
-          text-align: center;
-          margin-left: 16px;
-          color: $bgwhite2;
-          font-size: 20px;
-          font-weight: 400;
-          display: inline-block;
-        }
-      }
-
-      &-subTitle {
-        padding-top: 6px;
-        font-size: 28px;
-        color: $simpleGray;
-      }
+    }
+    &-subTitle {
+      padding-top: 6px;
+      font-size: 28px;
+      color: $simpleGray;
     }
   }
+}
 
-  .right-chat {
-    .chat-content {
-      justify-content: flex-end;
-      display: flex;
-    }
+.right-chat {
+  .chat-content {
+    justify-content: flex-end;
+    display: flex;
   }
+}
 
-  .cancel {
-    color: $gray3;
-    font-size: 28px;
-    @extend %flexV;
-  }
+.cancel {
+  color: $gray3;
+  font-size: 28px;
+  @extend %flexV;
+}
+.color-29BBFF {
+  background: #29bbff;
+}
+
+.color-4DBC89 {
+  background: #4dbc89;
+}
+
+.color-08BAC6 {
+  background: #08bac6;
+}
+
+.color-EDAB15 {
+  background: #edab15;
+}
 </style>
