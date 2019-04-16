@@ -124,16 +124,18 @@ const doctorTypes = (type) => {
   return codeToName(list, type)
 }
 /**
- * @desc： Format treatOrder status(过滤医生类型).
+ * @desc： Format treatOrder status().
  * @param {String} status
  * @example treatOrderStatus('UNCOMMIT') -> '就诊中'
  */
 const treatOrderStatus = (status) => {
   let list = [
+    {code: 'UNCOMMIT', name: '未提交'},
     {code: 'UNKNOWN', name: '未知'},
     {code: 'UNCOMMIT', name: '就诊中'},
     {code: 'UNPAID', name: '待支付'},
     {code: 'DISPENSING', name: '配药中'},
+    {code: 'DELIVER', name: '配送中'},
     {code: 'DONE', name: '完成'},
     {code: 'CANCEL', name: '取消'}
   ]
@@ -153,7 +155,7 @@ const sexFormat = (type) => {
   return codeToName(list, type)
 }
 /**
- * @desc： Format age(过滤医生类型).
+ * @desc： Format age().
  * @param {Number} str
  * @example ageFormat('...') -> 5
  */
