@@ -107,7 +107,7 @@ const dateFormat = function (date, fmt) {
       }
     })
   }
-  let d = Date.prototype.isPrototypeOf(date) ? date : new Date(date)
+  let d = Date.prototype.isPrototypeOf(date) ? date : new Date(Number(date))
   return d.Format(fmt)
 }
 /**

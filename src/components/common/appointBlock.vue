@@ -53,6 +53,10 @@ export default {
     doctorName: {
       type: String,
       default: ''
+    },
+    doctorId: {
+      default: 0,
+      type: Number
     }
   },
   data () {
@@ -94,7 +98,8 @@ export default {
           startTime: this.itemData.start_time,
           endTime: this.itemData.end_time,
           doctorName: this.doctorName,
-          treatTime: this.itemData.treat_time
+          treatTime: this.itemData.treat_time,
+          doctorId: this.doctorId
         }
       })
     }

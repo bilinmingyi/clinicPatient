@@ -36,6 +36,8 @@ const getDoctorList = params => fetch('/doctor/list', params)
 const fetchDOctorDetail = params => fetch('/doctor/detail?id=' + params.id)
 // 获取医生排版
 const fetchDoctorSchedule = params => fetch('/doctor/schedule', params)
+// 提交预约订单
+const saveAppointData = params => fetch('/appointOrder/submit', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -77,5 +79,6 @@ export {
   fecthRecipeDetail,
   changeUser,
   fetchDOctorDetail,
-  fetchDoctorSchedule
+  fetchDoctorSchedule,
+  saveAppointData
 }
