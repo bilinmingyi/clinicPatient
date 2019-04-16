@@ -99,8 +99,8 @@ export default {
           if (res.code === 1000) {
             try {
               window.location.href = res.data
-            } catch (e) {
-              console.log(e)
+            } catch (error) {
+              console.log(error)
               this.$Message.infor('支付跳转失败')
             }
           } else {

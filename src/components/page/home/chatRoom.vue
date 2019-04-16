@@ -120,7 +120,7 @@ export default {
             this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
           }, 0)
         } else {
-          console.log(res)
+          this.$Message.infor(res.msg)
         }
         window.scrollTo(0, this.$refs.wrapper + 100) // 滑动到底部
       })
@@ -218,7 +218,7 @@ export default {
           })
           this.isReply = false
         } else {
-          console.log(res)
+          this.$Message.infor(res.msg)
         }
       })
     },
@@ -251,7 +251,7 @@ export default {
             this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
           }, 0)
         } else {
-          console.log(res)
+          this.$Message.infor(res.msg)
         }
       })
     },
@@ -294,7 +294,7 @@ export default {
             this.scroll.closePullDown()
           }
         } else {
-          console.log(res)
+          this.$Message.infor(res.msg)
         }
       })
     }
