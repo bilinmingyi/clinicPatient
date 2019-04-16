@@ -60,6 +60,8 @@ const addPatient = params => fetch('/patient/add', params)
 const fetchAppointDetail = params => fetch('/appointOrder/detail', params)
 // 获取处方订单详情
 const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
+// 支付跳转
+const gotoPay = params => fetch('/pay/szjk/payUrl', params)
 // 更新个人信息
 const changeUser = params => fetch('/user/update', params)
 
@@ -83,5 +85,6 @@ export {
   changeUser,
   fetchDOctorDetail,
   fetchDoctorSchedule,
-  saveAppointData
+  saveAppointData,
+  gotoPay
 }

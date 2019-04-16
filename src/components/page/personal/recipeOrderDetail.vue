@@ -10,7 +10,7 @@
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">下单时间：</span>
-            <span class="label-two">{{orderDetail.order_info.createTime|dateFormat}}</span>
+            <!--<span class="label-two">{{orderDetail.order_info.createTime|dateFormat}}</span>-->
           </div>
           <div class="mb-8px">
             <span class="label-three">患者信息：</span>
@@ -34,20 +34,38 @@
           </div>
         </div>
       </div>
+      <div class="content-back">
+        <div class="line-item">
+          <label class="label-span mr-32px flexOne">订单总价</label>
+          <span class="label-red">￥{{orderDetail.order_info.price}}</span>
+        </div>
+        <hr class="line-hr">
+        <div class="line-item">
+          <label class="label-span mr-32px flexOne">支付方式</label>
+          <span class="label-span">{{orderDetail.order_info.payType|payTypeFormat}}</span>
+        </div>
+        <hr class="line-hr">
+      </div>
+    </div>
+    <div class="add-block">
+      <button class="add-btn" @click.stop="nextDone">{{orderDetail.order_info.status === 'UNPAID'?'去支付':'关闭'}}</button>
     </div>
   </div>
 </template>
 
 <script>
 import {Header, SmallTitle} from '../../common'
-import {fecthRecipeDetail} from '@/fetch/api.js'
+import {fecthRecipeDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'recipeOrderDetail',
   props: ['orderSeqno'],
   data () {
     return {
-      orderDetail: {}
+      orderDetail: {
+        order_info: {},
+        user_info: {}
+      }
     }
   },
   components: {
@@ -71,6 +89,30 @@ export default {
         this.$Message.infor('网络出错！')
         console.log(error)
       })
+    },
+    nextDone () {
+      if (this.orderDetail.order_info.status === 'UNPAID') {
+        gotoPay({
+          'order_type': 2,
+          'order_seqno': this.orderSeqno
+        }).then(res => {
+          if (res.code === 1000) {
+            try {
+              window.location.href = res.data
+            } catch (e) {
+              console.log(e)
+              this.$Message.infor('支付跳转失败')
+            }
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      } else {
+        this.$router.go(-1)
+      }
     }
   }
 }
@@ -128,5 +170,18 @@ export default {
 
   .patient-infor {
     padding: 0 30px;
+  }
+
+  .add-block {
+    @include psFixed(bottom, 112px);
+    @extend %displayFlex;
+    background: $backColor;
+    padding: 16px 30px 15px;
+    width: 100%;
+    border-top: 1px solid $lineColor;
+  }
+
+  .add-btn {
+    @include deepButton(80px, 100%)
   }
 </style>
