@@ -16,7 +16,7 @@
         >
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
-          <div class="reply-content" v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='link'">
+        <div class="reply-content" v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='link'">
           <div class="recommond">
             <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)">
             <div class="recommond-content">
@@ -57,166 +57,167 @@
 </template>
 <script>
 // 添加公共的混入 里面有图片的默认图和错误处理
-import imgMixins from "@/assets/js/imgMixins";
-import { mapState } from "vuex";
+import imgMixins from '@/assets/js/imgMixins'
+import {mapState} from 'vuex'
 
 export default {
   mixins: [imgMixins],
-  props: ["chatDetail"],
-  data() {
-    return {   
+  props: ['chatDetail'],
+  data () {
+    return {
       color_list: [
-        "color-4DBC89",
-        "color-EDAB15",
-        "color-08BAC6",
-        "color-29BBFF"
+        'color-4DBC89',
+        'color-EDAB15',
+        'color-08BAC6',
+        'color-29BBFF'
       ],
-      timeOutEvent:'',
-         imgDetail:''
-    };
+      timeOutEvent: '',
+      imgDetail: ''
+    }
   },
   computed: {
-    ...mapState(["userInfoState"])
+    ...mapState(['userInfoState'])
   },
   methods: {
     //开始按
-    gtouchstart() {
-      if (this.chatDetail.msgdata.msg_type == "withdraw_msg") {
-        return;
+    gtouchstart () {
+      if (this.chatDetail.msgdata.msg_type == 'withdraw_msg') {
+        return
         //撤销消息不能撤回
       }
       this.timeOutEvent = setTimeout(() => {
-        this.$Message.confirm("确认撤销消息么？", () => {
-          this.$emit("cancelMessage", this.chatDetail);
-        });
-      }, 1000); //这里设置定时器，定义长按1000毫秒触发长按事件，时间可以自己改
-      return false;
+        this.$Message.confirm('确认撤销消息么？', () => {
+          this.$emit('cancelMessage', this.chatDetail)
+        })
+      }, 1000) //这里设置定时器，定义长按1000毫秒触发长按事件，时间可以自己改
+      return false
     },
     //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
-    gtouchend() {
-      clearTimeout(this.timeOutEvent);
+    gtouchend () {
+      clearTimeout(this.timeOutEvent)
       //清除定时器
-      return false;
+      return false
     },
     //如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
-    gtouchmove() {
-      clearTimeout(this.timeOutEvent); //清除定时器
-      this.timeOutEvent = 0;
+    gtouchmove () {
+      clearTimeout(this.timeOutEvent) //清除定时器
+      this.timeOutEvent = 0
     }
   },
-    created() {
-      if(this.chatDetail.msgdata.msg_type=='link'){
-        this.imgDetail=JSON.parse(this.chatDetail.msgdata.link_desc);
+  created () {
+    if (this.chatDetail.msgdata.msg_type == 'link') {
+      this.imgDetail = JSON.parse(this.chatDetail.msgdata.link_desc)
     }
-    }
-};
+  }
+}
 </script>
 <style lang="scss" scoped>
-p {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 400;
-  color: $simpleGray;
-}
-
-.chat-content {
-  .reply-content {
-    background: $bgwhite2;
-    border: 1px solid $simpleGray;
-    max-width: 480px;
-    height: auto;
-    border-radius: 16px;
-    padding: 22px 30px;
-    @extend %normalTitle;
+  p {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    color: $simpleGray;
   }
 
-  a {
-    color: $deepBlue;
-    text-decoration: underline;
-    padding-left: 20px;
-    font-weight: 600;
-  }
+  .chat-content {
+    .reply-content {
+      background: $bgwhite2;
+      border: 1px solid $simpleGray;
+      max-width: 480px;
+      height: auto;
+      border-radius: 16px;
+      padding: 22px 30px;
+      @extend %normalTitle;
+    }
 
-  display: flex;
+    a {
+      color: $deepBlue;
+      text-decoration: underline;
+      padding-left: 20px;
+      font-weight: 600;
+    }
 
-  img {
-    border-radius: 100px;
-    @extend %minICon;
-  }
-
-  .recommond {
-    @extend %flexV;
+    display: flex;
 
     img {
-      @extend %mediumIcon;
+      border-radius: 100px;
+      @extend %minICon;
     }
 
-    &-content {
-      padding-left: 16px;
+    .recommond {
+      @extend %flexV;
 
-      p {
-        text-align: left;
+      img {
+        @extend %mediumIcon;
+      }
+
+      &-content {
+        padding-left: 16px;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      &-title {
+        @extend %normalTitle;
+        font-weight: 600;
+
+        span {
+          width: 72px;
+          height: 40px;
+          background: rgba(237, 171, 21, 1);
+          line-height: 40px;
+          text-align: center;
+          margin-left: 16px;
+          color: $bgwhite2;
+          font-size: 20px;
+          font-weight: 400;
+          display: inline-block;
+        }
+      }
+
+      &-subTitle {
+        padding-top: 6px;
+        font-size: 28px;
+        color: $simpleGray;
       }
     }
+  }
 
-    &-title {
-      @extend %normalTitle;
-      font-weight: 600;
-
-      span {
-        width: 72px;
-        height: 40px;
-        background: rgba(237, 171, 21, 1);
-        line-height: 40px;
-        text-align: center;
-        margin-left: 16px;
-        color: $bgwhite2;
-        font-size: 20px;
-        font-weight: 400;
-        display: inline-block;
-      }
-    }
-
-    &-subTitle {
-      padding-top: 6px;
-      font-size: 28px;
-      color: $simpleGray;
+  .imgMessage {
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
-}
 
-.imgMessage {
-  img {
-    width: 100%;
-    height: 100%;
+  .right-chat {
+    .chat-content {
+      justify-content: flex-end;
+      display: flex;
+    }
   }
-}
 
-.right-chat {
-  .chat-content {
-    justify-content: flex-end;
-    display: flex;
+  .cancel {
+    color: $gray3;
+    font-size: 28px;
+    @extend %flexV;
   }
-}
 
-.cancel {
-  color: $gray3;
-  font-size: 28px;
-  @extend %flexV;
-}
-.color-29BBFF {
-  background: #29bbff;
-}
+  .color-29BBFF {
+    background: #29bbff;
+  }
 
-.color-4DBC89 {
-  background: #4dbc89;
-}
+  .color-4DBC89 {
+    background: #4dbc89;
+  }
 
-.color-08BAC6 {
-  background: #08bac6;
-}
+  .color-08BAC6 {
+    background: #08bac6;
+  }
 
-.color-EDAB15 {
-  background: #edab15;
-}
+  .color-EDAB15 {
+    background: #edab15;
+  }
 </style>

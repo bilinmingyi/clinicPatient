@@ -74,7 +74,7 @@ export default {
 
       input {
         // width: 540px;
-        padding:20px;
+        padding: 20px;
         outline: medium;
         flex: 1;
         height: 80px;

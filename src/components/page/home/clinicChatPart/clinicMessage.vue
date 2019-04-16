@@ -6,12 +6,12 @@
         v-show="chatDetail.showTime"
       >{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
 
-      <div class="chat-content" >
-        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)" >
+      <div class="chat-content">
+        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)">
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
-        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'"    @touchstart="goRouter()">
+        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'" @touchstart="goRouter()">
           <div class="recommond">
             <img
               :src="imgNormalToggle(imgDetail.avatar,imgDetail)"
@@ -45,141 +45,143 @@
   </div>
 </template>
 <script>
-import imgMixins from "@/assets/js/imgMixins";
+import imgMixins from '@/assets/js/imgMixins'
 
 export default {
   mixins: [imgMixins],
-  props: ["chatDetail", "patientImg"],
-  data() {
+  props: ['chatDetail', 'patientImg'],
+  data () {
     return {
       color_list: [
-        "color-4DBC89",
-        "color-EDAB15",
-        "color-08BAC6",
-        "color-29BBFF"
+        'color-4DBC89',
+        'color-EDAB15',
+        'color-08BAC6',
+        'color-29BBFF'
       ],
-      imgDetail: ""
-    };
+      imgDetail: ''
+    }
   },
   methods: {
-    goRouter() {
-       this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`})
+    goRouter () {
+      this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`})
     }
   },
-  created() {
-    if (this.chatDetail.msgdata.msg_type == "link") {
-      this.imgDetail = JSON.parse(this.chatDetail.msgdata.link_desc);
+  created () {
+    if (this.chatDetail.msgdata.msg_type == 'link') {
+      this.imgDetail = JSON.parse(this.chatDetail.msgdata.link_desc)
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
-p {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 400;
-  color: $simpleGray;
-}
-
-.chat-content {
-  .reply-content {
-    background: $bgwhite2;
-    border: 1px solid $simpleGray;
-    max-width: 480px;
-    height: auto;
-    border-radius: 16px;
-    z-index: 999;
-    padding: 22px 30px;
-    @extend %normalTitle;
+  p {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    color: $simpleGray;
   }
 
-  a {
-    color: $deepBlue;
-    text-decoration: underline;
-    padding-left: 20px;
-    font-weight: 600;
-  }
-
-  display: flex;
-
-  img {
-    @extend %minICon;
-    border-radius: 100px;
-  }
-
-  .imgMessage {
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .recommond {
-    @extend %flexV;
-
-    img {
-      @extend %mediumIcon;
-    }
-
-    &-content {
-      padding-left: 16px;
-
-      p {
-        text-align: left;
-      }
-    }
-
-    &-title {
-      @extend %normalTitle;
-      font-weight: 600;
-
-      span {
-        min-width: 72px;
-        height: 40px;
-        padding: 0px 10px;
-        border-radius: 8px;
-        line-height: 40px;
-        text-align: center;
-        margin-left: 16px;
-        color: $bgwhite2;
-        font-size: 20px;
-        font-weight: 400;
-        display: inline-block;
-      }
-    }
-    &-subTitle {
-      padding-top: 6px;
-      font-size: 28px;
-      color: $simpleGray;
-    }
-  }
-}
-
-.right-chat {
   .chat-content {
-    justify-content: flex-end;
+    .reply-content {
+      background: $bgwhite2;
+      border: 1px solid $simpleGray;
+      max-width: 480px;
+      height: auto;
+      border-radius: 16px;
+      z-index: 999;
+      padding: 22px 30px;
+      @extend %normalTitle;
+    }
+
+    a {
+      color: $deepBlue;
+      text-decoration: underline;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
     display: flex;
+
+    img {
+      @extend %minICon;
+      border-radius: 100px;
+    }
+
+    .imgMessage {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .recommond {
+      @extend %flexV;
+
+      img {
+        @extend %mediumIcon;
+      }
+
+      &-content {
+        padding-left: 16px;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      &-title {
+        @extend %normalTitle;
+        font-weight: 600;
+
+        span {
+          min-width: 72px;
+          height: 40px;
+          padding: 0px 10px;
+          border-radius: 8px;
+          line-height: 40px;
+          text-align: center;
+          margin-left: 16px;
+          color: $bgwhite2;
+          font-size: 20px;
+          font-weight: 400;
+          display: inline-block;
+        }
+      }
+
+      &-subTitle {
+        padding-top: 6px;
+        font-size: 28px;
+        color: $simpleGray;
+      }
+    }
   }
-}
 
-.cancel {
-  color: $gray3;
-  font-size: 28px;
-  @extend %flexV;
-}
-.color-29BBFF {
-  background: #29bbff;
-}
+  .right-chat {
+    .chat-content {
+      justify-content: flex-end;
+      display: flex;
+    }
+  }
 
-.color-4DBC89 {
-  background: #4dbc89;
-}
+  .cancel {
+    color: $gray3;
+    font-size: 28px;
+    @extend %flexV;
+  }
 
-.color-08BAC6 {
-  background: #08bac6;
-}
+  .color-29BBFF {
+    background: #29bbff;
+  }
 
-.color-EDAB15 {
-  background: #edab15;
-}
+  .color-4DBC89 {
+    background: #4dbc89;
+  }
+
+  .color-08BAC6 {
+    background: #08bac6;
+  }
+
+  .color-EDAB15 {
+    background: #edab15;
+  }
 </style>
