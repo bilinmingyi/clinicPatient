@@ -128,7 +128,6 @@ export default {
           return false
         }
       })
-      console.log(patients)
       this.patient.user_name = patients[0].name
       this.patient.user_sex = patients[0].sex
       this.patient.user_age = patients[0].age

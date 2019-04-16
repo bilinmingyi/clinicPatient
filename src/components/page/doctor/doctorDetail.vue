@@ -100,7 +100,6 @@ export default {
     getSchedule () {
       fetchDoctorSchedule({id: this.id}).then(res => {
         if (res.code === 1000) {
-          console.log(res.data)
           this.scheduleList = res.data
         } else {
           this.$Message.infor(res.msg)

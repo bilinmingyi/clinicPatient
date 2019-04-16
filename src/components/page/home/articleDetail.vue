@@ -34,7 +34,6 @@ export default {
   methods: {
     getDetail () {
       fetchArticleDetail({id: this.id}).then(res => {
-        console.log(res)
         if (res.code === 1000) {
           this.content = res.data.content
           this.title = res.data.title

@@ -8,7 +8,7 @@
             <p v-show="isShowLoad" class="loadData">正在加载数据....</p>
             <div class="content-detail">
               <component
-                v-for="(item,index) in allMsgList"
+                v-for="(item) in allMsgList"
                 :key="item.msgid"
                 :is="RenderComponent(item.from)"
                 :chatDetail="item"
@@ -88,7 +88,7 @@ export default {
       let msgid =
         this.allMsgList.length > 0 ? this.allMsgList[index].msgid : null
       let params = {
-        last_msgid: this.allMsgList[index].msgid,
+        last_msgid: msgid,
         to_userid: this.userInfoState.id,
         from_username: this.userInfoState.name,
         from_userimg: this.userInfoState.avatar,
@@ -151,9 +151,8 @@ export default {
         return false
       }
     },
-    //撤销消息
+    // 撤销消息
     cancelMessage (val) {
-      console.log(val)
       let params = {
         session_type: val.session_type,
         session_id: val.session_id,
@@ -167,7 +166,6 @@ export default {
           })
         } else {
           this.$Message.infor('网络太差，撤销失败')
-          console.log(res)
         }
         setTimeout(() => {
           this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
@@ -187,24 +185,23 @@ export default {
         to_userid: this.userInfoState.id
       }
       chatMsgList(params).then(res => {
-        let filterArray = []
+        // let filterArray = []
         let withArray = []
-        // console.log(res);
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
-            if (index === 0 && this.allMsgList.length != 0) {
+            if (index === 0 && this.allMsgList.length !== 0) {
               return
             } else {
               this.allMsgList.push(item)
             }
-            //过滤上面已经撤回的信息
-            if (item.msgdata.msg_type == 'withdraw_msg') {
+            // 过滤上面已经撤回的信息
+            if (item.msgdata.msg_type === 'withdraw_msg') {
               withArray.push({msgid: item.msgdata.msg_id})
             }
           })
           let filterArray = JSON.parse(JSON.stringify(this.allMsgList))
           withArray.forEach(item => {
-            filterArray.splice(filterArray.findIndex(v => v.msgid == item.msgid), 1)
+            filterArray.splice(filterArray.findIndex(v => v.msgid === item.msgid), 1)
           })
           this.allMsgList = filterArray
           this.allMsgList.forEach((item, index) => {
@@ -234,7 +231,6 @@ export default {
         last_msgid: this.last_msgid
       }
       chatMsgList(params).then(res => {
-        // console.log(res);
         if (res.code === 1000) {
           this.allMsgList = res.data.msg_list
           this.allMsgList.forEach((item, index) => {
@@ -276,7 +272,6 @@ export default {
           res.data.msg_list.forEach((item, index) => {
             // 第一个数据不要
             if (index === res.data.msg_list.length - 1) {
-              return
             } else {
               newObject.push(item)
             }
@@ -295,7 +290,7 @@ export default {
             }
           })
           this.last_msgid = this.allMsgList[0].msgid
-          if (res.data.msg_list.length != 10) {
+          if (res.data.msg_list.length !== 10) {
             this.scroll.closePullDown()
           }
         } else {

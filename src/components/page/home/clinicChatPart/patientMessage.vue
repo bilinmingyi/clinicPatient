@@ -79,33 +79,33 @@ export default {
     ...mapState(['userInfoState'])
   },
   methods: {
-    //开始按
+    // 开始按
     gtouchstart () {
-      if (this.chatDetail.msgdata.msg_type == 'withdraw_msg') {
+      if (this.chatDetail.msgdata.msg_type === 'withdraw_msg') {
         return
-        //撤销消息不能撤回
+        // 撤销消息不能撤回
       }
       this.timeOutEvent = setTimeout(() => {
         this.$Message.confirm('确认撤销消息么？', () => {
           this.$emit('cancelMessage', this.chatDetail)
         })
-      }, 1000) //这里设置定时器，定义长按1000毫秒触发长按事件，时间可以自己改
+      }, 1000) // 这里设置定时器，定义长按1000毫秒触发长按事件，时间可以自己改
       return false
     },
-    //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
+    // 手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
     gtouchend () {
       clearTimeout(this.timeOutEvent)
-      //清除定时器
+      // 清除定时器
       return false
     },
-    //如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
+    // 如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
     gtouchmove () {
-      clearTimeout(this.timeOutEvent) //清除定时器
+      clearTimeout(this.timeOutEvent) // 清除定时器
       this.timeOutEvent = 0
     }
   },
   created () {
-    if (this.chatDetail.msgdata.msg_type == 'link') {
+    if (this.chatDetail.msgdata.msg_type === 'link') {
       this.imgDetail = JSON.parse(this.chatDetail.msgdata.link_desc)
     }
   }

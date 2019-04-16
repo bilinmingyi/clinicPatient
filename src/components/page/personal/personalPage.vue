@@ -89,7 +89,6 @@ export default {
     },
     getUser () {
       fetchUserInfo({}).then(res => {
-        console.log(res)
         this.user_id = res.data.id
         this.user_name = res.data.name
         this.user_sex = res.data.sex
