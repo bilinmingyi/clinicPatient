@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="预约订单"></Header>
+    <Header :canReturn="true" titleText="预约订单" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="list-block" v-for="item in dataList" :key="item.order_seqno"
            @click.stop="goRoute(item.order_seqno, item.week_idx)">
@@ -90,8 +90,8 @@ export default {
       this.page++
       this.getList()
     },
-    goRoute (orderSeqno, week_idx) {
-      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: week_idx}})
+    goRoute (orderSeqno, weekIdx) {
+      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: weekIdx}})
     }
   }
 }

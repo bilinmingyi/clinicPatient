@@ -107,7 +107,7 @@ const dateFormat = function (date, fmt) {
       }
     })
   }
-  let d = Date.prototype.isPrototypeOf(date) ? date : new Date(date)
+  let d = Date.prototype.isPrototypeOf(date) ? date : new Date(Number(date))
   return d.Format(fmt)
 }
 /**
@@ -124,23 +124,25 @@ const doctorTypes = (type) => {
   return codeToName(list, type)
 }
 /**
- * @desc： Format treatOrder status(过滤医生类型).
+ * @desc： Format treatOrder status(订单状态).
  * @param {String} status
  * @example treatOrderStatus('UNCOMMIT') -> '就诊中'
  */
 const treatOrderStatus = (status) => {
   let list = [
+    {code: 'UNCOMMIT', name: '未提交'},
     {code: 'UNKNOWN', name: '未知'},
     {code: 'UNCOMMIT', name: '就诊中'},
     {code: 'UNPAID', name: '待支付'},
     {code: 'DISPENSING', name: '配药中'},
+    {code: 'DELIVER', name: '配送中'},
     {code: 'DONE', name: '完成'},
     {code: 'CANCEL', name: '取消'}
   ]
   return codeToName(list, status)
 }
 /**
- * @desc： Format sex(过滤医生类型).
+ * @desc： Format sex(性别类型).
  * @param {Number} type
  * @example sexFormat(1) -> '男'
  */
@@ -153,7 +155,7 @@ const sexFormat = (type) => {
   return codeToName(list, type)
 }
 /**
- * @desc： Format age(过滤医生类型).
+ * @desc： Format age(年龄计算).
  * @param {Number} str
  * @example ageFormat('...') -> 5
  */
@@ -161,6 +163,34 @@ const ageFormat = (str) => {
   let date = new Date(Number(str))
   let today = new Date()
   return today.getFullYear() - date.getFullYear()
+}
+/**
+ * @desc： Format articleType(文章类型).
+ * @param {Number} type
+ * @example articleType(1) -> '资讯'
+ */
+const articleType = (type) => {
+  let list = [{code: 1, name: '资讯'}, {code: 2, name: '诊所动态'}]
+  return codeToName(list, type)
+}
+/**
+ * @desc： Format payType(支付类型).
+ * @param {Number} type
+ * @example payTypeFormat(1) -> '微信线上'
+ */
+const payTypeFormat = (type) => {
+  let list = [
+    {code: 0, name: '未知'},
+    {code: 1, name: '微信线上'},
+    {code: 2, name: '支付宝线上'},
+    {code: 3, name: '银行卡'},
+    {code: 4, name: '微信线下'},
+    {code: 5, name: '支付宝线下'},
+    {code: 6, name: '现金'},
+    {code: 7, name: '医保卡'},
+    {code: 9, name: '平台支付'}
+  ]
+  return codeToName(list, type)
 }
 
 export default {
@@ -170,5 +200,7 @@ export default {
   doctorTypes,
   treatOrderStatus,
   sexFormat,
-  ageFormat
+  ageFormat,
+  articleType,
+  payTypeFormat
 }

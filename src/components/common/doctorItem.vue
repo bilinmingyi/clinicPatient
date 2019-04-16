@@ -109,6 +109,10 @@ export default {
     }
   }
 
+  .item-bottom {
+    border-bottom: none;
+  }
+
   .color-29BBFF {
     background: #29BBFF;
   }

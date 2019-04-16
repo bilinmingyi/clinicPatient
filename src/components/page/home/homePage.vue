@@ -17,14 +17,14 @@
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
-        <div class="contact-item" @click="goRoute">
+        <div class="contact-item" @click="goRoute(1)">
           <img src="../../../assets/img/ly2.png">
           <span>咨询诊所</span>
         </div>
       </section>
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
-        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"></Dynamic>
+        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id" @click.native="goRoute(2, article.id)"></Dynamic>
         <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
       </section>
     </div>
@@ -90,8 +90,15 @@ export default {
       this.page++
       this.getList()
     },
-    goRoute () {
-      this.$router.push({name: 'chatRoom'})
+    goRoute (type, params) {
+      switch (type) {
+        case 1:
+          this.$router.push({name: 'chatRoom'})
+          break
+        case 2:
+          this.$router.push({name: 'articleDetail', params: {id: params}})
+          break
+      }
     }
   }
 }

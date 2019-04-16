@@ -22,6 +22,12 @@ export default new Router({
           path: 'chatRoom',
           name: 'chatRoom',
           component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue')
+        },
+        {
+          path: 'articleDetail/:id',
+          name: 'articleDetail',
+          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/articleDetail.vue'),
+          props: true
         }
       ]
     },
@@ -38,6 +44,12 @@ export default new Router({
           path: 'detail/:id',
           component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/doctorDetail.vue'),
           props: true
+        },
+        {
+          path: 'appointSure',
+          name: 'appointSure',
+          component: () => import(/* webpackChunkName: 'doctor' */'@/components/page/doctor/appointSure.vue'),
+          props: (route) => route.query
         }
       ]
     },

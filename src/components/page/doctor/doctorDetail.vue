@@ -34,7 +34,7 @@
               <td v-for="(schedule, index) in item.sched_list" :key="String(index)+schedule.treat_time" :class="{'back-EBF8F9':schedule.quota_used != schedule.quota_total}">
                 <div v-if="schedule.quota_used == 0 && schedule.quota_total == 0"></div>
                 <div v-else-if="schedule.quota_used == schedule.quota_total" class="td-content">挂满</div>
-                <div v-else>{{schedule.quota_used}}/{{schedule.quota_total}}</div>
+                <div v-else @click.stop="selectTime(schedule, item.treat_date)">{{schedule.quota_used}}/{{schedule.quota_total}}</div>
               </td>
             </tr>
             </tbody>
@@ -42,11 +42,12 @@
         </div>
       </div>
     </div>
+    <appoint-block :itemData="currBlock" :doctorName="doctor.name" :doctorId="Number(id)" :treatDate="treatDate" v-if="appointBlockShow" @canel-appoint="appointBlockShow=false"></appoint-block>
   </div>
 </template>
 
 <script>
-import {Header, doctorItem, SmallTitle} from '@/components/common'
+import {Header, doctorItem, SmallTitle, appointBlock} from '@/components/common'
 import {fetchDOctorDetail, fetchDoctorSchedule} from '@/fetch/api.js'
 
 export default {
@@ -55,7 +56,8 @@ export default {
   components: {
     Header,
     doctorItem,
-    SmallTitle
+    SmallTitle,
+    appointBlock
   },
   data () {
     return {
@@ -67,7 +69,10 @@ export default {
         title: -1,
         avatar: ''
       },
-      scheduleList: []
+      scheduleList: [],
+      appointBlockShow: false,
+      currBlock: null,
+      treatDate: ''
     }
   },
   created () {
@@ -104,6 +109,11 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    selectTime (block, time) {
+      this.appointBlockShow = true
+      this.currBlock = block
+      this.treatDate = Number(time)
     }
   }
 }

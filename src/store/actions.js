@@ -10,7 +10,6 @@ const actions = {
     let params = {}
     fetchUserInfo(params).then(res => {
       if (res.code === 1000) {
-        console.log(res)
         store.commit('updateUserInfo', res.data)
       } else {
         console.log(res)

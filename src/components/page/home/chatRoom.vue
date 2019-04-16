@@ -98,8 +98,7 @@ export default {
       msgSend(params).then(res => {
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
-            if (index == 0) {
-              return;
+            if (index === 0) {
             } else {
               this.allMsgList.push(item);
             }
@@ -193,7 +192,7 @@ export default {
         // console.log(res);
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
-            if (index == 0 && this.allMsgList.length != 0) {
+            if (index === 0 && this.allMsgList.length != 0) {
               return;
             } else {
               this.allMsgList.push(item);

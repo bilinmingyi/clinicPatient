@@ -22,11 +22,19 @@ export default {
     hasLine: {
       default: false,
       type: Boolean
+    },
+    backUrl: {
+      default: '',
+      type: String
     }
   },
   methods: {
     goBack () {
-      this.$router.go(-1)
+      if (this.backUrl) {
+        this.$router.replace({path: this.backUrl})
+      } else {
+        this.$router.go(-1)
+      }
     }
   }
 }

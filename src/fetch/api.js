@@ -22,13 +22,15 @@ function fetch(url, params) {
 // 首页
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
+    // 获取文章详情
+const fetchArticleDetail = params => fetch('/article/detail?id=' + params.id)
     // 获取诊所信息
 const getClinicData = params => fetch('/clinic/detail', params)
     // 获取聊天列表信息
 const chatMsgList = params => fetch('/chat/msg/list', params)
     // 发送信息
 const msgSend = params => fetch('/chat/msg/send', params)
-const msgWithdraw = params => fetch('/chat/msg/withdraw', params);
+const msgWithdraw = params => fetch('/chat/msg/withdraw', params)
 
 // 医生列表
 // 获取医生列表
@@ -37,6 +39,8 @@ const getDoctorList = params => fetch('/doctor/list', params)
 const fetchDOctorDetail = params => fetch('/doctor/detail?id=' + params.id)
     // 获取医生排版
 const fetchDoctorSchedule = params => fetch('/doctor/schedule', params)
+    // 提交预约订单
+const saveAppointData = params => fetch('/appointOrder/submit', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -57,6 +61,8 @@ const addPatient = params => fetch('/patient/add', params)
 const fetchAppointDetail = params => fetch('/appointOrder/detail', params)
     // 获取处方订单详情
 const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
+    // 支付跳转
+const gotoPay = params => fetch('/pay/szjk/payUrl', params)
     // 更新个人信息
 const changeUser = params => fetch('/user/update', params)
 
@@ -64,20 +70,23 @@ export {
     fetch,
     getAppointList,
     getArticleList,
+    fetchArticleDetail,
     getClinicData,
     chatMsgList,
     msgSend,
     getDoctorList,
-    msgWithdraw,
     fetchRecipeList,
     fetchUserInfo,
     fetchPatientList,
     changePatientInfo,
     deletePatient,
+    msgWithdraw,
     addPatient,
     fetchAppointDetail,
     fecthRecipeDetail,
     changeUser,
     fetchDOctorDetail,
-    fetchDoctorSchedule
+    fetchDoctorSchedule,
+    saveAppointData,
+    gotoPay
 }
