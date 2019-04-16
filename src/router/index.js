@@ -22,6 +22,12 @@ export default new Router({
           path: 'chatRoom',
           name: 'chatRoom',
           component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue')
+        },
+        {
+          path: 'articleDetail/:id',
+          name: 'articleDetail',
+          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/articleDetail.vue'),
+          props: true
         }
       ]
     },

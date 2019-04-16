@@ -163,6 +163,11 @@ const ageFormat = (str) => {
   return today.getFullYear() - date.getFullYear()
 }
 
+const articleType = (type) => {
+  let list = [{code: 1, name: '资讯'}, {code: 2, name: '诊所动态'}]
+  return codeToName(list, type)
+}
+
 export default {
   priceFormat,
   appointStatus,
@@ -170,5 +175,6 @@ export default {
   doctorTypes,
   treatOrderStatus,
   sexFormat,
-  ageFormat
+  ageFormat,
+  articleType
 }

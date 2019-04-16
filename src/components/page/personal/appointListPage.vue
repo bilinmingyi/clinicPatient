@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="预约订单"></Header>
+    <Header :canReturn="true" titleText="预约订单" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="list-block" v-for="item in dataList" :key="item.order_seqno"
            @click.stop="goRoute(item.order_seqno, item.week_idx)">

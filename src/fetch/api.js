@@ -22,6 +22,8 @@ function fetch (url, params) {
 // 首页
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
+// 获取文章详情
+const fetchArticleDetail = params => fetch('/article/detail?id=' + params.id)
 // 获取诊所信息
 const getClinicData = params => fetch('/clinic/detail', params)
 // 获取聊天列表信息
@@ -65,6 +67,7 @@ export {
   fetch,
   getAppointList,
   getArticleList,
+  fetchArticleDetail,
   getClinicData,
   chatMsgList,
   msgSend,
