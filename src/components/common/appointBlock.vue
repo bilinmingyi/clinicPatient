@@ -49,6 +49,10 @@ export default {
     treatDate: {
       type: Number,
       default: 0
+    },
+    doctorName: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -88,7 +92,9 @@ export default {
           treatDate: this.treatDate,
           price: this.itemData.price,
           startTime: this.itemData.start_time,
-          end_time: this.itemData.end_time
+          endTime: this.itemData.end_time,
+          doctorName: this.doctorName,
+          treatTime: this.itemData.treat_time
         }
       })
     }

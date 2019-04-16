@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <appoint-block :itemData="currBlock" :treatDate="treatDate" v-if="appointBlockShow" @canel-appoint="appointBlockShow=false"></appoint-block>
+    <appoint-block :itemData="currBlock" :doctorName="doctor.name" :treatDate="treatDate" v-if="appointBlockShow" @canel-appoint="appointBlockShow=false"></appoint-block>
   </div>
 </template>
 
