@@ -59,7 +59,7 @@ export default {
 
     .content-title {
       font-weight: bold;
-      font-size: 32px;
+      font-size: 36px;
       color: $depthTextColor;
       padding: 40px 0 0;
     }
