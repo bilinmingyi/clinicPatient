@@ -54,13 +54,16 @@
         </div>
       </div>
     </div>
+    <div class="add-block">
+      <button class="add-btn" @click.stop="nextDone">{{orderInfo.status === 'UNPAID'?'去支付':'关闭'}}</button>
+    </div>
   </div>
 </template>
 
 <script>
 import {Header, SmallTitle} from '../../common'
 import {mapState} from 'vuex'
-import {fetchAppointDetail} from '@/fetch/api.js'
+import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
@@ -96,6 +99,30 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    nextDone () {
+      if (this.orderInfo.status === 'UNPAID') {
+        gotoPay({
+          'order_type': 1,
+          'order_seqno': this.orderInfo.orderSeqno
+        }).then(res => {
+          if (res.code === 1000) {
+            try {
+              window.location.href = res.data
+            } catch (error) {
+              console.log(error)
+              this.$Message.infor('支付跳转失败')
+            }
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      } else {
+        this.$router.go(-1)
+      }
     }
   }
 }
@@ -137,7 +164,7 @@ export default {
   }
 
   .line-item {
-    padding: 26px 30px;
+    padding: 26px 0px;
     @extend %displayFlex
   }
 
@@ -150,7 +177,21 @@ export default {
     line-height: 45px;
     font-size: 32px;
   }
-  .patient-infor{
+
+  .patient-infor {
     padding: 0 30px;
+  }
+
+  .add-block {
+    @include psFixed(bottom, 112px);
+    @extend %displayFlex;
+    background: $backColor;
+    padding: 16px 30px 15px;
+    width: 100%;
+    border-top: 1px solid $lineColor;
+  }
+
+  .add-btn {
+    @include deepButton(80px, 100%)
   }
 </style>

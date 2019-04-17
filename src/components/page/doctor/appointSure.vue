@@ -34,15 +34,27 @@
         </Small-title>
         <div class="appoint-text">
           <div class="line-item">
-            <label class="label-span mr-32px">手机号码</label>
-            <input type="text" class="input-item flexOne" placeholder="请输入手机号码" v-model="patient.mobile">
+            <label class="label-span mr-32px">患者姓名</label>
+            <input type="text" class="input-item flexOne" placeholder="请输入患者姓名" v-model="patient.user_name"
+                   @input="filterPatient" @blur="hideSelect">
+            <ul class="select-ul" v-show="showSelect">
+              <li v-for="item in selectList" :key="item.id" @click.stop="selectPatient(item)">
+                <p>{{item.name}}/{{item.sex|sexFormat}}/{{item.age}}岁</p>
+                <hr class="line-hr">
+              </li>
+              <li v-if="selectList.length===0">
+                <p>暂无该患者</p>
+              </li>
+            </ul>
+            <!--<select class="input-item flexOne" v-model="patient.user_id" @change="selectPatient">-->
+            <!--<option v-for="item in patientList" :key="item.id" :value="item.id">{{item.name}}</option>-->
+            <!--</select>-->
           </div>
           <hr class="line-hr">
-          <div class="line-item">
-            <label class="label-span mr-32px">患者姓名</label>
-            <select class="input-item flexOne" v-model="patient.user_id" @change="selectPatient">
-              <option v-for="item in patientList" :key="item.id" :value="item.id">{{item.name}}</option>
-            </select>
+          <div class="line-items">
+            <label class="label-four mr-32px">手机号码</label>
+            <input type="text" class="input-item flexOne" placeholder="手机号码" disabled v-model="patient.mobile">
+            <button class="phone-btn">绑定手机</button>
           </div>
           <hr class="line-hr">
           <div class=" line-item">
@@ -87,7 +99,9 @@ export default {
         user_name: '',
         user_id: 0
       },
-      patientList: []
+      patientList: [],
+      selectList: [],
+      showSelect: false
     }
   },
   computed: {
@@ -120,18 +134,12 @@ export default {
         this.$Message.infor('网络出错！')
       })
     },
-    selectPatient () {
-      let patients = this.patientList.filter((item) => {
-        if (item.id === this.patient.user_id) {
-          return true
-        } else {
-          return false
-        }
-      })
-      this.patient.user_name = patients[0].name
-      this.patient.user_sex = patients[0].sex
-      this.patient.user_age = patients[0].age
-      this.patient.mobile = patients[0].mobile
+    selectPatient (patient) {
+      this.patient.user_name = patient.name
+      this.patient.user_sex = patient.sex
+      this.patient.user_age = patient.age
+      this.patient.mobile = patient.mobile
+      this.showSelect = false
     },
     changeSex (val) {
       this.patient.user_sex = Number(val)
@@ -169,6 +177,21 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    filterPatient () {
+      if (this.patient.user_name) {
+        this.selectList = this.patientList.filter((item) => {
+          return item.name.indexOf(this.patient.user_name) >= 0
+        })
+        this.showSelect = true
+      } else {
+        this.showSelect = false
+      }
+    },
+    hideSelect () {
+      setTimeout(() => {
+        this.showSelect = false
+      }, 30)
     }
   }
 }
@@ -202,6 +225,12 @@ export default {
     line-height: 42px;
   }
 
+  .label-four {
+    color: $depthTextColor;
+    line-height: 64px;
+    font-size: 32px;
+  }
+
   .label-red {
     color: #EB6262;
     font-size: 30px;
@@ -213,8 +242,15 @@ export default {
     padding: 0 30px;
   }
 
+  .line-items {
+    padding: 16px 0px;
+    position: relative;
+    @extend %displayFlex
+  }
+
   .line-item {
-    padding: 26px 30px;
+    padding: 26px 0px;
+    position: relative;
     @extend %displayFlex
   }
 
@@ -234,6 +270,14 @@ export default {
     line-height: 45px;
     font-size: 32px;
     color: $depthTextColor;
+    background: transparent;
+
+    &::-webkit-input-placeholder {
+      font-size: 32px;
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
+      line-height: 45px;
+    }
   }
 
   .input-width {
@@ -252,5 +296,31 @@ export default {
 
   .add-btn {
     @include deepButton(80px, 100%)
+  }
+
+  .phone-btn {
+    @include deepButton(64px, 148px)
+  }
+
+  .select-ul {
+    position: absolute;
+    top: 90px;
+    left: 160px;
+    color: $lightTextColor;
+    width: calc(100vw - 240px);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px 4px rgba(0, 0, 0, 0.20);
+    background: $backColor;
+    z-index: 1000;
+    max-height: 255px;
+    overflow-y: scroll;
+
+    li {
+      font-size: 32px;
+
+      p {
+        padding: 10px 20px;
+      }
+    }
   }
 </style>

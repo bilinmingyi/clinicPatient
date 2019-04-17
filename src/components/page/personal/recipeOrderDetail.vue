@@ -78,7 +78,8 @@ export default {
   methods: {
     getDetail () {
       fecthRecipeDetail({
-        order_seqno: this.orderSeqno
+        order_seqno: this.orderSeqno,
+        need_recipes: 1
       }).then(res => {
         if (res.code === 1000) {
           this.orderDetail = res.data
