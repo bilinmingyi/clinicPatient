@@ -64,7 +64,8 @@ export default {
       currTime: {
         start: '',
         end: ''
-      }
+      },
+      resource: this.$route.query.resource
     }
   },
   filters: {
@@ -72,6 +73,9 @@ export default {
       let list = ['上午', '下午', '晚上']
       return list[Number(val) - 1]
     }
+  },
+  created () {
+    console.log(this.resource)
   },
   methods: {
     cancelAppoint () {
@@ -99,7 +103,8 @@ export default {
           endTime: this.itemData.end_time,
           doctorName: this.doctorName,
           treatTime: this.itemData.treat_time,
-          doctorId: this.doctorId
+          doctorId: this.doctorId,
+          resource: this.resource
         }
       })
     }

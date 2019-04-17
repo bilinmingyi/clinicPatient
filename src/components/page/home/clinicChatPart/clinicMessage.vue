@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     goRouter () {
-      this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`})
+      this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`, query: {resource: 'chat'}})
     }
   },
   created () {

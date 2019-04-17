@@ -14,7 +14,7 @@
           </div>
           <div class="mb-8px">
             <span class="label-three">预约时间：</span>
-            <span class="label-two">{{orderInfo.appointDate}}&nbsp;&nbsp;{{day}}&nbsp;&nbsp;{{orderInfo.startTime}}-{{orderInfo.endTime}}</span>
+            <span class="label-two">{{orderInfo.appointDate|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.startTime}}-{{orderInfo.endTime}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约医生：</span>
@@ -67,7 +67,7 @@ import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
-  props: ['orderSeqno', 'day'],
+  props: ['orderSeqno'],
   components: {
     Header,
     SmallTitle
@@ -92,6 +92,8 @@ export default {
       }).then(res => {
         if (res.code === 1000) {
           this.orderInfo = res.data.order_info
+          let time = this.orderInfo.appointDate
+          this.orderInfo.appointDate = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2))
         } else {
           this.$Message.infor(res.msg)
         }

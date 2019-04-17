@@ -3,7 +3,7 @@
     <Header :canReturn="true" titleText="预约订单" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="list-block" v-for="item in dataList" :key="item.order_seqno"
-           @click.stop="goRoute(item.order_seqno, item.week_idx)">
+           @click.stop="goRoute(item.order_seqno)">
         <Small-title>
           <div class="patient-label">就诊人</div>
           <div class="patient-name">{{item.patient_name}}</div>
@@ -90,8 +90,8 @@ export default {
       this.page++
       this.getList()
     },
-    goRoute (orderSeqno, weekIdx) {
-      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno, day: weekIdx}})
+    goRoute (orderSeqno) {
+      this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: orderSeqno}})
     }
   }
 }

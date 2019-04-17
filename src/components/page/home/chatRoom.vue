@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header titleText="我的咨询" :canReturn="true"></Header>
+    <Header titleText="我的咨询" :canReturn="true" backUrl="/home"></Header>
     <div class="mt-88px">
       <div class="clinic-chat">
         <div class="wrapper" ref="wrapper">
@@ -22,7 +22,7 @@
           :showFuc="isShowFuc"
           @addFunc="addFunc"
           @hideFunc="foucs"
-          @sendMessage="sendMessage"
+          @sendMessage="sendTextMessage"
           @showReply="showReply"
         ></chat-bottom>
       </div>
@@ -41,6 +41,7 @@ import patientMessage from './clinicChatPart/patientMessage'
 
 export default {
   name: 'chatRoom',
+  props: ['hasAppoint', 'orderSeqno'],
   data () {
     return {
       isShowFuc: false,
@@ -83,18 +84,41 @@ export default {
       return from === 1 ? clinicMessage : patientMessage
     },
     // 发送信息的时候请求数据
-    sendMessage (val) {
+    // 1文本；2图片；3预约订单；
+    sendMessage (type, val) {
       let index = this.allMsgList.length - 1
-      let msgid =
-        this.allMsgList.length > 0 ? this.allMsgList[index].msgid : null
-      let params = {
-        last_msgid: msgid,
-        to_userid: this.userInfoState.id,
-        from_username: this.userInfoState.name,
-        from_userimg: this.userInfoState.avatar,
-        session_type: 'CLINIC_PATIENT',
-        msgdata: {msg_type: 'text', text: val}
+      let msgid = this.allMsgList.length > 0 ? this.allMsgList[index].msgid : null
+      let params = {}
+      switch (type) {
+        case 1:
+          params = {
+            last_msgid: msgid,
+            to_userid: this.userInfoState.id,
+            from_username: this.userInfoState.name,
+            from_userimg: this.userInfoState.avatar,
+            session_type: 'CLINIC_PATIENT',
+            msgdata: {msg_type: 'text', text: val}
+          }
+          break
+        case 2:
+          break
+        case 3:
+          params = {
+            last_msgid: msgid,
+            to_userid: this.userInfoState.id,
+            from_username: this.userInfoState.name,
+            from_userimg: this.userInfoState.avatar,
+            session_type: 'CLINIC_PATIENT',
+            msgdata: {
+              msg_type: 'link',
+              link_type: 'treatment_order_Submission',
+              link_url: `/personal/appointListPage/appointOrderDetail?orderSeqno=${this.orderSeqno}`,
+              link_desc: JSON.stringify({orderSeqno: this.orderSeqno})
+            }
+          }
+          break
       }
+
       msgSend(params).then(res => {
         if (res.code === 1000) {
           res.data.msg_list.forEach((item, index) => {
@@ -124,6 +148,10 @@ export default {
         }
         window.scrollTo(0, this.$refs.wrapper + 100) // 滑动到底部
       })
+    },
+    // 发送文本
+    sendTextMessage (val) {
+      this.sendMessage(1, val)
     },
     showReply () {
       this.isReply = true
@@ -319,6 +347,9 @@ export default {
     }, 3000)
   },
   created () {
+    if (Number(this.hasAppoint) === 1) {
+      this.sendMessage(3)
+    }
     this.getChatMsg()
   }
 }

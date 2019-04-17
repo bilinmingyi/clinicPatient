@@ -109,7 +109,7 @@ export default {
       clinic: state => state.clinic
     })
   },
-  props: ['treatDate', 'price', 'startTime', 'endTime', 'doctorName', 'treatTime', 'doctorId'],
+  props: ['treatDate', 'price', 'startTime', 'endTime', 'doctorName', 'treatTime', 'doctorId', 'resource'],
   created () {
     this.getList()
   },
@@ -169,7 +169,11 @@ export default {
         patient_name: this.patient.user_name
       }).then(res => {
         if (res.code === 1000) {
-          this.$router.push({name: 'appointListPage'})
+          if (this.resource) {
+            this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno}})
+          } else {
+            this.$router.push({name: 'appointListPage'})
+          }
         } else {
           this.$Message.infor(res.msg)
         }

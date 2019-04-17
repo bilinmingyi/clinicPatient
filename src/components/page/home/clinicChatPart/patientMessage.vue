@@ -9,28 +9,23 @@
         <!-- messagetype  text-->
         <div
           class="reply-content"
-          v-show="chatDetail.msgdata.msg_type=='text'"
+          v-if="chatDetail.msgdata.msg_type=='text'"
           @touchstart="gtouchstart()"
           @touchmove="gtouchmove()"
           @touchend="gtouchend()"
         >
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
-        <div class="reply-content" v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='link'">
-          <div class="recommond">
-            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)">
-            <div class="recommond-content">
-              <p class="recommond-title">
-                {{imgDetail.name}}
-                <span :class="color_list[imgDetail.title-1]">{{imgDetail.title|doctorTypes}}</span>
-              </p>
-              <p class="recommond-subTitle">请点击进行预约</p>
+        <div class="reply-content" v-if="chatDetail.msgdata && chatDetail.msgdata.msg_type=='link'">
+          <div class="recommond" v-if="chatDetail.msgdata.link_type == 'treatment_order_Submission'">
+            <div class="recommond-content" @touchstart="goRoute(chatDetail.msgdata.link_url)">
+              <p class="recommond-subTitle">已提交预约订单，点击查看</p>
             </div>
           </div>
         </div>
         <div
           class="reply-content"
-          v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
+          v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
         >
           <div class="imgMessage">
             <img :src="chatDetail.msgdata.img_url" alt>
@@ -38,7 +33,7 @@
         </div>
         <div
           class="cancel"
-          v-show="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='withdraw_msg'"
+          v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='withdraw_msg'"
         >
           <p>撤回了一条消息</p>
         </div>
@@ -102,6 +97,10 @@ export default {
     gtouchmove () {
       clearTimeout(this.timeOutEvent) // 清除定时器
       this.timeOutEvent = 0
+    },
+    // 路由跳转
+    goRoute (url) {
+      this.$router.push({path: `${url}`})
     }
   },
   created () {
@@ -152,8 +151,6 @@ export default {
       }
 
       &-content {
-        padding-left: 16px;
-
         p {
           text-align: left;
         }
@@ -178,9 +175,9 @@ export default {
       }
 
       &-subTitle {
-        padding-top: 6px;
         font-size: 28px;
         color: $simpleGray;
+        line-height: 40px;
       }
     }
   }

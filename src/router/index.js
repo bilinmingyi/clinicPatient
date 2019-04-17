@@ -21,7 +21,8 @@ export default new Router({
         {
           path: 'chatRoom',
           name: 'chatRoom',
-          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue')
+          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue'),
+          props: (route) => route.query
         },
         {
           path: 'articleDetail/:id',
