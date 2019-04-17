@@ -21,7 +21,7 @@
       <div class="line-items">
         <label class="label-four mr-32px">手机</label>
         <input type="number" class="input-item flexOne" v-model="mobile" disabled>
-        <button class="phone-btn">绑定号码</button>
+        <button class="phone-btn" @click.stop="goRoute">绑定号码</button>
       </div>
     </div>
     <div class="add-block">
@@ -91,6 +91,9 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    goRoute () {
+      this.$router.push({name: 'editPhone', query: {returnType: 1}})
     }
   }
 }

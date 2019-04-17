@@ -69,6 +69,7 @@ export default new Router({
       children: [
         {
           path: '',
+          name: 'personal',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/personalPage.vue')
         },
         {
@@ -85,6 +86,12 @@ export default new Router({
           path: 'editPerson',
           name: 'editPerson',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/editPerson.vue')
+        },
+        {
+          path: 'editPhone',
+          name: 'editPhone',
+          props: (route) => route.query,
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/modifyPhone.vue')
         },
         {
           path: 'recipeListPage',

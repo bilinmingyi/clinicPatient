@@ -54,7 +54,7 @@
           <div class="line-items">
             <label class="label-four mr-32px">手机号码</label>
             <input type="text" class="input-item flexOne" placeholder="手机号码" disabled v-model="patient.mobile">
-            <button class="phone-btn">绑定手机</button>
+            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
           </div>
           <hr class="line-hr">
           <div class=" line-item">
@@ -192,6 +192,9 @@ export default {
       setTimeout(() => {
         this.showSelect = false
       }, 30)
+    },
+    goRoute () {
+      this.$router.push({name: 'editPhone', query: {returnType: 2}})
     }
   }
 }

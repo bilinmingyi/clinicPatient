@@ -65,6 +65,10 @@ const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
 const gotoPay = params => fetch('/pay/szjk/payUrl', params)
 // 更新个人信息
 const changeUser = params => fetch('/user/update', params)
+// 获取验证码
+const fetchCode = params => fetch('/sms/chkCode/mobileBind', params)
+// 修改电话号码
+const savePhone = params => fetch('/user/mobile/update', params)
 
 export {
   fetch,
@@ -88,5 +92,7 @@ export {
   fetchDOctorDetail,
   fetchDoctorSchedule,
   saveAppointData,
-  gotoPay
+  gotoPay,
+  fetchCode,
+  savePhone
 }
