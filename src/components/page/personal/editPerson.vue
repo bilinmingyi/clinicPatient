@@ -17,6 +17,12 @@
         <span class="label-span mr-32px">性别</span>
         <radioGroup :data="sexList" :value="sex" :name="'sex'" @input="changeSex"></radioGroup>
       </div>
+      <hr class="line-hr">
+      <div class="line-items">
+        <label class="label-four mr-32px">手机</label>
+        <input type="number" class="input-item flexOne" v-model="mobile" disabled>
+        <button class="phone-btn">绑定号码</button>
+      </div>
     </div>
     <div class="add-block">
       <button class="sure-btn" @click.stop="saveChange">确定</button>
@@ -41,6 +47,7 @@ export default {
       name: '',
       id: '',
       age: '',
+      mobile: '',
       isEdit: true
     }
   },
@@ -48,6 +55,7 @@ export default {
     this.sex = Number(this.$route.query.sex)
     this.id = this.$route.query.id
     this.name = this.$route.query.name
+    this.mobile = this.$route.query.mobile
     let birthday = this.$route.query.birthday
     this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
     this.isEdit = Boolean(this.id)
@@ -105,8 +113,14 @@ export default {
   .sure-btn {
     @include deepButton(80px, 100%);
   }
+
   .line-item {
     padding: 26px 30px;
+    @extend %displayFlex
+  }
+
+  .line-items {
+    padding: 16px 30px;
     @extend %displayFlex
   }
 
@@ -120,7 +134,14 @@ export default {
     font-size: 32px;
   }
 
+  .label-four {
+    color: $depthTextColor;
+    line-height: 64px;
+    font-size: 32px;
+  }
+
   .input-item {
+    background: transparent;
     border: none;
     outline: none;
     line-height: 45px;
@@ -128,8 +149,11 @@ export default {
     color: $depthTextColor;
   }
 
+  .phone-btn {
+    @include deepButton(64px, 148px)
+  }
+
   .input-width {
-    width: 55px;
-    text-align: center;
+    width: 26%;
   }
 </style>

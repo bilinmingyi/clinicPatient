@@ -82,7 +82,7 @@ export default {
         case 5:
           this.$router.push({
             name: 'editPerson',
-            query: {id: this.user_id, name: this.user_name, sex: this.user_sex, birthday: this.user_birthday}
+            query: {id: this.user_id, name: this.user_name, sex: this.user_sex, birthday: this.user_birthday, mobile: this.mobile}
           })
           break
       }
