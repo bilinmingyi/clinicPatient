@@ -43,7 +43,7 @@
         <img
           :src="imgNormalToggle(userInfoState.avatar, userInfoState)"
           alt
-          class="ml20"
+          class="ml20 iconImg"
           @error="error(userInfoState,$event)"
         >
       </div>
@@ -145,7 +145,7 @@ export default {
 
     display: flex;
 
-    img {
+    .iconImg {
       border-radius: 100px;
       @extend %minICon;
     }

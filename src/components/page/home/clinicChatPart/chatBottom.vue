@@ -188,7 +188,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+input {
+  -webkit-user-select:text !important;
+  -webkit-appearance:none; /*去除input默认样式*/
+  }
   .chat-bottom {
     @include psFixed(112px);
     background: $bgwhite2;

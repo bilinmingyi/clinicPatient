@@ -7,7 +7,7 @@
       >{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
 
       <div class="chat-content">
-        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)">
+        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)" class="iconImg">
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
@@ -102,7 +102,7 @@ export default {
 
     display: flex;
 
-    img {
+    .iconImg {
       @extend %minICon;
       border-radius: 100px;
     }
