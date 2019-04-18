@@ -31,6 +31,8 @@ const chatMsgList = params => fetch('/chat/msg/list', params)
 // 发送信息
 const msgSend = params => fetch('/chat/msg/send', params)
 const msgWithdraw = params => fetch('/chat/msg/withdraw', params)
+// 图片生成链接
+const imgUpLoad = params => fetch('/chat/img/upload', params)
 
 // 医生列表
 // 获取医生列表
@@ -94,5 +96,6 @@ export {
   saveAppointData,
   gotoPay,
   fetchCode,
-  savePhone
+  savePhone,
+  imgUpLoad
 }

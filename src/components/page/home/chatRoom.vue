@@ -23,6 +23,7 @@
           @addFunc="addFunc"
           @hideFunc="foucs"
           @sendMessage="sendTextMessage"
+          @sendImg="sendImgMessage"
           @showReply="showReply"
         ></chat-bottom>
       </div>
@@ -101,6 +102,14 @@ export default {
           }
           break
         case 2:
+          params = {
+            last_msgid: msgid,
+            to_userid: this.userInfoState.id,
+            from_username: this.userInfoState.name,
+            from_userimg: this.userInfoState.avatar,
+            session_type: 'CLINIC_PATIENT',
+            msgdata: {msg_type: 'image', img_url: val}
+          }
           break
         case 3:
           params = {
@@ -140,6 +149,7 @@ export default {
             }
           })
           this.isReply = false
+          this.isShowFuc = false
           setTimeout(() => {
             this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
           }, 0)
@@ -152,6 +162,9 @@ export default {
     // 发送文本
     sendTextMessage (val) {
       this.sendMessage(1, val)
+    },
+    sendImgMessage (val) {
+      this.sendMessage(2, val)
     },
     showReply () {
       this.isReply = true
@@ -329,7 +342,8 @@ export default {
     let options = {
       pullDownRefresh: {
         threshold: 50, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
-        stop: 20 // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
+        stop: 20, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
+        click: true
       }
     }
     // 上拉加载数据
