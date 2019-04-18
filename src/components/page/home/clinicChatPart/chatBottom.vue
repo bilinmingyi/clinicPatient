@@ -79,10 +79,10 @@ export default {
       this.imgUrl = ''
     },
     fileClick (id) {
-      this.showLoad = true
       document.querySelector('#img-' + id).click()
     },
     fileChange (el, id) {
+      this.showLoad = true
       if (!el.target.files[0].size) {
         this.showLoad = false
         return
