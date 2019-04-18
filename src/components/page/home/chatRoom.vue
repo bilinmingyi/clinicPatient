@@ -222,16 +222,14 @@ export default {
             } else {
               this.allMsgList.push(item)
             }
-            // 过滤上面已经撤回的信息
-            if (item.msgdata.msg_type === 'withdraw_msg') {
-              withArray.push({msgid: item.msgdata.msg_id})
+           //过滤上面已经撤回的信息
+            if (item.msgdata.msg_type == "withdraw_msg") {
+               this.allMsgList =   this.allMsgList.filter(item1 => {
+            return item.msgid !== item.msgdata.msgid;
+          });
             }
           })
-          let filterArray = JSON.parse(JSON.stringify(this.allMsgList))
-          withArray.forEach(item => {
-            filterArray.splice(filterArray.findIndex(v => v.msgid === item.msgid), 1)
-          })
-          this.allMsgList = filterArray
+       
           this.allMsgList.forEach((item, index) => {
             if (index === 0) {
               this.$set(item, 'showTime', true)
