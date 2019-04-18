@@ -11,12 +11,13 @@
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
-        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'" @touchstart="goRouter()">
+        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'" @click="goRouter()">
           <div class="recommond">
             <img
               :src="imgNormalToggle(imgDetail.avatar,imgDetail)"
               alt
               @error="error(imgDetail,$event)"
+              class="iconImg"
             >
             <div class="recommond-content">
               <p class="recommond-title">
@@ -30,7 +31,7 @@
           </div>
         </div>
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='image'">
-          <div class="imgMessage">
+          <div class="imgMessage" @click="showImg">
             <img :src="chatDetail.msgdata.img_url" alt>
           </div>
         </div>
@@ -64,6 +65,13 @@ export default {
   methods: {
     goRouter () {
       this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`, query: {resource: 'chat'}})
+    },
+      // 调用微信接口展示图片
+    showImg () {
+      WeixinJSBridge.invoke('imagePreview', {
+        'current': this.chatDetail.msgdata.img_url,
+        'urls': [this.chatDetail.msgdata.img_url]
+      })
     }
   },
   created () {
@@ -88,7 +96,7 @@ export default {
       max-width: 480px;
       height: auto;
       border-radius: 16px;
-      z-index: 999;
+      z-index: 99;
       padding: 22px 30px;
       @extend %normalTitle;
     }

@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="outwrap">
     <Header titleText="我的咨询" :canReturn="true" backUrl="/home"></Header>
     <div class="mt-88px">
+      <div class="overflows">
       <div class="clinic-chat">
         <div class="wrapper" ref="wrapper">
           <div class="chat-content content" @click="hideFuc" @touchstart="hideFuc">
@@ -17,17 +18,21 @@
             </div>
           </div>
         </div>
+      </div>
         <!-- <div class="mb88"></div> -->
+      
         <chat-bottom
-          :showFuc="isShowFuc"
+           :showFuc="isShowFuc"
           @addFunc="addFunc"
           @hideFunc="foucs"
           @sendMessage="sendTextMessage"
           @sendImg="sendImgMessage"
-          @showReply="showReply"
+          @showReply="showReply" 
+          @inputBlur="inputBlur"
         ></chat-bottom>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -68,7 +73,11 @@ export default {
     next()
   },
   methods: {
+    inputBlur(){
+      window.scrollTo(0,0)
+    },
     foucs () {
+        window.scrollTo(0,0)
       this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
       this.isShowFuc = false
     },
@@ -351,10 +360,11 @@ export default {
       pullDownRefresh: {
         threshold: 50, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
         stop: 20, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
-        click: true
-      }
+        bounce:true
+      },
+      click: true
     }
-    // 上拉加载数据
+    // // 上拉加载数据
     this.scroll = new BScroll(this.$refs.wrapper, options)
 
     this.scroll.on('pullingDown', () => {
@@ -376,30 +386,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .clinic-chat {
-    // position: relative;
-    height: 100%;
+.outwrap{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+}
+.clinic-chat {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  // position: relative;
+  // height: 100%;
+  // overflow: auto;
+  .chat-content {
+    width: 100%;
+    // height: 100%;
     overflow: hidden;
-
-    .chat-content {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-
-      .content-detail {
-        padding: 32px 24px;
-      }
+    .content-detail {
+      padding: 32px 24px;
     }
   }
-
-  .wrapper {
-    max-height: calc(100vh - 200px);
-  }
-
-  .loadData {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 24px;
-    color: $gray2;
-  }
+}
+.wrapper {
+  max-height: calc(100vh - 200px);
+}
+.loadData {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 24px;
+  color: $gray2;
+}
 </style>

@@ -2,7 +2,7 @@
   <div class="chat-bottom">
     <div class="reply">
       <!-- <div @click="showReply"><span class="leftIcon iconfont">&#xe612;</span></div> -->
-      <input class="serach-input" type="text" @focus="hideFunc" v-model="sendContent">
+      <input class="serach-input" type="textarea" @focus="hideFunc" v-model="sendContent" @blur="inputBlur">
       <div class="ml24 pr16">
         <img src="@/assets/img/tianjia@2x.png" alt @click="addFunc" :class="{'translateImg':showFuc}" v-show="showIcon">
         <div class="send " v-show="!showIcon" @click="sendMessage">发送</div>
@@ -60,6 +60,9 @@ export default {
   methods: {
     addFunc () {
       this.$emit('addFunc')
+    },
+    inputBlur(){
+          this.$emit('inputBlur')  
     },
     hideFunc () {
       this.$emit('hideFunc')
@@ -183,11 +186,9 @@ input {
   .chat-bottom {
     @include psFixed(112px);
     background: $bgwhite2;
-
     .reply {
       padding: 16px 0 16px 16px;
       @extend %flexV;
-
       input {
         // width: 540px;
         padding: 20px;
