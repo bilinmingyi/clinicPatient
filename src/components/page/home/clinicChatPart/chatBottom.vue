@@ -102,6 +102,7 @@ export default {
           this.showLoad = false
         }).catch(error => {
           console.log(error)
+          this.showLoad = false
           self.$Message.infor('网络出错！')
         })
       })
@@ -124,9 +125,6 @@ export default {
         img.onload = () => {
           let canvas = document.createElement('canvas')
           let ctx = canvas.getContext('2d')
-          //    瓦片canvas
-          let tCanvas = document.createElement('canvas')
-          let tctx = tCanvas.getContext('2d')
           let width = img.width
           let height = img.height
 
@@ -140,34 +138,24 @@ export default {
           } else {
             ratio = 1
           }
+
           canvas.width = width
           canvas.height = height
+
+          ctx.save()
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          ctx.translate(width / 2, height / 2)
+          ctx.rotate(Math.PI / 2)
+          ctx.translate(-width / 2, -height / 2)
 
           ctx.fillStyle = '#fff'
           ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-          // 如果图片太大则使用瓦片绘制
-          let count
-          if ((count = width * height / 1000000 > 1)) {
-            count = ~~(Math.sqrt(count) + 1)// 计算分成的瓦片数
-            let nw = ~~(width / count)
-            let nh = ~~(height / count)
-
-            tCanvas.width = nw
-            tCanvas.height = nh
-
-            for (let i = 0; i < count; i++) {
-              for (let j = 0; j < count; j++) {
-                tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh)
-                ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh)
-              }
-            }
-          } else {
-            ctx.drawImage(img, 0, 0, width, height)
-          }
+          ctx.drawImage(img, 0, 0, width, height)
+          ctx.restore()
           // 进行最小压缩
           let ndata = canvas.toDataURL('image/jpeg', 0.3)
-          tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0
+          canvas.width = canvas.height = 0
           resolve(ndata)
         }
       })
