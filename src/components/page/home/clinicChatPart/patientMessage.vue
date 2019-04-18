@@ -18,16 +18,16 @@
         </div>
         <div class="reply-content" v-if="chatDetail.msgdata && chatDetail.msgdata.msg_type=='link'">
           <div class="recommond" v-if="chatDetail.msgdata.link_type == 'treatment_order_Submission'">
-            <div class="recommond-content" @touchstart="goRoute(chatDetail.msgdata.link_url)">
+            <div class="recommond-content" @touchend="goRoute(chatDetail.msgdata.link_url)">
               <p class="recommond-subTitle">已提交预约订单，点击查看</p>
             </div>
           </div>
         </div>
-        <div
+          <div
           class="reply-content"
           v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
         >
-          <div class="imgMessage">
+          <div class="imgMessage" @touchend="showImg">
             <img :src="chatDetail.msgdata.img_url" alt>
           </div>
         </div>
@@ -101,6 +101,13 @@ export default {
     // 路由跳转
     goRoute (url) {
       this.$router.push({path: `${url}`})
+    },
+    // 调用微信接口展示图片
+    showImg () {
+      WeixinJSBridge.invoke('imagePreview', {
+        'current': this.chatDetail.msgdata.img_url,
+        'urls': [this.chatDetail.msgdata.img_url]
+      })
     }
   },
   created () {
