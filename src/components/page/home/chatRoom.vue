@@ -56,7 +56,9 @@ export default {
       allMsgList: [],
       isReply: false,
       dataInterval: '',
-      isShowLoad: false
+      isShowLoad: false,
+            unPullingUp:true,  //两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
+      unfinalPulling:true
     }
   },
   components: {
@@ -77,6 +79,9 @@ export default {
       window.scrollTo(0,0)
     },
     foucs () {
+            this.unPullingUp = true;
+      this.unfinalPulling = true;
+      this.scroll.openPullDown();
         window.scrollTo(0,0)
       this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
       this.isShowFuc = false
@@ -273,6 +278,11 @@ export default {
             }
           })
           this.isReply = false
+            if(res.data.msg_list.length>1&&this.unPullingUp&&this.unfinalPulling){
+               setTimeout(() => {
+            this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000);
+          }, 0);
+          }
         } else {
           this.$Message.infor(res.msg)
         }
@@ -313,6 +323,7 @@ export default {
     },
     // 向上加载的时候的操作数据
     getUpLoadData () {
+            this.unPullingUp = false;
       this.isShowLoad = true
       let params = {
         direction: 'up',
@@ -347,6 +358,7 @@ export default {
           })
           this.last_msgid = this.allMsgList[0].msgid
           if (res.data.msg_list.length !== 10) {
+            this.unfinalPulling = false;
             this.scroll.closePullDown()
           }
         } else {
