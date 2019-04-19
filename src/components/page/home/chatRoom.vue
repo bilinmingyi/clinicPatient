@@ -3,36 +3,36 @@
     <Header titleText="我的咨询" :canReturn="true" backUrl="/home"></Header>
     <div class="mt-88px">
       <div class="overflows">
-      <div class="clinic-chat">
-        <div class="wrapper" ref="wrapper">
-          <div class="chat-content content" @click="hideFuc" @touchstart="hideFuc">
-            <p v-show="isShowLoad" class="loadData">正在加载数据....</p>
-            <div class="content-detail">
-              <component
-                v-for="(item) in allMsgList"
-                :key="item.msgid"
-                :is="RenderComponent(item.from)"
-                :chatDetail="item"
-                @cancelMessage="cancelMessage"
-              ></component>
+        <div class="clinic-chat">
+          <div class="wrapper" ref="wrapper">
+            <div class="chat-content content" @click="hideFuc" @touchstart="hideFuc">
+              <p v-show="isShowLoad" class="loadData">正在加载数据....</p>
+              <div class="content-detail">
+                <component
+                  v-for="(item) in allMsgList"
+                  :key="item.msgid"
+                  :is="RenderComponent(item.from)"
+                  :chatDetail="item"
+                  @cancelMessage="cancelMessage"
+                ></component>
+              </div>
             </div>
           </div>
         </div>
-      </div>
         <!-- <div class="mb88"></div> -->
-      
+
         <chat-bottom
-           :showFuc="isShowFuc"
+          :showFuc="isShowFuc"
           @addFunc="addFunc"
           @hideFunc="foucs"
           @sendMessage="sendTextMessage"
           @sendImg="sendImgMessage"
-          @showReply="showReply" 
+          @showReply="showReply"
           @inputBlur="inputBlur"
         ></chat-bottom>
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -57,8 +57,8 @@ export default {
       isReply: false,
       dataInterval: '',
       isShowLoad: false,
-            unPullingUp:true,  //两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
-      unfinalPulling:true
+      unPullingUp: true, // 两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
+      unfinalPulling: true
     }
   },
   components: {
@@ -75,14 +75,14 @@ export default {
     next()
   },
   methods: {
-    inputBlur(){
-      window.scrollTo(0,0)
+    inputBlur () {
+      window.scrollTo(0, 0)
     },
     foucs () {
-            this.unPullingUp = true;
-      this.unfinalPulling = true;
-      this.scroll.openPullDown();
-        window.scrollTo(0,0)
+      this.unPullingUp = true
+      this.unfinalPulling = true
+      this.scroll.openPullDown()
+      window.scrollTo(0, 0)
       this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
       this.isShowFuc = false
     },
@@ -244,27 +244,27 @@ export default {
             if (index === 0 && this.allMsgList.length !== 0) {
               return
             } else {
-                       //避免发送数据和轮巡时 数据加了两天
-              let noData = true;
-              for(let i=0;i<this.allMsgList.length;i++){
-                if(this.allMsgList[i].msgid===item.msgid){
-                  noData=false;
-                  break;
+              // 避免发送数据和轮巡时 数据加了两天
+              let noData = true
+              for (let i = 0; i < this.allMsgList.length; i++) {
+                if (this.allMsgList[i].msgid === item.msgid) {
+                  noData = false
+                  break
                 }
               }
-              if(noData){
-                this.allMsgList.push(item);
+              if (noData) {
+                this.allMsgList.push(item)
               }
               // this.allMsgList.push(item)
             }
-           //过滤上面已经撤回的信息
-            if (item.msgdata.msg_type == "withdraw_msg") {
-               this.allMsgList =   this.allMsgList.filter(item1 => {
-            return item.msgid !== item.msgdata.msgid;
-          });
+            // 过滤上面已经撤回的信息
+            if (item.msgdata.msg_type === 'withdraw_msg') {
+              this.allMsgList = this.allMsgList.filter(item1 => {
+                return item.msgid !== item.msgdata.msgid
+              })
             }
           })
-       
+
           this.allMsgList.forEach((item, index) => {
             if (index === 0) {
               this.$set(item, 'showTime', true)
@@ -278,10 +278,10 @@ export default {
             }
           })
           this.isReply = false
-            if(res.data.msg_list.length>1&&this.unPullingUp&&this.unfinalPulling){
-               setTimeout(() => {
-            this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000);
-          }, 0);
+          if (res.data.msg_list.length > 1 && this.unPullingUp && this.unfinalPulling) {
+            setTimeout(() => {
+              this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
+            }, 0)
           }
         } else {
           this.$Message.infor(res.msg)
@@ -323,7 +323,7 @@ export default {
     },
     // 向上加载的时候的操作数据
     getUpLoadData () {
-            this.unPullingUp = false;
+      this.unPullingUp = false
       this.isShowLoad = true
       let params = {
         direction: 'up',
@@ -358,7 +358,7 @@ export default {
           })
           this.last_msgid = this.allMsgList[0].msgid
           if (res.data.msg_list.length !== 10) {
-            this.unfinalPulling = false;
+            this.unfinalPulling = false
             this.scroll.closePullDown()
           }
         } else {
@@ -372,7 +372,7 @@ export default {
       pullDownRefresh: {
         threshold: 50, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
         stop: 20, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
-        bounce:true
+        bounce: true
       },
       click: true
     }
@@ -398,33 +398,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.outwrap{
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-}
-.clinic-chat {
-  padding-bottom: 0;
-  margin-bottom: 0;
-  // position: relative;
-  // height: 100%;
-  // overflow: auto;
-  .chat-content {
-    width: 100%;
+  .outwrap {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .clinic-chat {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    // position: relative;
     // height: 100%;
-    overflow: hidden;
-    .content-detail {
-      padding: 32px 24px;
+    // overflow: auto;
+    .chat-content {
+      width: 100%;
+      // height: 100%;
+      overflow: hidden;
+
+      .content-detail {
+        padding: 32px 24px;
+      }
     }
   }
-}
-.wrapper {
-  max-height: calc(100vh - 200px);
-}
-.loadData {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: $gray2;
-}
+
+  .wrapper {
+    max-height: calc(100vh - 200px);
+  }
+
+  .loadData {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: $gray2;
+  }
 </style>

@@ -23,13 +23,13 @@
             </div>
           </div>
         </div>
-          <div
+        <div
           class="reply-content"
           v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
         >
-          <div class="imgMessage" @click="showImg"     @touchstart="gtouchstart()"
-          @touchmove="gtouchmove()"
-          @touchend="gtouchend()">
+          <div class="imgMessage" @click="showImg" @touchstart="gtouchstart()"
+               @touchmove="gtouchmove()"
+               @touchend="gtouchend()">
             <img :src="chatDetail.msgdata.img_url" alt>
           </div>
         </div>

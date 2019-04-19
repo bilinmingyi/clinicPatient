@@ -61,8 +61,8 @@ export default {
     addFunc () {
       this.$emit('addFunc')
     },
-    inputBlur(){
-          this.$emit('inputBlur')  
+    inputBlur () {
+      this.$emit('inputBlur')
     },
     hideFunc () {
       this.$emit('hideFunc')
@@ -179,16 +179,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-input {
-  -webkit-user-select:text !important;
-  -webkit-appearance:none; /*去除input默认样式*/
+  input {
+    -webkit-user-select: text !important;
+    -webkit-appearance: none; /*去除input默认样式*/
   }
+
   .chat-bottom {
     @include psFixed(112px);
     background: $bgwhite2;
+
     .reply {
       padding: 16px 0 16px 16px;
       @extend %flexV;
+
       input {
         // width: 540px;
         padding: 20px;
