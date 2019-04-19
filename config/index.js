@@ -50,7 +50,7 @@ module.exports = {
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'clinicgzh/public/patient',
+    assetsSubDirectory: 'yzsgzh/public/patient',
     assetsPublicPath: '/',
 
     /**
