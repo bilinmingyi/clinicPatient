@@ -66,7 +66,7 @@ export default {
     goRouter () {
       this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`, query: {resource: 'chat'}})
     },
-      // 调用微信接口展示图片
+    // 调用微信接口展示图片
     showImg () {
       WeixinJSBridge.invoke('imagePreview', {
         'current': this.chatDetail.msgdata.img_url,

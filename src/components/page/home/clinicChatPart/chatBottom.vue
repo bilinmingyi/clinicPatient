@@ -160,10 +160,10 @@ export default {
           canvas.height = height
 
           ctx.save()
-          ctx.clearRect(0, 0, canvas.width, canvas.height)
-          ctx.translate(width / 2, height / 2)
-          ctx.rotate(Math.PI / 2)
-          ctx.translate(-width / 2, -height / 2)
+          // ctx.clearRect(0, 0, canvas.width, canvas.height)
+          // ctx.translate(height / 2, width / 2)
+          // ctx.rotate(Math.PI / 2)
+          // ctx.translate(-height / 2, -width / 2)
 
           ctx.fillStyle = '#fff'
           ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -193,10 +193,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-input {
-  -webkit-user-select:text !important;
-  -webkit-appearance:none; /*去除input默认样式*/
+  input {
+    -webkit-user-select: text !important;
+    -webkit-appearance: none; /*去除input默认样式*/
   }
+
   .chat-bottom {
   width: 100%;
   z-index: 99;
@@ -207,9 +208,11 @@ input {
   right: 0;
   bottom: 0;
     background: $bgwhite2;
+
     .reply {
       padding: 16px 0 16px 16px;
       @extend %flexV;
+
       input {
         // width: 540px;
         padding: 20px;

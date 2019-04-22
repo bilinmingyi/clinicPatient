@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 try {
-  axios.defaults.baseURL = '/clinicgzh'
+  axios.defaults.baseURL = '/yzsgzh'
 } catch (e) {
   console.log(e)
 }
@@ -33,6 +33,8 @@ const msgSend = params => fetch('/chat/msg/send', params)
 const msgWithdraw = params => fetch('/chat/msg/withdraw', params)
 // 图片生成链接
 const imgUpLoad = params => fetch('/chat/img/upload', params)
+// 未读消息
+const unread = params => fetch('/chat/msg/unread', params)
 
 // 医生列表
 // 获取医生列表
@@ -97,5 +99,6 @@ export {
   gotoPay,
   fetchCode,
   savePhone,
-  imgUpLoad
+  imgUpLoad,
+  unread
 }

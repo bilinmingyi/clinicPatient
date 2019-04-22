@@ -22,17 +22,17 @@
       <div class="mb88"></div>
       
         <chat-bottom
-           :showFuc="isShowFuc"
+          :showFuc="isShowFuc"
           @addFunc="addFunc"
           @hideFunc="foucs"
           @sendMessage="sendTextMessage"
           @sendImg="sendImgMessage"
-          @showReply="showReply" 
+          @showReply="showReply"
           @inputBlur="inputBlur"
         ></chat-bottom>
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -247,16 +247,16 @@ export default {
             if (index === 0 && this.allMsgList.length !== 0) {
               return
             } else {
-                       //避免发送数据和轮巡时 数据加了两天
-              let noData = true;
-              for(let i=0;i<this.allMsgList.length;i++){
-                if(this.allMsgList[i].msgid===item.msgid){
-                  noData=false;
-                  break;
+              // 避免发送数据和轮巡时 数据加了两天
+              let noData = true
+              for (let i = 0; i < this.allMsgList.length; i++) {
+                if (this.allMsgList[i].msgid === item.msgid) {
+                  noData = false
+                  break
                 }
               }
-              if(noData){
-                this.allMsgList.push(item);
+              if (noData) {
+                this.allMsgList.push(item)
               }
               // this.allMsgList.push(item)
             }
@@ -267,7 +267,7 @@ export default {
           });
             }
           })
-       
+
           this.allMsgList.forEach((item, index) => {
             if (index === 0) {
               this.$set(item, 'showTime', true)
