@@ -90,6 +90,7 @@ export default {
   }
 
   .chat-content {
+      margin-left: 20px;
     .reply-content {
       background: $bgwhite2;
       border: 1px solid $simpleGray;
@@ -166,6 +167,7 @@ export default {
 
   .right-chat {
     .chat-content {
+
       justify-content: flex-end;
       display: flex;
     }

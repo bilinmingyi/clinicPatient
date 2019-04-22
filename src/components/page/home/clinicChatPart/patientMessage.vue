@@ -202,6 +202,7 @@ export default {
   }
 
   .right-chat {
+    margin-right: 20px;
     .chat-content {
       justify-content: flex-end;
       display: flex;
