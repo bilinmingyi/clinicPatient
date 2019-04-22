@@ -18,13 +18,17 @@
           <span>客服电话</span>
         </a>
         <div class="contact-item" @click="goRoute(1)">
-          <img src="../../../assets/img/ly2.png">
+          <div class="messageIcon">
+            <img src="../../../assets/img/ly2.png">
+            <div class="no-read" v-if="unReadCount !== 0">{{unReadCount}}</div>
+          </div>
           <span>咨询诊所</span>
         </div>
       </section>
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
-        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id" @click.native="goRoute(2, article.id)"></Dynamic>
+        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"
+                 @click.native="goRoute(2, article.id)"></Dynamic>
         <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
       </section>
     </div>
@@ -34,7 +38,7 @@
 
 <script>
 import {Footer, Header, SmallTitle, Dynamic, LoadMore} from '@/components/common/index'
-import {getArticleList} from '@/fetch/api.js'
+import {getArticleList, unread} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 
@@ -53,11 +57,13 @@ export default {
       pageSize: 5,
       articleList: [],
       canShowAdd: false,
-      no_img: clinicImg
+      no_img: clinicImg,
+      unReadCount: 0
     }
   },
   created () {
     this.getList()
+    this.getUnread()
   },
   computed: {
     ...mapState({
@@ -99,6 +105,18 @@ export default {
           this.$router.push({name: 'articleDetail', params: {id: params}})
           break
       }
+    },
+    getUnread () {
+      unread({
+        session_type: 'CLINIC_PATIENT'
+      }).then(res => {
+        if (res.code === 1000) {
+          res.data ? this.unReadCount = res.data.unread_count : this.unReadCount = 0
+        } else {
+          this.$Message.infor(res.msg)
+        }
+        console.log(res)
+      })
     }
   }
 }
@@ -170,6 +188,23 @@ export default {
         height: 64px;
         margin-right: 20px;
       }
+    }
+  }
+
+  .messageIcon {
+    position: relative;
+
+    .no-read {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      background: $redColor;
+      color: #ffffff;
+      position: absolute;
+      top: -16px;
+      left: 32px;
+      border-radius: 50%;
     }
   }
 
