@@ -1,25 +1,25 @@
 <template>
-  <div class="outwrap">
+  <div class="allWrapper">
     <Header titleText="我的咨询" :canReturn="true" backUrl="/home"></Header>
     <div class="mt-88px">
-      <div class="overflows">
-      <div class="clinic-chat">
-        <div class="wrapper" ref="wrapper">
-          <div class="chat-content content" @click="hideFuc" @touchstart="hideFuc">
-            <p v-show="isShowLoad" class="loadData">正在加载数据....</p>
-            <div class="content-detail">
-              <component
-                v-for="(item) in allMsgList"
-                :key="item.msgid"
-                :is="RenderComponent(item.from)"
-                :chatDetail="item"
-                @cancelMessage="cancelMessage"
-              ></component>
-            </div>
+  <div class="clinic-chat">
+      <div class="wrapper" ref="wrapper" @click="hideFuc" >
+          <p v-show="isShowLoad" class="loadData">正在加载数据...</p>
+          <div class="content-detail">
+            <component
+              v-for="(item,index) in allMsgList"
+              v-if="allMsgList.length>0"
+              :key="item.msgid"
+              :is="RenderComponent(item.from)"
+              :chatDetail="item"
+              :patientImg="queryData.avatar"
+              @cancelMessage="cancelMessage"
+               ref="chatBottoms"
+            ></component>
           </div>
         </div>
       </div>
-        <!-- <div class="mb88"></div> -->
+      <div class="mb88"></div>
       
         <chat-bottom
            :showFuc="isShowFuc"
@@ -38,7 +38,7 @@
 
 <script>
 import {Header} from '@/components/common'
-import BScroll from 'better-scroll'
+// import BScroll from 'better-scroll'
 import {chatMsgList, msgSend, msgWithdraw} from '@/fetch/api'
 import {mapState} from 'vuex'
 import chatBottom from './clinicChatPart/chatBottom'
@@ -57,8 +57,11 @@ export default {
       isReply: false,
       dataInterval: '',
       isShowLoad: false,
-            unPullingUp:true,  //两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
-      unfinalPulling:true
+      unPullingUp:true,  //两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
+      unfinalPulling:true,
+      noPull:true,
+           first:'',
+      second:''
     }
   },
   components: {
@@ -76,19 +79,20 @@ export default {
   },
   methods: {
     inputBlur(){
-      window.scrollTo(0,0)
+            let self =this;
+              self.$refs.wrapper.scrollTo (0,self.$refs.wrapper.scrollHeight)
     },
     foucs () {
-            this.unPullingUp = true;
-      this.unfinalPulling = true;
-      this.scroll.openPullDown();
-        window.scrollTo(0,0)
-      this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
-      this.isShowFuc = false
+      this.unPullingUp = true;
+      let self =this;
+      self.$refs.wrapper.scrollTo (0,self.$refs.wrapper.scrollHeight)
+      this.isShowFuc = false;
     },
     hideFuc () {
-      this.isShowFuc = false
+            this.isShowFuc = false
       this.isReply = false
+         this.$refs.chatBottoms.$refs.inputText.blur();
+
     },
     addFunc () {
       this.isShowFuc = !this.isShowFuc
@@ -164,12 +168,13 @@ export default {
           })
           this.isReply = false
           this.isShowFuc = false
-          setTimeout(() => {
-            this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
-          }, 0)
+                       this.$nextTick(()=>{
+                 this.$refs.wrapper.scrollTo (0,this.$refs.wrapper.scrollHeight)
+          })
         } else {
           this.$Message.infor(res.msg)
         }
+              this.isShowFuc = false;
       })
     },
     // 发送文本
@@ -221,9 +226,7 @@ export default {
         } else {
           this.$Message.infor('网络太差，撤销失败')
         }
-        setTimeout(() => {
-          this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
-        }, 0)
+  
       })
     },
     // 一定时间请求数据
@@ -260,7 +263,7 @@ export default {
            //过滤上面已经撤回的信息
             if (item.msgdata.msg_type == "withdraw_msg") {
                this.allMsgList =   this.allMsgList.filter(item1 => {
-            return item.msgid !== item.msgdata.msgid;
+            return item1.msgid !== item.msgdata.msg_id;
           });
             }
           })
@@ -278,10 +281,11 @@ export default {
             }
           })
           this.isReply = false
-            if(res.data.msg_list.length>1&&this.unPullingUp&&this.unfinalPulling){
-               setTimeout(() => {
-            this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000);
-          }, 0);
+                          // alert(this.unPullingUp)
+           if(res.data.msg_list.length>1&&this.unPullingUp){
+          this.$nextTick(()=>{
+                 this.$refs.wrapper.scrollTo (0,this.$refs.wrapper.scrollHeight)
+          })
           }
         } else {
           this.$Message.infor(res.msg)
@@ -313,9 +317,16 @@ export default {
           })
           this.last_msgid =
             this.allMsgList.length > 0 ? this.allMsgList[0].msgid : null
-          setTimeout(() => {
-            this.scroll.scrollTo(0, this.scroll.maxScrollY, 1000)
-          }, 0)
+        this.$nextTick(()=>{
+                  setTimeout(()=>{
+                  this.$refs.wrapper.scrollTo(0,this.$refs.wrapper.scrollHeight)
+                  },0)
+               this.$refs.wrapper.addEventListener('scroll', () => {
+            if(this.$refs.wrapper.scrollTop==0&&this.unfinalPulling){
+          this.getUpLoadData()
+           }
+          }, false)
+        })
         } else {
           this.$Message.infor(res.msg)
         }
@@ -323,8 +334,9 @@ export default {
     },
     // 向上加载的时候的操作数据
     getUpLoadData () {
-            this.unPullingUp = false;
+               this.first = this.$refs.wrapper.scrollHeight; //记录一开始得高度
       this.isShowLoad = true
+      this.unPullingUp = false;
       let params = {
         direction: 'up',
         session_type: 'CLINIC_PATIENT',
@@ -335,6 +347,8 @@ export default {
       chatMsgList(params).then(res => {
         this.isShowLoad = false
         if (res.code === 1000) {
+      
+                this.$nextTick(()=>{
           let newObject = []
           res.data.msg_list.forEach((item, index) => {
             // 第一个数据不要
@@ -357,9 +371,14 @@ export default {
             }
           })
           this.last_msgid = this.allMsgList[0].msgid
+             setTimeout(()=>{
+            this.second = this.$refs.wrapper.scrollHeight;
+            let scroTo = Number(this.second -  this.first);
+            this.$refs.wrapper.scrollTo(0,scroTo);
+          },0)
+        })
           if (res.data.msg_list.length !== 10) {
             this.unfinalPulling = false;
-            this.scroll.closePullDown()
           }
         } else {
           this.$Message.infor(res.msg)
@@ -368,58 +387,45 @@ export default {
     }
   },
   mounted () {
-    let options = {
-      pullDownRefresh: {
-        threshold: 50, // 当下拉到超过顶部 50px 时，触发 pullingDown 事件
-        stop: 20, // 刷新数据的过程中，回弹停留在距离顶部还有 20px 的位置
-        bounce:true
-      },
-      click: true
-    }
-    // // 上拉加载数据
-    this.scroll = new BScroll(this.$refs.wrapper, options)
-
-    this.scroll.on('pullingDown', () => {
-      this.getUpLoadData()
-      this.scroll.finishPullDown()
-      // 刷新数据的过程中，回弹停留在距离顶部还有20px的位置
-    })
     this.dataInterval = setInterval(() => {
       this.setIntervalData()
     }, 3000)
-  },
-  created () {
-    if (Number(this.hasAppoint) === 1) {
+        if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
     }
     this.getChatMsg()
+  },
+  created () {
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.outwrap{
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
+.allWrapper{
+  position:fixed;
+  width:100vw;
+  height:100%;
 }
 .clinic-chat {
-  padding-bottom: 0;
-  margin-bottom: 0;
-  // position: relative;
-  // height: 100%;
-  // overflow: auto;
+  position:relative;
+  height:100%;
+  width:100%;
   .chat-content {
     width: 100%;
-    // height: 100%;
+    margin-right:20px;
     overflow: hidden;
     .content-detail {
-      padding: 32px 24px;
+      width: 100%;
+      margin: 32px 24px;
     }
   }
 }
 .wrapper {
-  max-height: calc(100vh - 200px);
+   box-sizing: border-box;
+  overflow:hidden;
+  height: calc(100vh - 200px);
+    overflow-y: scroll; 
+  -webkit-overflow-scrolling: touch;
 }
 .loadData {
   margin-top: 20px;

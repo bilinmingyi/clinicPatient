@@ -1,5 +1,6 @@
 <template>
   <div class="preview">
+
     <div class="title-block bottom-link">
       <button class="title-btn" @click.stop="cancelSend"></button>
       <div class="title-text">
@@ -32,12 +33,15 @@ export default {
 
 <style lang="scss" scoped>
   .preview {
-    position: fixed;
+    // position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
+    bottom:0;
+    // right: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    // background: #000;
 
     .img-content {
       width: 100%;
@@ -57,7 +61,9 @@ export default {
   .title-block {
     background: #fafafa;
     text-align: center;
-    @include psFixed(top);
+    position: relative;
+    @include psFixed(top,100px);
+       z-index: 999;
     @extend %displayFlex;
 
     .title-btn {

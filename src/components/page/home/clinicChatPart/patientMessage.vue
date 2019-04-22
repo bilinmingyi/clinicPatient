@@ -14,7 +14,7 @@
           @touchmove="gtouchmove()"
           @touchend="gtouchend()"
         >
-          <span>{{chatDetail.msgdata.text}}</span>
+          <div class="reply-text">{{chatDetail.msgdata.text}}</div>
         </div>
         <div class="reply-content" v-if="chatDetail.msgdata && chatDetail.msgdata.msg_type=='link'">
           <div class="recommond" v-if="chatDetail.msgdata.link_type == 'treatment_order_Submission'">
@@ -120,6 +120,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.reply-text{
+   user-select:none
+}
   p {
     text-align: center;
     font-size: 26px;
@@ -194,7 +197,7 @@ export default {
   .imgMessage {
     img {
       width: 100%;
-      height: 100%;
+      height: 400px;
     }
   }
 

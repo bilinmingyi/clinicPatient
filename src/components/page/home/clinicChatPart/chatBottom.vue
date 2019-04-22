@@ -2,7 +2,9 @@
   <div class="chat-bottom">
     <div class="reply">
       <!-- <div @click="showReply"><span class="leftIcon iconfont">&#xe612;</span></div> -->
-      <input class="serach-input" type="textarea" @focus="hideFunc" v-model="sendContent" @blur="inputBlur">
+      <input class="serach-input" type="textarea"        @focus="hideFunc($event)"
+        v-model="sendContent"
+        @blur="inputBlur($event)"    ref="inputText">
       <div class="ml24 pr16">
         <img src="@/assets/img/tianjia@2x.png" alt @click="addFunc" :class="{'translateImg':showFuc}" v-show="showIcon">
         <div class="send " v-show="!showIcon" @click="sendMessage">发送</div>
@@ -62,10 +64,22 @@ export default {
       this.$emit('addFunc')
     },
     inputBlur(){
-          this.$emit('inputBlur')  
+           let self = this;
+      clearInterval(self.bottomTimer);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        self.$emit("inputBlur");
+      }, 64);
     },
-    hideFunc () {
-      this.$emit('hideFunc')
+    hideFunc (e) {
+          setTimeout(function() {
+        e.target.scrollIntoView(true);
+      }, 500);
+      let self = this;
+      self.bottomTimer = setInterval(function() {
+        document.body.scrollTop = document.body.clientHeight;
+      }, 200);
+      this.$emit("hideFunc", e);
     },
     showReply () {
       this.$emit('showReply')
@@ -184,7 +198,14 @@ input {
   -webkit-appearance:none; /*去除input默认样式*/
   }
   .chat-bottom {
-    @include psFixed(112px);
+  width: 100%;
+  z-index: 99;
+  position: absolute;
+  min-height: 112px;
+  overflow: hidden;
+  left: 0;
+  right: 0;
+  bottom: 0;
     background: $bgwhite2;
     .reply {
       padding: 16px 0 16px 16px;
@@ -193,7 +214,8 @@ input {
         // width: 540px;
         padding: 20px;
         outline: medium;
-        flex: 1;
+           width: 584px;
+      margin-left: 20px;
         height: 80px;
         @extend %normalTitle;
         background: rgba(249, 249, 249, 1);
@@ -235,7 +257,7 @@ input {
   }
 
   .send {
-    @include deepButton(68px, 68px);
+    @include deepButton(68px, 88px);
     border-radius: 16px;
     font-size: 24px;
   }
