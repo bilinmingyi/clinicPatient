@@ -2,37 +2,35 @@
   <div class="allWrapper">
     <Header titleText="我的咨询" :canReturn="true" backUrl="/home"></Header>
     <div class="mt-88px">
-  <div class="clinic-chat">
-      <div class="wrapper" ref="wrapper" @click="hideFuc" >
+      <div class="clinic-chat">
+        <div class="wrapper" ref="wrapper" @click="hideFuc">
           <p v-show="isShowLoad" class="loadData">正在加载数据...</p>
           <div class="content-detail">
             <component
-              v-for="(item,index) in allMsgList"
+              v-for="(item) in allMsgList"
               v-if="allMsgList.length>0"
               :key="item.msgid"
               :is="RenderComponent(item.from)"
               :chatDetail="item"
               :patientImg="queryData.avatar"
               @cancelMessage="cancelMessage"
-               ref="chatBottoms"
+              ref="chatBottoms"
             ></component>
           </div>
         </div>
       </div>
       <div class="mb88"></div>
-      
-        <chat-bottom
-          :showFuc="isShowFuc"
-          @addFunc="addFunc"
-          @hideFunc="foucs"
-          @sendMessage="sendTextMessage"
-          @sendImg="sendImgMessage"
-          @showReply="showReply"
-          @inputBlur="inputBlur"
-        ></chat-bottom>
-      </div>
-    </div>
 
+      <chat-bottom
+        :showFuc="isShowFuc"
+        @addFunc="addFunc"
+        @hideFunc="foucs"
+        @sendMessage="sendTextMessage"
+        @sendImg="sendImgMessage"
+        @showReply="showReply"
+        @inputBlur="inputBlur"
+      ></chat-bottom>
+    </div>
   </div>
 </template>
 
@@ -57,11 +55,11 @@ export default {
       isReply: false,
       dataInterval: '',
       isShowLoad: false,
-      unPullingUp:true,  //两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
-      unfinalPulling:true,
-      noPull:true,
-           first:'',
-      second:''
+      unPullingUp: true,  // 两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
+      unfinalPulling: true,
+      noPull: true,
+      first: '',
+      second: ''
     }
   },
   components: {
@@ -78,20 +76,20 @@ export default {
     next()
   },
   methods: {
-    inputBlur(){
-            let self =this;
-              self.$refs.wrapper.scrollTo (0,self.$refs.wrapper.scrollHeight)
+    inputBlur () {
+      let self = this
+      self.$refs.wrapper.scrollTo(0, self.$refs.wrapper.scrollHeight)
     },
     foucs () {
-      this.unPullingUp = true;
-      let self =this;
-      self.$refs.wrapper.scrollTo (0,self.$refs.wrapper.scrollHeight)
-      this.isShowFuc = false;
+      this.unPullingUp = true
+      let self = this
+      self.$refs.wrapper.scrollTo(0, self.$refs.wrapper.scrollHeight)
+      this.isShowFuc = false
     },
     hideFuc () {
-            this.isShowFuc = false
+      this.isShowFuc = false
       this.isReply = false
-         this.$refs.chatBottoms.$refs.inputText.blur();
+      this.$refs.chatBottoms.$refs.inputText.blur()
 
     },
     addFunc () {
@@ -168,13 +166,13 @@ export default {
           })
           this.isReply = false
           this.isShowFuc = false
-                       this.$nextTick(()=>{
-                 this.$refs.wrapper.scrollTo (0,this.$refs.wrapper.scrollHeight)
+          this.$nextTick(() => {
+            this.$refs.wrapper.scrollTo(0, this.$refs.wrapper.scrollHeight)
           })
         } else {
           this.$Message.infor(res.msg)
         }
-              this.isShowFuc = false;
+        this.isShowFuc = false
       })
     },
     // 发送文本
@@ -226,7 +224,7 @@ export default {
         } else {
           this.$Message.infor('网络太差，撤销失败')
         }
-  
+
       })
     },
     // 一定时间请求数据
@@ -260,11 +258,11 @@ export default {
               }
               // this.allMsgList.push(item)
             }
-           //过滤上面已经撤回的信息
-            if (item.msgdata.msg_type == "withdraw_msg") {
-               this.allMsgList =   this.allMsgList.filter(item1 => {
-            return item1.msgid !== item.msgdata.msg_id;
-          });
+            // 过滤上面已经撤回的信息
+            if (item.msgdata.msg_type == 'withdraw_msg') {
+              this.allMsgList = this.allMsgList.filter(item1 => {
+                return item1.msgid !== item.msgdata.msg_id
+              })
             }
           })
 
@@ -281,11 +279,11 @@ export default {
             }
           })
           this.isReply = false
-                          // alert(this.unPullingUp)
-           if(res.data.msg_list.length>1&&this.unPullingUp){
-          this.$nextTick(()=>{
-                 this.$refs.wrapper.scrollTo (0,this.$refs.wrapper.scrollHeight)
-          })
+          // alert(this.unPullingUp)
+          if (res.data.msg_list.length > 1 && this.unPullingUp) {
+            this.$nextTick(() => {
+              this.$refs.wrapper.scrollTo(0, this.$refs.wrapper.scrollHeight)
+            })
           }
         } else {
           this.$Message.infor(res.msg)
@@ -317,16 +315,16 @@ export default {
           })
           this.last_msgid =
             this.allMsgList.length > 0 ? this.allMsgList[0].msgid : null
-        this.$nextTick(()=>{
-                  setTimeout(()=>{
-                  this.$refs.wrapper.scrollTo(0,this.$refs.wrapper.scrollHeight)
-                  },0)
-               this.$refs.wrapper.addEventListener('scroll', () => {
-            if(this.$refs.wrapper.scrollTop==0&&this.unfinalPulling){
-          this.getUpLoadData()
-           }
-          }, false)
-        })
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.$refs.wrapper.scrollTo(0, this.$refs.wrapper.scrollHeight)
+            }, 0)
+            this.$refs.wrapper.addEventListener('scroll', () => {
+              if (this.$refs.wrapper.scrollTop === 0 && this.unfinalPulling) {
+                this.getUpLoadData()
+              }
+            }, false)
+          })
         } else {
           this.$Message.infor(res.msg)
         }
@@ -334,9 +332,9 @@ export default {
     },
     // 向上加载的时候的操作数据
     getUpLoadData () {
-               this.first = this.$refs.wrapper.scrollHeight; //记录一开始得高度
+      this.first = this.$refs.wrapper.scrollHeight // 记录一开始得高度
       this.isShowLoad = true
-      this.unPullingUp = false;
+      this.unPullingUp = false
       let params = {
         direction: 'up',
         session_type: 'CLINIC_PATIENT',
@@ -347,38 +345,38 @@ export default {
       chatMsgList(params).then(res => {
         this.isShowLoad = false
         if (res.code === 1000) {
-      
-                this.$nextTick(()=>{
-          let newObject = []
-          res.data.msg_list.forEach((item, index) => {
-            // 第一个数据不要
-            if (index === res.data.msg_list.length - 1) {
-            } else {
-              newObject.push(item)
-            }
+
+          this.$nextTick(() => {
+            let newObject = []
+            res.data.msg_list.forEach((item, index) => {
+              // 第一个数据不要
+              if (index === res.data.msg_list.length - 1) {
+              } else {
+                newObject.push(item)
+              }
+            })
+            this.allMsgList.unshift(...newObject)
+            this.allMsgList.forEach((item, index) => {
+              if (index === 0) {
+                this.$set(item, 'showTime', true)
+              } else if (
+                index !== 0 &&
+                this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
+              ) {
+                this.$set(item, 'showTime', true)
+              } else {
+                this.$set(item, 'showTime', false)
+              }
+            })
+            this.last_msgid = this.allMsgList[0].msgid
+            setTimeout(() => {
+              this.second = this.$refs.wrapper.scrollHeight
+              let scroTo = Number(this.second - this.first)
+              this.$refs.wrapper.scrollTo(0, scroTo)
+            }, 0)
           })
-          this.allMsgList.unshift(...newObject)
-          this.allMsgList.forEach((item, index) => {
-            if (index === 0) {
-              this.$set(item, 'showTime', true)
-            } else if (
-              index !== 0 &&
-              this.computedTime(this.allMsgList[index - 1].msgts, item.msgts)
-            ) {
-              this.$set(item, 'showTime', true)
-            } else {
-              this.$set(item, 'showTime', false)
-            }
-          })
-          this.last_msgid = this.allMsgList[0].msgid
-             setTimeout(()=>{
-            this.second = this.$refs.wrapper.scrollHeight;
-            let scroTo = Number(this.second -  this.first);
-            this.$refs.wrapper.scrollTo(0,scroTo);
-          },0)
-        })
           if (res.data.msg_list.length !== 10) {
-            this.unfinalPulling = false;
+            this.unfinalPulling = false
           }
         } else {
           this.$Message.infor(res.msg)
@@ -390,7 +388,7 @@ export default {
     this.dataInterval = setInterval(() => {
       this.setIntervalData()
     }, 3000)
-        if (Number(this.hasAppoint) === 1) {
+    if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
     }
     this.getChatMsg()
@@ -401,36 +399,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.allWrapper{
-  position:fixed;
-  width:100vw;
-  height:100%;
-}
-.clinic-chat {
-  position:relative;
-  height:100%;
-  width:100%;
-  .chat-content {
+  .allWrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+  }
+
+  .clinic-chat {
+    position: relative;
+    height: 100%;
     width: 100%;
-    margin-right:20px;
-    overflow: hidden;
-    .content-detail {
+
+    .chat-content {
       width: 100%;
-      margin: 32px 24px;
+      margin-right: 20px;
+      overflow: hidden;
+
+      .content-detail {
+        width: 100%;
+        margin: 32px 24px;
+      }
     }
   }
-}
-.wrapper {
-   box-sizing: border-box;
-  overflow:hidden;
-  height: calc(100vh - 200px);
-    overflow-y: scroll; 
-  -webkit-overflow-scrolling: touch;
-}
-.loadData {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: $gray2;
-}
+
+  .wrapper {
+    box-sizing: border-box;
+    overflow: hidden;
+    height: calc(100vh - 200px);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .loadData {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: $gray2;
+  }
 </style>
