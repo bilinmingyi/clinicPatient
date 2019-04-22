@@ -90,7 +90,8 @@ export default {
   }
 
   .chat-content {
-      margin-left: 20px;
+    margin-left: 20px;
+
     .reply-content {
       background: $bgwhite2;
       border: 1px solid $simpleGray;

@@ -55,7 +55,7 @@ export default {
       isReply: false,
       dataInterval: '',
       isShowLoad: false,
-      unPullingUp: true,  // 两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
+      unPullingUp: true, // 两个变量控制轮询的时候 是否滚到底部  若上拉到最顶层的时候 此页面不进行上拉加载
       unfinalPulling: true,
       noPull: true,
       first: '',
