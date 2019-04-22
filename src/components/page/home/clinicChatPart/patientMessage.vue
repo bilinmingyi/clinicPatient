@@ -120,9 +120,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.reply-text{
-   user-select:none
-}
+  .reply-text {
+    user-select: none
+  }
+
   p {
     text-align: center;
     font-size: 26px;

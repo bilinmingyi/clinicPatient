@@ -36,7 +36,7 @@ export default {
     // position: fixed;
     top: 0;
     left: 0;
-    bottom:0;
+    bottom: 0;
     // right: 0;
     z-index: 999;
     width: 100vw;
@@ -62,8 +62,8 @@ export default {
     background: #fafafa;
     text-align: center;
     position: relative;
-    @include psFixed(top,100px);
-       z-index: 999;
+    @include psFixed(top, 100px);
+    z-index: 999;
     @extend %displayFlex;
 
     .title-btn {
