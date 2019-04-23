@@ -68,10 +68,14 @@ export default {
     },
     // 调用微信接口展示图片
     showImg () {
-      WeixinJSBridge.invoke('imagePreview', {
-        'current': this.chatDetail.msgdata.img_url,
-        'urls': [this.chatDetail.msgdata.img_url]
-      })
+      try {
+        WeixinJSBridge.invoke('imagePreview', {
+          'current': this.chatDetail.msgdata.img_url,
+          'urls': [this.chatDetail.msgdata.img_url]
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   },
   created () {
