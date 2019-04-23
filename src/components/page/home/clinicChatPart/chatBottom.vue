@@ -198,7 +198,7 @@ export default {
         padding: 20px;
         outline: medium;
         width: 584px;
-        margin-left:20px;
+        margin-left: 20px;
         height: 80px;
         @extend %normalTitle;
         background: rgba(249, 249, 249, 1);

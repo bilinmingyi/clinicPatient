@@ -7,7 +7,9 @@
       >{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
       <div class="chat-content">
         <!-- messagetype  text-->
-         <div class="cancelButton" v-if="chatDetail.msgdata.msg_type !== 'withdraw_msg'&&chatDetail.msgdata.msg_type!=='link'" @click="cancelThis"> <span>撤回</span></div>
+        <div class="cancelButton"
+             v-if="chatDetail.msgdata.msg_type !== 'withdraw_msg'&&chatDetail.msgdata.msg_type!=='link'"
+             @click="cancelThis"><span>撤回</span></div>
         <div
           class="reply-content"
           v-if="chatDetail.msgdata.msg_type=='text'"
@@ -72,10 +74,10 @@ export default {
     ...mapState(['userInfoState'])
   },
   methods: {
-    cancelThis(){
-        this.$Message.confirm("确认撤销消息么？", () => {
-          this.$emit("cancelMessage", this.chatDetail);
-        });
+    cancelThis () {
+      this.$Message.confirm('确认撤销消息么？', () => {
+        this.$emit('cancelMessage', this.chatDetail)
+      })
     },
     // 路由跳转
     goRoute (url) {
@@ -109,23 +111,28 @@ export default {
     font-weight: 400;
     color: $simpleGray;
   }
-  .reply-text{
-   @extend %normalTitle;
-}
-.cancelButton{
-  // background: yellow;
-  width: 88px;
-  line-height: 50px;
-  text-align: center;
-  height: 50px;
-  color: $gray3;
-  font-size: 26px;
-  span{
-    border-bottom: 1px solid $gray3;
+
+  .reply-text {
+    @extend %normalTitle;
   }
-}
+
+  .cancelButton {
+    // background: yellow;
+    width: 88px;
+    line-height: 50px;
+    text-align: center;
+    height: 50px;
+    color: $gray3;
+    font-size: 26px;
+
+    span {
+      border-bottom: 1px solid $gray3;
+    }
+  }
+
   .chat-content {
     @extend %flexVC;
+
     .reply-content {
       background: $bgwhite2;
       border: 1px solid $simpleGray;
