@@ -115,7 +115,6 @@ export default {
         } else {
           this.$Message.infor(res.msg)
         }
-        console.log(res)
       })
     }
   }

@@ -90,7 +90,6 @@ export default {
       this.isShowFuc = false
       this.isReply = false
       this.$refs.chatBottoms.$refs.inputText.blur()
-
     },
     addFunc () {
       this.isShowFuc = !this.isShowFuc
@@ -224,7 +223,6 @@ export default {
         } else {
           this.$Message.infor('网络太差，撤销失败')
         }
-
       })
     },
     // 一定时间请求数据
@@ -259,7 +257,7 @@ export default {
               // this.allMsgList.push(item)
             }
             // 过滤上面已经撤回的信息
-            if (item.msgdata.msg_type == 'withdraw_msg') {
+            if (item.msgdata.msg_type === 'withdraw_msg') {
               this.allMsgList = this.allMsgList.filter(item1 => {
                 return item1.msgid !== item.msgdata.msg_id
               })
@@ -345,7 +343,6 @@ export default {
       chatMsgList(params).then(res => {
         this.isShowLoad = false
         if (res.code === 1000) {
-
           this.$nextTick(() => {
             let newObject = []
             res.data.msg_list.forEach((item, index) => {

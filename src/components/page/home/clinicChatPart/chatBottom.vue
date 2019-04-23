@@ -2,9 +2,7 @@
   <div class="chat-bottom">
     <div class="reply">
       <!-- <div @click="showReply"><span class="leftIcon iconfont">&#xe612;</span></div> -->
-      <input class="serach-input" type="textarea" @focus="hideFunc($event)"
-             v-model="sendContent"
-             @blur="inputBlur($event)" ref="inputText">
+      <input class="serach-input" type="textarea" @focus="hideFunc" v-model="sendContent" @blur="inputBlur">
       <div class="ml24 pr16">
         <img src="@/assets/img/tianjia@2x.png" alt @click="addFunc" :class="{'translateImg':showFuc}" v-show="showIcon">
         <div class="send " v-show="!showIcon" @click="sendMessage">发送</div>
@@ -64,22 +62,10 @@ export default {
       this.$emit('addFunc')
     },
     inputBlur () {
-      let self = this
-      clearInterval(self.bottomTimer)
-      setTimeout(() => {
-        window.scrollTo(0, 0)
-        self.$emit('inputBlur')
-      }, 64)
+      this.$emit('inputBlur')
     },
-    hideFunc (e) {
-      setTimeout(function () {
-        e.target.scrollIntoView(true)
-      }, 500)
-      let self = this
-      self.bottomTimer = setInterval(function () {
-        document.body.scrollTop = document.body.clientHeight
-      }, 200)
-      this.$emit('hideFunc', e)
+    hideFunc () {
+      this.$emit('hideFunc')
     },
     showReply () {
       this.$emit('showReply')
@@ -156,17 +142,18 @@ export default {
             ratio = 1
           }
 
-          canvas.width = width
-          canvas.height = height
+          canvas.width = height
+          canvas.height = width
 
           ctx.save()
-          // ctx.clearRect(0, 0, canvas.width, canvas.height)
-          // ctx.translate(height / 2, width / 2)
-          // ctx.rotate(Math.PI / 2)
-          // ctx.translate(-height / 2, -width / 2)
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-          ctx.fillStyle = '#fff'
-          ctx.fillRect(0, 0, canvas.width, canvas.height)
+          ctx.translate(canvas.width / 2, canvas.height / 2)
+          ctx.rotate(Math.PI / 2)
+          ctx.translate(-canvas.height / 2, -canvas.width / 2)
+
+          ctx.fillStyle = '#000'
+          ctx.fillRect(0, 0, canvas.height, canvas.width)
 
           ctx.drawImage(img, 0, 0, width, height)
           ctx.restore()
@@ -199,14 +186,7 @@ export default {
   }
 
   .chat-bottom {
-    width: 100%;
-    z-index: 99;
-    position: absolute;
-    min-height: 112px;
-    overflow: hidden;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include psFixed(112px);
     background: $bgwhite2;
 
     .reply {
@@ -217,8 +197,7 @@ export default {
         // width: 540px;
         padding: 20px;
         outline: medium;
-        width: 584px;
-        margin-left: 20px;
+        flex: 1;
         height: 80px;
         @extend %normalTitle;
         background: rgba(249, 249, 249, 1);
@@ -260,7 +239,7 @@ export default {
   }
 
   .send {
-    @include deepButton(68px, 88px);
+    @include deepButton(68px, 68px);
     border-radius: 16px;
     font-size: 24px;
   }
