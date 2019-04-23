@@ -89,7 +89,6 @@ export default {
     hideFuc () {
       this.isShowFuc = false
       this.isReply = false
-      this.$refs.chatBottoms.$refs.inputText.blur()
     },
     addFunc () {
       this.isShowFuc = !this.isShowFuc
@@ -387,6 +386,7 @@ export default {
     }, 3000)
     if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
+      this.$router.replace({name: 'chatRoom'})
     }
     this.getChatMsg()
   },

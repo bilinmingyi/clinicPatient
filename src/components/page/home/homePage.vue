@@ -58,12 +58,20 @@ export default {
       articleList: [],
       canShowAdd: false,
       no_img: clinicImg,
-      unReadCount: 0
+      unReadCount: 0,
+      dataInterval: ''
     }
   },
   created () {
     this.getList()
     this.getUnread()
+    this.dataInterval = setInterval(() => {
+      this.getUnread()
+    }, 5000)
+  },
+  beforeRouteLeave (to, from, next) {
+    clearInterval(this.dataInterval)
+    next()
   },
   computed: {
     ...mapState({

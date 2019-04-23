@@ -79,7 +79,7 @@
 <script>
 import {Header, SmallTitle, radioGroup} from '@/components/common'
 import {mapState} from 'vuex'
-import {fetchPatientList, saveAppointData} from '@/fetch/api.js'
+import {fetchPatientList, saveAppointData, fetchUserInfo, gotoPay} from '@/fetch/api.js'
 import filters from '../../../assets/js/fliters'
 
 export default {
@@ -112,8 +112,23 @@ export default {
   props: ['treatDate', 'price', 'startTime', 'endTime', 'doctorName', 'treatTime', 'doctorId', 'resource'],
   created () {
     this.getList()
+    this.getPerson()
   },
   methods: {
+    getPerson () {
+      fetchUserInfo({}).then(
+        res => {
+          if (res.code === 1000) {
+            this.patient.mobile = res.data.mobile
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }
+      ).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
+      })
+    },
     getList () {
       fetchPatientList({}).then(res => {
         if (res.code === 1000) {
@@ -138,7 +153,7 @@ export default {
       this.patient.user_name = patient.name
       this.patient.user_sex = patient.sex
       this.patient.user_age = patient.age
-      this.patient.mobile = patient.mobile
+
       this.showSelect = false
     },
     changeSex (val) {
@@ -169,6 +184,24 @@ export default {
         patient_name: this.patient.user_name
       }).then(res => {
         if (res.code === 1000) {
+          gotoPay({
+            'order_type': 1,
+            'order_seqno': res.order_seqno
+          }).then(res => {
+            if (res.code === 1000) {
+              try {
+                window.location.href = res.data
+              } catch (error) {
+                console.log(error)
+                this.$Message.infor('支付跳转失败')
+              }
+            } else {
+              this.$Message.infor(res.msg)
+            }
+          }).catch(error => {
+            console.log(error)
+            this.$Message.infor('网络出错！')
+          })
           if (this.resource) {
             this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno}})
           } else {
