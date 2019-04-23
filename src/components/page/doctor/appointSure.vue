@@ -173,6 +173,9 @@ export default {
         this.$Message.infor('请先填写患者年龄！')
         return
       }
+
+      let fullYear = new Date().getFullYear() - Number(this.patient.user_age)
+
       saveAppointData({
         doctor_id: this.doctorId,
         start_time: this.startTime,
@@ -181,6 +184,7 @@ export default {
         appoint_date: filters.dateFormat(this.treatDate, 'yyyyMMdd'),
         patient_sex: this.patient.user_sex,
         patient_age: this.patient.user_age,
+        birthday: new Date().setFullYear(fullYear),
         patient_name: this.patient.user_name
       }).then(res => {
         if (res.code === 1000) {
