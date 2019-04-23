@@ -197,7 +197,8 @@ export default {
         // width: 540px;
         padding: 20px;
         outline: medium;
-        flex: 1;
+        width: 584px;
+        margin-left:20px;
         height: 80px;
         @extend %normalTitle;
         background: rgba(249, 249, 249, 1);
@@ -239,7 +240,7 @@ export default {
   }
 
   .send {
-    @include deepButton(68px, 68px);
+    @include deepButton(68px, 88px);
     border-radius: 16px;
     font-size: 24px;
   }

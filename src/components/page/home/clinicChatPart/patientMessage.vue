@@ -7,18 +7,16 @@
       >{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
       <div class="chat-content">
         <!-- messagetype  text-->
+         <div class="cancelButton" v-if="chatDetail.msgdata.msg_type !== 'withdraw_msg'&&chatDetail.msgdata.msg_type!=='link'" @click="cancelThis"> <span>撤回</span></div>
         <div
           class="reply-content"
           v-if="chatDetail.msgdata.msg_type=='text'"
-          @touchstart="gtouchstart()"
-          @touchmove="gtouchmove()"
-          @touchend="gtouchend()"
         >
-          <div class="reply-text">{{chatDetail.msgdata.text}}</div>
+          <p class="reply-text">{{chatDetail.msgdata.text}}</p>
         </div>
         <div class="reply-content" v-if="chatDetail.msgdata && chatDetail.msgdata.msg_type=='link'">
           <div class="recommond" v-if="chatDetail.msgdata.link_type == 'treatment_order_Submission'">
-            <div class="recommond-content" @touchend="goRoute(chatDetail.msgdata.link_url)">
+            <div class="recommond-content" @click="goRoute(chatDetail.msgdata.link_url)">
               <p class="recommond-subTitle">已提交预约订单，点击查看</p>
             </div>
           </div>
@@ -27,9 +25,7 @@
           class="reply-content"
           v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='image'"
         >
-          <div class="imgMessage" @click="showImg" @touchstart="gtouchstart()"
-               @touchmove="gtouchmove()"
-               @touchend="gtouchend()">
+          <div class="imgMessage" @click="showImg">
             <img :src="chatDetail.msgdata.img_url" alt>
           </div>
         </div>
@@ -37,7 +33,7 @@
           class="cancel"
           v-if="chatDetail.msgdata&&chatDetail.msgdata.msg_type=='withdraw_msg'"
         >
-          <p>撤回了一条消息</p>
+          <p>你撤回了一条消息</p>
         </div>
         <!-- <div
               class="reply-content"
@@ -76,29 +72,10 @@ export default {
     ...mapState(['userInfoState'])
   },
   methods: {
-    // 开始按
-    gtouchstart () {
-      if (this.chatDetail.msgdata.msg_type === 'withdraw_msg') {
-        return
-        // 撤销消息不能撤回
-      }
-      this.timeOutEvent = setTimeout(() => {
-        this.$Message.confirm('确认撤销消息么？', () => {
-          this.$emit('cancelMessage', this.chatDetail)
-        })
-      }, 1000) // 这里设置定时器，定义长按1000毫秒触发长按事件，时间可以自己改
-      return false
-    },
-    // 手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
-    gtouchend () {
-      clearTimeout(this.timeOutEvent)
-      // 清除定时器
-      return false
-    },
-    // 如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
-    gtouchmove () {
-      clearTimeout(this.timeOutEvent) // 清除定时器
-      this.timeOutEvent = 0
+    cancelThis(){
+        this.$Message.confirm("确认撤销消息么？", () => {
+          this.$emit("cancelMessage", this.chatDetail);
+        });
     },
     // 路由跳转
     goRoute (url) {
@@ -124,9 +101,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .reply-text {
-    user-select: none
-  }
+
 
   p {
     text-align: center;
@@ -134,8 +109,23 @@ export default {
     font-weight: 400;
     color: $simpleGray;
   }
-
+  .reply-text{
+   @extend %normalTitle;
+}
+.cancelButton{
+  // background: yellow;
+  width: 88px;
+  line-height: 50px;
+  text-align: center;
+  height: 50px;
+  color: $gray3;
+  font-size: 26px;
+  span{
+    border-bottom: 1px solid $gray3;
+  }
+}
   .chat-content {
+    @extend %flexVC;
     .reply-content {
       background: $bgwhite2;
       border: 1px solid $simpleGray;
