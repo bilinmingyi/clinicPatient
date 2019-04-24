@@ -79,7 +79,7 @@
 <script>
 import {Header, SmallTitle, radioGroup} from '@/components/common'
 import {mapState} from 'vuex'
-import {fetchPatientList, saveAppointData, fetchUserInfo, gotoPay} from '@/fetch/api.js'
+import {fetchPatientList, saveAppointData, fetchUserInfo} from '@/fetch/api.js'
 import filters from '../../../assets/js/fliters'
 
 export default {
@@ -189,7 +189,10 @@ export default {
       }).then(res => {
         if (res.code === 1000) {
           if (this.resource) {
-            this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}})
+            this.$router.push({
+              name: 'chatRoom',
+              query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}
+            })
           } else {
             this.$router.push({name: 'appointListPage'})
           }

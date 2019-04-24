@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="scrollContent" @scroll="scrollEvent" style="height: 100vh;overflow-y: scroll">
     <Header titleText="诊所商城"></Header>
     <div class="mt-88px pb-128px">
       <Search placeholder="请输入药品/产品名称" :hasBtn="false"></Search>
@@ -16,6 +16,10 @@
         <GoodItem></GoodItem>
         <GoodItem class="mr-10px"></GoodItem>
         <GoodItem></GoodItem>
+        <GoodItem class="mr-10px"></GoodItem>
+        <GoodItem></GoodItem>
+        <GoodItem class="mr-10px"></GoodItem>
+        <GoodItem></GoodItem>
       </div>
     </div>
     <Footer navtiveIndex="3"></Footer>
@@ -25,6 +29,18 @@
 <script>
 import {Footer, Header, Search, SmallTitle, GoodItem} from '@/components/common/index'
 
+let throttle = (fn, env) => {
+  let canRun = true
+  return () => {
+    if (canRun) {
+      canRun = false
+      setTimeout(() => {
+        fn.apply(env, arguments)
+      }, 500)
+    }
+  }
+}
+
 export default {
   name: 'mallPage',
   components: {
@@ -33,6 +49,19 @@ export default {
     Search,
     SmallTitle,
     GoodItem
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    scrollEvent () {
+      let scrollItem = this.$refs.scrollContent
+      throttle(() => {
+        console.log(scrollItem.scrollTop)
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 20) {
+        }
+      }, this)
+    }
   }
 }
 </script>
