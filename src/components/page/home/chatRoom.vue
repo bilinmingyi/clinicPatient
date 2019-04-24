@@ -37,7 +37,7 @@
 <script>
 import {Header} from '@/components/common'
 // import BScroll from 'better-scroll'
-import {chatMsgList, msgSend, msgWithdraw} from '@/fetch/api'
+import {chatMsgList, msgSend, msgWithdraw, gotoPay} from '@/fetch/api'
 import {mapState} from 'vuex'
 import chatBottom from './clinicChatPart/chatBottom'
 import clinicMessage from './clinicChatPart/clinicMessage'
@@ -45,7 +45,7 @@ import patientMessage from './clinicChatPart/patientMessage'
 
 export default {
   name: 'chatRoom',
-  props: ['hasAppoint', 'orderSeqno'],
+  props: ['hasAppoint', 'orderSeqno', 'price'],
   data () {
     return {
       isShowFuc: false,
@@ -386,6 +386,24 @@ export default {
     }, 3000)
     if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
+      gotoPay({
+        'order_type': 1,
+        'order_seqno': this.orderSeqno
+      }).then(res => {
+        if (res.code === 1000) {
+          try {
+            window.location.href = res.data
+          } catch (error) {
+            console.log(error)
+            this.$Message.infor('支付跳转失败')
+          }
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
       this.$router.replace({name: 'chatRoom'})
     }
     this.getChatMsg()

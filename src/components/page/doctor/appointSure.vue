@@ -188,28 +188,8 @@ export default {
         patient_name: this.patient.user_name
       }).then(res => {
         if (res.code === 1000) {
-          if (Number(this.price) > 0) {
-            gotoPay({
-              'order_type': 1,
-              'order_seqno': res.order_seqno
-            }).then(res => {
-              if (res.code === 1000) {
-                try {
-                  window.location.href = res.data
-                } catch (error) {
-                  console.log(error)
-                  this.$Message.infor('支付跳转失败')
-                }
-              } else {
-                this.$Message.infor(res.msg)
-              }
-            }).catch(error => {
-              console.log(error)
-              this.$Message.infor('网络出错！')
-            })
-          }
           if (this.resource) {
-            this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno}})
+            this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}})
           } else {
             this.$router.push({name: 'appointListPage'})
           }
