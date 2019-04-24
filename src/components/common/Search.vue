@@ -6,7 +6,7 @@
         <input type="text" v-bind="$attrs" v-model="searchName" :placeholder="placeholder" @input="searchInput()"
                id="dsearch"/>
       </div>
-      <div class="search_btn_block">
+      <div class="search_btn_block" v-if="hasBtn">
         <button class="search_btn" @click.stop="searchInput()">{{btnText}}</button>
       </div>
     </div>
@@ -26,6 +26,10 @@ export default {
     btnText: {
       type: String,
       default: '查询'
+    },
+    hasBtn: {
+      type: Boolean,
+      default: true
     }
   },
   inheritAttrs: false,

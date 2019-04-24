@@ -9,10 +9,10 @@
       <span class="iconfont">{{navtiveIndex==2? '&#xe615;':'&#xe616;'}}</span>
       <span class="footer-text">医生</span>
     </div>
-    <!--<div :class="['footer-item',{'cur':navtiveIndex==3}] " @click.stop="goRoute(3)">-->
-      <!--<span class="iconfont">{{navtiveIndex==3? '&#xe60a;':'&#xe60c;'}}</span>-->
-      <!--<span class="footer-text">商城</span>-->
-    <!--</div>-->
+    <div :class="['footer-item',{'cur':navtiveIndex==3}] " @click.stop="goRoute(3)">
+      <span class="iconfont">{{navtiveIndex==3? '&#xe60a;':'&#xe60c;'}}</span>
+      <span class="footer-text">商城</span>
+    </div>
     <div :class="['footer-item',{'cur':navtiveIndex==4}] " @click.stop="goRoute(4)">
       <span class="iconfont">{{navtiveIndex==4? '&#xe60d;':'&#xe609;'}}</span>
       <span class="footer-text">个人</span>
