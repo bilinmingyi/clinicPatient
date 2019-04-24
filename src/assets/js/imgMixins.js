@@ -1,8 +1,8 @@
 export default {
   data () {
     return {
-      maleImg: require('@/assets/img/nan@2x.png'),
-      femaleImg: require('@/assets/img/nv@2x.png'),
+      maleImg: require('@/assets/img/mhz@2x.png'),
+      femaleImg: require('@/assets/img/whz@2x.png'),
       classifiedImg: require('@/assets/img/bm.png')
     }
   },
