@@ -10,4 +10,3 @@ export {default as radioGroup} from './radioGroup'
 export {default as appointBlock} from './appointBlock'
 export {default as imgPreview} from './imgPreview'
 export {default as Loading} from './Loading'
-
