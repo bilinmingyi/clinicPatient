@@ -2,7 +2,7 @@
   <div class="chat-bottom">
     <div class="reply">
       <!-- <div @click="showReply"><span class="leftIcon iconfont">&#xe612;</span></div> -->
-       <input class="serach-input" type="textarea" @focus="hideFunc($event)"
+      <input class="serach-input" type="textarea" @focus="hideFunc($event)"
              v-model="sendContent"
              @blur="inputBlur($event)" ref="inputText">
       <div class="ml24 pr16">
@@ -64,7 +64,7 @@ export default {
       this.$emit('addFunc')
     },
     inputBlur () {
-            let self = this
+      let self = this
       clearInterval(self.bottomTimer)
       setTimeout(() => {
         window.scrollTo(0, 0)
@@ -72,7 +72,7 @@ export default {
       }, 64)
     },
     hideFunc (e) {
-          setTimeout(function () {
+      setTimeout(function () {
         e.target.scrollIntoView(true)
       }, 500)
       let self = this
@@ -200,7 +200,7 @@ export default {
   }
 
   .chat-bottom {
-      width: 100%;
+    width: 100%;
     z-index: 99;
     position: absolute;
     min-height: 112px;
@@ -209,6 +209,7 @@ export default {
     right: 0;
     bottom: 0;
     background: $bgwhite2;
+
     .reply {
       padding: 16px 0 16px 16px;
       @extend %flexV;

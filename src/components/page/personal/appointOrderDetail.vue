@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="add-block">
-      <button class="add-btn" @click.stop="nextDone">{{orderInfo.status === 'UNPAID'?'去支付':'关闭'}}</button>
+      <button class="add-btn" @click.stop="nextDone">{{orderInfo.status === 'SZJK_PAYING'?'去支付':'关闭'}}</button>
     </div>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
       })
     },
     nextDone () {
-      if (this.orderInfo.status === 'UNPAID') {
+      if (this.orderInfo.status === 'SZJK_PAYING') {
         gotoPay({
           'order_type': 1,
           'order_seqno': this.orderInfo.orderSeqno

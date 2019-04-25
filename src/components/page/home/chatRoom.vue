@@ -389,7 +389,6 @@ export default {
       this.sendMessage(3)
       this.$router.replace({name: 'chatRoom'})
     }
-
   },
   created () {
   }
