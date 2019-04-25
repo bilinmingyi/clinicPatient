@@ -21,13 +21,15 @@
         <GoodItem class="mr-10px"></GoodItem>
         <GoodItem></GoodItem>
       </div>
+      <Add-load v-if="showLoad"></Add-load>
     </div>
+    <Shop-car></Shop-car>
     <Footer navtiveIndex="3"></Footer>
   </div>
 </template>
 
 <script>
-import {Footer, Header, Search, SmallTitle, GoodItem} from '@/components/common/index'
+import {Footer, Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
 
 var canRun = true
 var throttle = (fn) => {
@@ -49,10 +51,14 @@ export default {
     Header,
     Search,
     SmallTitle,
-    GoodItem
+    GoodItem,
+    AddLoad,
+    ShopCar
   },
   data () {
-    return {}
+    return {
+      showLoad: false
+    }
   },
   methods: {
     scrollEvent () {
