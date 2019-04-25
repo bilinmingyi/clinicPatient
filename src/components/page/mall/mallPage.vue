@@ -29,13 +29,14 @@
 <script>
 import {Footer, Header, Search, SmallTitle, GoodItem} from '@/components/common/index'
 
-let throttle = (fn, env) => {
-  let canRun = true
+var canRun = true
+var throttle = (fn) => {
   return () => {
     if (canRun) {
       canRun = false
       setTimeout(() => {
-        fn.apply(env, arguments)
+        fn.apply(this, arguments)
+        canRun = true
       }, 500)
     }
   }
@@ -55,12 +56,12 @@ export default {
   },
   methods: {
     scrollEvent () {
-      let scrollItem = this.$refs.scrollContent
       throttle(() => {
-        console.log(scrollItem.scrollTop)
-        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 20) {
+        let scrollItem = this.$refs.scrollContent
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 120) {
+          console.log('加载')
         }
-      }, this)
+      })()
     }
   }
 }
