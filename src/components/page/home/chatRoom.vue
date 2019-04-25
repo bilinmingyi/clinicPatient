@@ -381,6 +381,7 @@ export default {
     }
   },
   mounted () {
+    this.getChatMsg()
     this.dataInterval = setInterval(() => {
       this.setIntervalData()
     }, 3000)
@@ -406,7 +407,6 @@ export default {
       })
       this.$router.replace({name: 'chatRoom'})
     }
-    this.getChatMsg()
   },
   created () {
   }
