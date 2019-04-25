@@ -27,10 +27,10 @@
           <img src="../../../assets/img/cf@2x.png">
           <span>处方订单</span>
         </li>
-        <!--<li>-->
-        <!--<img src="../../../assets/img/dd@2x.png">-->
-        <!--<span>商城订单</span>-->
-        <!--</li>-->
+        <li @click.stop="goRouter(4)">
+        <img src="../../../assets/img/dd@2x.png">
+        <span>商城订单</span>
+        </li>
       </ul>
 
     </div>
@@ -78,6 +78,9 @@ export default {
           break
         case 3:
           this.$router.push({name: 'recipeListPage'})
+          break
+        case 4:
+          this.$router.push({name: 'mallListPage'})
           break
         case 5:
           this.$router.push({

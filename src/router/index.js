@@ -121,6 +121,11 @@ export default new Router({
           name: 'appointOrderDetail',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointOrderDetail.vue'),
           props: (route) => route.query
+        },
+        {
+          path: 'mallListPage',
+          name: 'mallListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/mallListPage.vue')
         }
       ]
     }

@@ -20,10 +20,10 @@ export default {
       default () {
         return {
           order_seqno: '',
-          doctor_name: '',
+          doctor_name: '测试',
           create_time: '',
           price: 0,
-          status: ''
+          status: 'UNKNOWN'
         }
       }
     },
