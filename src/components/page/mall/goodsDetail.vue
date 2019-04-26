@@ -30,19 +30,20 @@
         这是说明这是说明这是说明这是说明这是说明这是。
       </div>
     </div>
-    <div></div>
+    <Shop-footer></Shop-footer>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '@/components/common/index'
+import {Header, SmallTitle, ShopFooter} from '@/components/common/index'
 import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'goodsDetail',
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    ShopFooter
   },
   data () {
     return {
