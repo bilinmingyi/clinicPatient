@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     toCount () {
-      console.log('去结算')
+      this.$router.push({path: '/mall/sureOrder'})
     },
     selectALL () {
       this.resource = !this.resource

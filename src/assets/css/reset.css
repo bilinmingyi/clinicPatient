@@ -162,6 +162,10 @@ input {
     color: #d9d9d9;
 }
 
+.flex {
+  display: flex;
+}
+
 .flexOne {
     flex: 1;
 }

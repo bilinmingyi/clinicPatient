@@ -72,6 +72,11 @@ export default new Router({
           path: 'shopCar',
           name: 'shopCar',
           component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/ShopCar.vue')
+        },
+        {
+          path: 'sureOrder',
+          name: 'sureOrder',
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/orderSure.vue')
         }
       ]
     },
