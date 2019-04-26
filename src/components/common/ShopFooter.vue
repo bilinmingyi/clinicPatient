@@ -1,16 +1,17 @@
 <template>
   <div class="shop-footer">
     <div class="flexOne all-info">
-      <div class="car-block">
+      <div class="car-block" @click.stop="goRouter" v-if="hasCar">
         <img src="../../assets/img/gwcn@2x.png">
+        <div class="car-num" v-if="carNum>0">{{carNum}}</div>
       </div>
       <div class="amount-block">
         <span>合计：</span>
-        <span class="red-text">￥354545</span>
+        <span class="red-text">￥{{allPrice}}</span>
       </div>
     </div>
-    <div class="add-car-btn">
-      加入购物车
+    <div class="add-car-btn" @click.stop="btnClick">
+      {{btnText}}
     </div>
   </div>
 </template>
@@ -18,10 +19,35 @@
 <script>
 export default {
   name: 'ShopFooter',
+  props: {
+    btnText: {
+      type: String,
+      default: '按钮文本'
+    },
+    allPrice: {
+      type: Number,
+      default: 0
+    },
+    hasCar: {
+      type: Boolean,
+      default: false
+    },
+    carNum: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {}
   },
-  methods: {}
+  methods: {
+    goRouter () {
+      this.$router.push({path: '/mall/shopCar'})
+    },
+    btnClick () {
+      this.$emit('click')
+    }
+  }
 }
 </script>
 
@@ -37,6 +63,21 @@ export default {
 
       .car-block {
         margin-right: 24px;
+        position: relative;
+        .car-num {
+          border: 4px solid #ffffff;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          background: $redColor;
+          color: #ffffff;
+          line-height: 30px;
+          font-size: 20px;
+          text-align: center;
+          position: absolute;
+          right: -15px;
+          top: -15px;
+        }
 
         img {
           width: 48px;
@@ -57,7 +98,8 @@ export default {
       color: #ffffff;
       @extend %flexVC;
       font-size: 32px;
-      padding: 0 44px;
+      width: 248px;
+      text-align: center;
     }
 
     .red-text {

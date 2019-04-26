@@ -67,6 +67,11 @@ export default new Router({
           name: 'goodsDetail',
           component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/goodsDetail.vue'),
           props: true
+        },
+        {
+          path: 'shopCar',
+          name: 'shopCar',
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/ShopCar.vue')
         }
       ]
     },
