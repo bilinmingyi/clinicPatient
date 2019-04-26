@@ -2,7 +2,7 @@
   <div>
     <Header titleText="商城订单" :canReturn="true"></Header>
     <div class="mt-88px orderList">
-      <order-item></order-item>
+      <order-item @click.native="goRoute"></order-item>
       <Load-more></Load-more>
     </div>
   </div>
@@ -21,6 +21,11 @@ export default {
   data () {
     return {
       canShowAdd: false
+    }
+  },
+  methods: {
+    goRoute () {
+      this.$router.push({name: 'mallOrderDetail', query: {orderSeqno: 1}})
     }
   }
 }

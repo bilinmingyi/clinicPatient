@@ -44,7 +44,6 @@
           <label class="label-span mr-32px flexOne">支付方式</label>
           <span class="label-span">{{orderDetail.order_info.payType|payTypeFormat}}</span>
         </div>
-        <hr class="line-hr">
       </div>
     </div>
     <div class="add-block">
