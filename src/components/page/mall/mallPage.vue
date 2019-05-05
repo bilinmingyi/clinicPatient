@@ -25,6 +25,7 @@
 <script>
 import {Footer, Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
 import {fetchGoodsList, fetchShopCar} from '@/fetch/api'
+import {mapActions} from 'vuex'
 
 var canRun = true
 var throttle = (fn) => {
@@ -66,6 +67,7 @@ export default {
     this.getGoodsList()
   },
   methods: {
+    ...mapActions(['set_shop_num', 'set_shop_money']),
     scrollEvent () {
       throttle(() => {
         let scrollItem = this.$refs.scrollContent
@@ -104,7 +106,13 @@ export default {
     },
     getShopCar () {
       fetchShopCar().then(res => {
+        let allPrice = 0
         this.shopCar = res.data
+        this.shopCar.forEach(item => {
+          allPrice += Number(item.num * item.goods_info.price)
+        })
+        this.set_shop_money(allPrice)
+        this.set_shop_num(Number(this.shopCar.length))
       }).catch(e => {
         console.log(e)
         this.$Message.infor('网络出错！')

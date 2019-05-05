@@ -22,7 +22,7 @@
       </Small-title>
       <div class="intro-content" v-html="GoodDetail.page_content"></div>
     </div>
-    <Shop-footer btnText="加入购物车" :allPrice="100" :hasCar="true" :carNum='7' @click="addCar"></Shop-footer>
+    <Shop-footer btnText="加入购物车" :allPrice="shopCarMoney" :hasCar="true" :carNum='shopCarNum' @click="addCar"></Shop-footer>
   </div>
 </template>
 
@@ -30,6 +30,7 @@
 import {Header, SmallTitle, ShopFooter} from '@/components/common/index'
 import noImg from '@/assets/img/nophoto.png'
 import {fetchGoodsDetail} from '@/fetch/api'
+import {mapState} from 'vuex'
 
 export default {
   name: 'goodsDetail',
@@ -44,6 +45,12 @@ export default {
       noImg: noImg,
       GoodDetail: {}
     }
+  },
+  computed: {
+    ...mapState({
+      shopCarNum: state => state.shopCarNum,
+      shopCarMoney: state => state.shopCarMoney
+    })
   },
   created () {
     this.getGoodsDetail()

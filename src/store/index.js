@@ -20,7 +20,9 @@ const state = {
     address: '',
     logo: ''
   },
-  userInfoState: {} // 客户信息
+  userInfoState: {}, // 客户信息
+  shopCarNum: 0,
+  shopCarMoney: 0
 }
 
 const store = new Vuex.Store({

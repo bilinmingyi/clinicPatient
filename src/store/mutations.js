@@ -6,6 +6,12 @@ const mutations = {
       state.clinic[item] = obj[item]
     })
   },
+  [mutationTypes.SET_SHOP_NUM] (state, val) {
+    state.shopCarNum = Number(val)
+  },
+  [mutationTypes.SET_SHOP_MONEY] (state, val) {
+    state.shopCarMoney = Number(val)
+  },
   updateUserInfo (state, object) {
     state.userInfoState = object
   }
