@@ -2,7 +2,7 @@
   <div ref="scrollContent" @scroll="scrollEvent" style="height: 100vh;overflow-y: scroll">
     <Header titleText="诊所商城"></Header>
     <div class="mt-88px pb-128px">
-      <Search placeholder="请输入药品/产品名称" :hasBtn="false"></Search>
+      <Search placeholder="请输入药品/产品名称" :hasBtn="false" @on-search="searchByName"></Search>
       <div class="white-back">
         <SmallTitle>
           <div class="flexOne recommend-title">
@@ -12,14 +12,8 @@
         </SmallTitle>
       </div>
       <div class="good-list">
-        <GoodItem class="mr-10px"></GoodItem>
-        <GoodItem></GoodItem>
-        <GoodItem class="mr-10px"></GoodItem>
-        <GoodItem></GoodItem>
-        <GoodItem class="mr-10px"></GoodItem>
-        <GoodItem></GoodItem>
-        <GoodItem class="mr-10px"></GoodItem>
-        <GoodItem></GoodItem>
+        <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
+                  :class="{'mr-10px':index%2===0}"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
     </div>
@@ -30,6 +24,7 @@
 
 <script>
 import {Footer, Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
+import {fetchGoodsList} from '@/fetch/api'
 
 var canRun = true
 var throttle = (fn) => {
@@ -57,17 +52,53 @@ export default {
   },
   data () {
     return {
-      showLoad: false
+      showLoad: false,
+      query: '',
+      page: 1,
+      pageSize: 6,
+      totalNum: 0,
+      goodsList: []
     }
+  },
+  created () {
+    this.getGoodsList()
   },
   methods: {
     scrollEvent () {
       throttle(() => {
         let scrollItem = this.$refs.scrollContent
         if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 120) {
-          console.log('加载')
+          if (this.page < Math.ceil(this.totalNum / this.pageSize)) {
+            this.page++
+            this.showLoad = true
+            this.getGoodsList()
+          }
         }
       })()
+    },
+    searchByName (str) {
+      this.query = str
+      this.page = 1
+      this.goodsList = []
+      this.getGoodsList()
+    },
+    getGoodsList () {
+      fetchGoodsList({
+        name: this.query,
+        page: this.page,
+        page_size: this.pageSize
+      }).then(res => {
+        this.showLoad = false
+        if (res.code === 1000) {
+          this.goodsList = this.goodsList.concat(res.data)
+          this.totalNum = res.total_num
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错!')
+      })
     }
   }
 }

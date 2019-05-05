@@ -46,6 +46,10 @@ const fetchDoctorSchedule = params => fetch('/doctor/schedule', params)
 // 提交预约订单
 const saveAppointData = params => fetch('/appointOrder/submit', params)
 
+// 商场
+// 获取商品列表
+const fetchGoodsList = params => fetch('/goods/list', params)
+
 // 个人中心
 // 获取预约订单列表
 const getAppointList = params => fetch('/appointOrder/list', params)
@@ -100,5 +104,6 @@ export {
   fetchCode,
   savePhone,
   imgUpLoad,
-  unread
+  unread,
+  fetchGoodsList
 }

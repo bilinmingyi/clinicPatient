@@ -30,7 +30,7 @@
         这是说明这是说明这是说明这是说明这是说明这是。
       </div>
     </div>
-    <Shop-footer btnText="加入购物车" :allPrice="100" :hasCar="true" carNum=7 @click="addCar"></Shop-footer>
+    <Shop-footer btnText="加入购物车" :allPrice="100" :hasCar="true" :carNum='7' @click="addCar"></Shop-footer>
   </div>
 </template>
 
