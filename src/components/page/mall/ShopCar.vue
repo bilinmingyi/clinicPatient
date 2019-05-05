@@ -9,31 +9,34 @@
           </div>
           <span class="ml-20px">诊所药房</span>
         </Small-title>
-        <div class="goods-item">
-          <div>
-            <div :class="['select-radio']">
-              <img src="../../../assets/img/xuanze@2x.png">
+        <div v-for="(item, index) in shopCarList" :key="item.id">
+          <div class="goods-item">
+            <div>
+              <div :class="['select-radio']">
+                <img src="../../../assets/img/xuanze@2x.png">
+              </div>
             </div>
-          </div>
-          <div class="goods-item-middle">
-            <img src="../../../assets/img/nophoto.png">
-          </div>
-          <div class="goods-item-right">
-            <div class="goods-info">
-              <span>葵花牌 葵花健儿消食口服液口服液</span>
-              <span>10ml*6支/盒 10盒</span>
+            <div class="goods-item-middle">
+              <img src="../../../assets/img/nophoto.png">
             </div>
-            <div class="goods-num">
+            <div class="goods-item-right">
+              <div class="goods-info">
+                <span>葵花牌 葵花健儿消食口服液口服液</span>
+                <span>10ml*6支/盒 10盒</span>
+              </div>
+              <div class="goods-num">
               <span class="flexOne">
                 ￥13232
               </span>
-              <div class="num-change">
-                <div class="num-cut"></div>
-                <input class="num-word">
-                <div class="num-add"></div>
+                <div class="num-change">
+                  <div class="num-cut"></div>
+                  <input class="num-word">
+                  <div class="num-add"></div>
+                </div>
               </div>
             </div>
           </div>
+          <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
         </div>
       </div>
 
@@ -44,6 +47,7 @@
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
+import {fetchShopCar} from '@/fetch/api'
 
 export default {
   name: 'ShopCar',
@@ -54,8 +58,12 @@ export default {
   },
   data () {
     return {
-      resource: false
+      resource: false,
+      shopCarList: []
     }
+  },
+  created () {
+    this.getShopCar()
   },
   methods: {
     toCount () {
@@ -63,6 +71,19 @@ export default {
     },
     selectALL () {
       this.resource = !this.resource
+    },
+    getShopCar () {
+      fetchShopCar({}).then(res => {
+        console.log(res)
+        if (res.code === 1000) {
+          this.shopCarList = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('获取购物车列表失败!')
+      })
     }
   }
 }
@@ -117,20 +138,24 @@ export default {
 
       .goods-num {
         @extend %displayFlex;
+
         span {
           color: $redColor;
           font-size: 32px;
           line-height: 45px;
           font-weight: 500;
         }
+
         .num-change {
           @extend %flexV;
+
           .num-cut {
             width: 44px;
             height: 44px;
             background-image: url("../../../assets/img/jianshao@2x.png");
             background-size: 100% 100%;
           }
+
           .num-word {
             border: none;
             outline: none;
@@ -140,6 +165,7 @@ export default {
             line-height: 45px;
             font-size: 32px;
           }
+
           .num-add {
             width: 44px;
             height: 44px;
