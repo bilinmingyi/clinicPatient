@@ -46,7 +46,7 @@ export default {
       clearTimeout(self.timer)
       self.timer = setTimeout(function () {
         self.$emit('on-search', self.searchName)
-      }, 300)
+      }, 500)
     }
   }
 

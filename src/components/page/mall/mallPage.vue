@@ -55,7 +55,7 @@ export default {
       showLoad: false,
       query: '',
       page: 1,
-      pageSize: 6,
+      pageSize: 10,
       totalNum: 0,
       goodsList: [],
       shopCar: []
