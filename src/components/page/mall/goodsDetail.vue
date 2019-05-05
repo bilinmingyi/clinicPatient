@@ -29,8 +29,8 @@
 <script>
 import {Header, SmallTitle, ShopFooter} from '@/components/common/index'
 import noImg from '@/assets/img/nophoto.png'
-import {fetchGoodsDetail} from '@/fetch/api'
-import {mapState} from 'vuex'
+import {fetchGoodsDetail, addShopCar, fetchShopCar} from '@/fetch/api'
+import {mapState, mapActions} from 'vuex'
 
 export default {
   name: 'goodsDetail',
@@ -56,8 +56,21 @@ export default {
     this.getGoodsDetail()
   },
   methods: {
+    ...mapActions(['set_shop_num', 'set_shop_money']),
     addCar () {
-      console.log('加入购物车')
+      addShopCar({
+        goods_id: this.id
+      }).then(res => {
+        if (res.code === 1000) {
+          this.$Message.infor('加入购物车成功')
+          this.getShopCar()
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     },
     getGoodsDetail () {
       fetchGoodsDetail({
@@ -69,6 +82,19 @@ export default {
         } else {
           this.$Message.infor(res.msg)
         }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    getShopCar () {
+      fetchShopCar().then(res => {
+        let allPrice = 0
+        res.data.forEach(item => {
+          allPrice += Number(item.num * item.goods_info.price)
+        })
+        this.set_shop_money(allPrice)
+        this.set_shop_num(Number(res.data.length))
       }).catch(e => {
         console.log(e)
         this.$Message.infor('网络出错！')

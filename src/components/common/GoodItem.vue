@@ -7,7 +7,10 @@
       <div class="item-title">{{goods.name}}</div>
       <div class="item-price">
         <div class="flexOne">￥{{goods.price}}</div>
-        <img @click.stop="goRoute(2)" src="../../assets/img/gwc@2x.png">
+        <div class="item-car">
+          <div :class="['add-success', {'change-top': addSuccess}]">+1</div>
+          <img @click.stop="goRoute(2)" src="../../assets/img/gwc@2x.png">
+        </div>
       </div>
     </div>
   </div>
@@ -36,7 +39,8 @@ export default {
   },
   data () {
     return {
-      noImg: noImg
+      noImg: noImg,
+      addSuccess: false
     }
   },
   methods: {
@@ -55,6 +59,10 @@ export default {
         goods_id: this.goods.id
       }).then(res => {
         if (res.code === 1000) {
+          this.addSuccess = true
+          setTimeout(() => {
+            this.addSuccess = false
+          }, 1000)
           this.$emit('add-car')
         } else {
           this.$Message.infor(res.msg)
@@ -106,11 +114,27 @@ export default {
         font-size: 36px;
         margin-top: 12px;
         @extend %flexV;
+      }
 
+      .item-car {
+        position: relative;
         img {
           height: 48px;
           width: 48px;
-          margin-left: 60px;
+          position: absolute;
+          top: -25px;
+          right: 0;
+        }
+        .add-success{
+          position: absolute;
+          top: -25px;
+          right: 0;
+          opacity: 1;
+        }
+        .change-top  {
+          transition:all 1s;
+          top: -100px;
+          opacity: 0;
         }
       }
     }
