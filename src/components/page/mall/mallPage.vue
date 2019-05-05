@@ -13,18 +13,18 @@
       </div>
       <div class="good-list">
         <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
-                  :class="{'mr-10px':index%2===0}"></GoodItem>
+                  :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
     </div>
-    <Shop-car></Shop-car>
+    <Shop-car :num="Number(shopCar.length)"></Shop-car>
     <Footer navtiveIndex="3"></Footer>
   </div>
 </template>
 
 <script>
 import {Footer, Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
-import {fetchGoodsList} from '@/fetch/api'
+import {fetchGoodsList, fetchShopCar} from '@/fetch/api'
 
 var canRun = true
 var throttle = (fn) => {
@@ -57,10 +57,12 @@ export default {
       page: 1,
       pageSize: 6,
       totalNum: 0,
-      goodsList: []
+      goodsList: [],
+      shopCar: []
     }
   },
   created () {
+    this.getShopCar()
     this.getGoodsList()
   },
   methods: {
@@ -98,6 +100,14 @@ export default {
       }).catch(error => {
         console.log(error)
         this.$Message.infor('网络出错!')
+      })
+    },
+    getShopCar () {
+      fetchShopCar().then(res => {
+        this.shopCar = res.data
+      }).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
       })
     }
   }

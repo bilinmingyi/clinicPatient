@@ -49,6 +49,9 @@ const saveAppointData = params => fetch('/appointOrder/submit', params)
 // 商场
 // 获取商品列表
 const fetchGoodsList = params => fetch('/goods/list', params)
+const fetchGoodsDetail = params => fetch('/goods/detail', params)
+const fetchShopCar = params => fetch('/shopcart/list', params)
+const addShopCar = params => fetch('/shopcart/add', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -105,5 +108,8 @@ export {
   savePhone,
   imgUpLoad,
   unread,
-  fetchGoodsList
+  fetchGoodsList,
+  fetchGoodsDetail,
+  fetchShopCar,
+  addShopCar
 }

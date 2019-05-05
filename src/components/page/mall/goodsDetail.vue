@@ -3,32 +3,24 @@
     <Header titleText="商品详情" :canReturn="true"></Header>
     <div class="mt-88px mb-131px detail-content">
       <div class="img-content">
-        <img :src="noImg">
+        <img :src="GoodDetail.img==''?noImg:GoodDetail.img" @error="imgError($event)">
       </div>
       <hr class="full-screen-hr">
       <div class="goods-info">
         <div class="price mb-8px">
-          ￥13232
+          ￥{{GoodDetail.price}}
         </div>
         <div class="good-title">
-          <span>葵花牌</span>
-          <span>葵花健儿消食口服液</span>
-          <span>10ml*6支/盒</span>
-          <span>10盒</span>
-          <span>黑龙江葵花药业股份有限公司</span>
+          <span>{{GoodDetail.name}}</span>
+          <span>{{GoodDetail.spec}}</span>
+          <span>{{GoodDetail.vender}}</span>
         </div>
       </div>
       <hr class="full-screen-hr">
       <Small-title :hasBlock="true">
         <span class="ml-16px">商品简介</span>
       </Small-title>
-      <div class="intro-content">
-        这是说明这是说明这是说明这是说明这是说明这是说明
-        这是说明这是说明这是说明这是说明这是说明这是说明
-        这是说明这是说明这是说明这是说明这是说明这是说明
-        这是说明这是说明这是说明这是说明这是说明这是说明
-        这是说明这是说明这是说明这是说明这是说明这是。
-      </div>
+      <div class="intro-content" v-html="GoodDetail.page_content"></div>
     </div>
     <Shop-footer btnText="加入购物车" :allPrice="100" :hasCar="true" :carNum='7' @click="addCar"></Shop-footer>
   </div>
@@ -37,6 +29,7 @@
 <script>
 import {Header, SmallTitle, ShopFooter} from '@/components/common/index'
 import noImg from '@/assets/img/nophoto.png'
+import {fetchGoodsDetail} from '@/fetch/api'
 
 export default {
   name: 'goodsDetail',
@@ -45,14 +38,37 @@ export default {
     SmallTitle,
     ShopFooter
   },
+  props: ['id'],
   data () {
     return {
-      noImg: noImg
+      noImg: noImg,
+      GoodDetail: {}
     }
+  },
+  created () {
+    this.getGoodsDetail()
   },
   methods: {
     addCar () {
       console.log('加入购物车')
+    },
+    getGoodsDetail () {
+      fetchGoodsDetail({
+        id: this.id
+      }).then(res => {
+        if (res.code === 1000) {
+          this.GoodDetail = res.data
+          console.log(res)
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    imgError (event) {
+      event.target.src = this.noImg
     }
   }
 }
@@ -65,6 +81,7 @@ export default {
     .img-content {
       @extend %flexVC;
       padding: 8px 0;
+
       img {
         width: 543px;
         height: 543px;
@@ -73,18 +90,21 @@ export default {
 
     .goods-info {
       padding: 24px 30px;
+
       .price {
         color: $redColor;
         font-size: 40px;
         line-height: 56px;
         font-weight: 500;
       }
+
       .good-title {
         color: $depthTextColor;
-        font-size:32px;
-        line-height:45px;
+        font-size: 32px;
+        line-height: 45px;
       }
     }
+
     .intro-content {
       padding: 24px 30px;
     }

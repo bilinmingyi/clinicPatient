@@ -1,7 +1,7 @@
 <template>
   <div class="good-item" @click.stop="goRoute(1)">
     <div class="item-top">
-      <img :src="goods.img" @error="imgError($event)">
+      <img :src="goods.img==''?noImg:goods.img" @error="imgError($event)">
     </div>
     <div class="item-bottom">
       <div class="item-title">{{goods.name}}</div>
@@ -15,6 +15,7 @@
 
 <script>
 import noImg from '../../assets/img/nophoto.png'
+import {addShopCar} from '@/fetch/api'
 
 export default {
   name: 'GoodItem',
@@ -45,9 +46,23 @@ export default {
           this.$router.push({path: `/mall/goodsDetail/${this.goods.id}`})
           break
         case 2:
-          this.$router.push({path: '/mall/shopCar'})
+          this.addShopCar()
           break
       }
+    },
+    addShopCar () {
+      addShopCar({
+        goods_id: this.goods.id
+      }).then(res => {
+        if (res.code === 1000) {
+          this.$emit('add-car')
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     },
     imgError (event) {
       event.target.src = this.noImg

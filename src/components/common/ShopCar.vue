@@ -1,13 +1,24 @@
 <template>
-  <div class="shop-car">
+  <div class="shop-car" @click="goRouter">
     <img src="../../assets/img/gwct@2x.png">
-    <div class="red-block">2</div>
+    <div v-if="num>0" class="red-block">{{num}}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ShopCar'
+  name: 'ShopCar',
+  props: {
+    num: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    goRouter () {
+      this.$router.push({path: '/mall/shopCar'})
+    }
+  }
 }
 </script>
 
