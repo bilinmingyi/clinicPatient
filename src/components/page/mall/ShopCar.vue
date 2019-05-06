@@ -40,7 +40,7 @@
                 </div>
               </div>
             </div>
-            <div class="goods-delete">
+            <div class="goods-delete" @click.stop="deleteShop(item.id)">
               删除
             </div>
           </div>
@@ -55,7 +55,7 @@
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, changeShopNum} from '@/fetch/api'
+import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
 import noImg from '@/assets/img/nophoto.png'
 
 export default {
@@ -113,8 +113,8 @@ export default {
     },
     getShopCar () {
       fetchShopCar({}).then(res => {
-        console.log(res)
         if (res.code === 1000) {
+          this.shopCarList = []
           res.data.forEach(item => {
             let curItem = Object.assign(item, {is_check: 0})
             this.shopCarList.push(curItem)
@@ -191,6 +191,20 @@ export default {
     // 复位滑动状态
     restSlide: function () {
       this.touchDel.activeMed = -1
+    },
+    deleteShop (id) {
+      removeShop({
+        ids: [id]
+      }).then(res => {
+        if (res.code === 1000) {
+          this.getShopCar()
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }
@@ -294,6 +308,7 @@ export default {
       }
     }
   }
+
   .good-item-delete {
     -webkit-transform: translateX(-160px);
     -moz-transform: translateX(-160px);
@@ -301,9 +316,11 @@ export default {
     -o-transform: translateX(-160px);
     transform: translateX(-160px);
   }
+
   .goods {
     @extend %displayFlex;
     transition: all 0.2s;
+
     .goods-delete {
       background: $redColor;
       color: #ffffff;

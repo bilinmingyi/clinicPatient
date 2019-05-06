@@ -53,6 +53,7 @@ const fetchGoodsDetail = params => fetch('/goods/detail', params)
 const fetchShopCar = params => fetch('/shopcart/list', params)
 const addShopCar = params => fetch('/shopcart/add', params)
 const changeShopNum = params => fetch('/shopcart/update', params)
+const removeShop = params => fetch('/shopcart/remove', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -113,5 +114,6 @@ export {
   fetchGoodsDetail,
   fetchShopCar,
   addShopCar,
-  changeShopNum
+  changeShopNum,
+  removeShop
 }
