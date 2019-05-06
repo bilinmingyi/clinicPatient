@@ -10,31 +10,38 @@
           <span class="ml-20px">诊所药房</span>
         </Small-title>
         <div v-for="(item, index) in shopCarList" :key="item.id">
-          <div :class="['goods-item',{'ban_back':!item.goods_info.id}]">
-            <div>
-              <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
-                <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
+          <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
+            <div :class="['goods-item',{'ban_back':!item.goods_info.id}]"
+                 @touchstart.capture="touchStart"
+                 @touchend.capture="touchEnd(item.id, $event)">
+              <div>
+                <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                  <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
+                </div>
               </div>
-            </div>
-            <div class="goods-item-middle">
-              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
-            </div>
-            <div class="goods-item-right">
-              <div class="goods-info">
-                <span>{{item.goods_info.name}}</span>
-                <span>{{item.goods_info.vender}}</span>
-                <span>{{item.goods_info.spec}}</span>
+              <div class="goods-item-middle">
+                <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
               </div>
-              <div class="goods-num">
+              <div class="goods-item-right">
+                <div class="goods-info">
+                  <span>{{item.goods_info.name}}</span>
+                  <span>{{item.goods_info.vender}}</span>
+                  <span>{{item.goods_info.spec}}</span>
+                </div>
+                <div class="goods-num">
               <span class="flexOne">
                 ￥{{item.goods_info.price}}
               </span>
-                <div class="num-change">
-                  <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                  <input class="num-word" v-model="item.num">
-                  <div class="num-add" @click.stop="changeNum(2, index)"></div>
+                  <div class="num-change">
+                    <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                    <input class="num-word" v-model="item.num">
+                    <div class="num-add" @click.stop="changeNum(2, index)"></div>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="goods-delete">
+              删除
             </div>
           </div>
           <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
@@ -62,7 +69,12 @@ export default {
     return {
       resource: false,
       shopCarList: [],
-      noImg: noImg
+      noImg: noImg,
+      touchDel: {
+        activeMed: -1,
+        startX: 0,
+        endX: 0
+      }
     }
   },
   created () {
@@ -83,13 +95,6 @@ export default {
       }
     }
   },
-  // watch: {
-  //   shopCarList: {
-  //     deep: true,
-  //     handler: (newVal, oldVal) => {
-  //     }
-  //   }
-  // },
   methods: {
     toCount () {
       this.$router.push({path: '/mall/sureOrder'})
@@ -162,6 +167,30 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错!')
       })
+    },
+    touchStart: function (e) {
+      this.touchDel.startX = e.touches[0].clientX
+    },
+    // 滑动结束
+    touchEnd: function (id, e) {
+      // 记录结束位置
+      this.touchDel.endX = e.changedTouches[0].clientX
+      // 左滑
+      if (this.touchDel.startX - this.touchDel.endX > 80) {
+        this.restSlide()
+        this.touchDel.activeMed = id
+      }
+      // 右滑
+      if (this.touchDel.startX - this.touchDel.endX < -80) {
+        this.restSlide()
+        this.touchDel.activeMed = -1
+      }
+      this.touchDel.startX = 0
+      this.touchDel.endX = 0
+    },
+    // 复位滑动状态
+    restSlide: function () {
+      this.touchDel.activeMed = -1
     }
   }
 }
@@ -170,6 +199,8 @@ export default {
 <style lang="scss" scoped>
   .clinic-content {
     background: $backColor;
+    min-width: 100vw;
+    overflow-x: hidden;
   }
 
   .select-radio {
@@ -192,8 +223,12 @@ export default {
   }
 
   .goods-item {
+    position: relative;
+
+    overflow: hidden;
     @extend %flexV;
     padding: 32px 30px;
+    min-width: 100vw;
 
     .goods-item-middle {
       margin-left: 20px;
@@ -257,6 +292,25 @@ export default {
           }
         }
       }
+    }
+  }
+  .good-item-delete {
+    -webkit-transform: translateX(-160px);
+    -moz-transform: translateX(-160px);
+    -ms-transform: translateX(-160px);
+    -o-transform: translateX(-160px);
+    transform: translateX(-160px);
+  }
+  .goods {
+    @extend %displayFlex;
+    transition: all 0.2s;
+    .goods-delete {
+      background: $redColor;
+      color: #ffffff;
+      min-width: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>
