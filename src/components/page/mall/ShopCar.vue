@@ -10,28 +10,29 @@
           <span class="ml-20px">诊所药房</span>
         </Small-title>
         <div v-for="(item, index) in shopCarList" :key="item.id">
-          <div class="goods-item">
+          <div :class="['goods-item',{'ban_back':!item.goods_info.id}]">
             <div>
-              <div :class="['select-radio']">
-                <img src="../../../assets/img/xuanze@2x.png">
+              <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
               </div>
             </div>
             <div class="goods-item-middle">
-              <img src="../../../assets/img/nophoto.png">
+              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
             </div>
             <div class="goods-item-right">
               <div class="goods-info">
-                <span>葵花牌 葵花健儿消食口服液口服液</span>
-                <span>10ml*6支/盒 10盒</span>
+                <span>{{item.goods_info.name}}</span>
+                <span>{{item.goods_info.vender}}</span>
+                <span>{{item.goods_info.spec}}</span>
               </div>
               <div class="goods-num">
               <span class="flexOne">
-                ￥13232
+                ￥{{item.goods_info.price}}
               </span>
                 <div class="num-change">
-                  <div class="num-cut"></div>
-                  <input class="num-word">
-                  <div class="num-add"></div>
+                  <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                  <input class="num-word" v-model="item.num">
+                  <div class="num-add" @click.stop="changeNum(2, index)"></div>
                 </div>
               </div>
             </div>
@@ -41,13 +42,14 @@
       </div>
 
     </div>
-    <Shop-footer btnText="去结算" :allPrice="100" @click="toCount"></Shop-footer>
+    <Shop-footer btnText="去结算" :allPrice="allPrice" @click="toCount"></Shop-footer>
   </div>
 </template>
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar} from '@/fetch/api'
+import {fetchShopCar, changeShopNum} from '@/fetch/api'
+import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'ShopCar',
@@ -59,30 +61,106 @@ export default {
   data () {
     return {
       resource: false,
-      shopCarList: []
+      shopCarList: [],
+      noImg: noImg
     }
   },
   created () {
     this.getShopCar()
   },
+  computed: {
+    allPrice () {
+      if (this.shopCarList.length === 0) {
+        return 0
+      } else {
+        let all = 0
+        this.shopCarList.forEach(item => {
+          if (item.goods_info.id !== undefined && item.goods_info.id !== null && item.is_check) {
+            all += Number(item.num * item.goods_info.price)
+          }
+        })
+        return all
+      }
+    }
+  },
+  // watch: {
+  //   shopCarList: {
+  //     deep: true,
+  //     handler: (newVal, oldVal) => {
+  //     }
+  //   }
+  // },
   methods: {
     toCount () {
       this.$router.push({path: '/mall/sureOrder'})
     },
     selectALL () {
       this.resource = !this.resource
+      if (this.resource) {
+        this.shopCarList.forEach(item => {
+          item.goods_info.id ? item.is_check = 1 : item.is_check = 0
+        })
+      } else {
+        this.shopCarList.forEach(item => {
+          item.is_check = 0
+        })
+      }
     },
     getShopCar () {
       fetchShopCar({}).then(res => {
         console.log(res)
         if (res.code === 1000) {
-          this.shopCarList = res.data
+          res.data.forEach(item => {
+            let curItem = Object.assign(item, {is_check: 0})
+            this.shopCarList.push(curItem)
+          })
         } else {
           this.$Message.infor(res.msg)
         }
       }).catch(error => {
         console.log(error)
         this.$Message.infor('获取购物车列表失败!')
+      })
+    },
+    imgError (event) {
+      event.target.src = this.noImg
+    },
+    selectItem (index) {
+      let checkItem = this.shopCarList[index]
+      if (!checkItem.goods_info.id) {
+        this.$Message.infor('该药品已下架，请删除！')
+        return
+      }
+      checkItem.is_check ? checkItem.is_check = 0 : checkItem.is_check = 1
+    },
+    changeNum (type, index) {
+      let currItem = this.shopCarList[index]
+      if (!currItem.goods_info.id) {
+        return
+      }
+      let oldNum = currItem.num
+      if (type === 1) {
+        currItem.num > 0 ? currItem.num-- : currItem.num = 0
+      } else if (type === 2) {
+        currItem.num++
+      }
+      if (oldNum !== currItem.num) {
+        this.saveChange(index)
+      }
+    },
+    saveChange (index) {
+      let currItem = this.shopCarList[index]
+      changeShopNum({
+        id: currItem.id,
+        num: currItem.num
+      }).then(res => {
+        if (res.code === 1000) {
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错!')
       })
     }
   }
@@ -107,6 +185,10 @@ export default {
 
   .border-yuan {
     border: 1px solid $lightTextColor;
+  }
+
+  .ban_back {
+    background: #f7f7f7;
   }
 
   .goods-item {
@@ -164,6 +246,7 @@ export default {
             text-align: center;
             line-height: 45px;
             font-size: 32px;
+            background: transparent;
           }
 
           .num-add {
