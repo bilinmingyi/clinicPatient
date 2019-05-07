@@ -97,7 +97,20 @@ export default {
   },
   methods: {
     toCount () {
-      this.$router.push({path: '/mall/sureOrder'})
+      if (this.shopCarList.some(item => {
+        return item.is_check === 1
+      })) {
+        let ids = this.shopCarList.filter(item => {
+          if (item.is_check) {
+            return item.goods_id
+          }
+        }).map(item => {
+          return item.goods_id
+        })
+        this.$router.push({path: '/mall/sureOrder', query: {ids: JSON.stringify(ids)}})
+      } else {
+        this.$Message.infor('请先选择购买药品！')
+      }
     },
     selectALL () {
       this.resource = !this.resource
