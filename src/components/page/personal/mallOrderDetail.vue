@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header :canReturn="true" titleText="订单详情"></Header>
-    <div class="mt-88px">
+    <div class="mt-88px mb-131px">
       <div class="content-back">
         <Small-title :hasBlock="true">
           <span class="flexOne ml-16px">订单信息</span>
@@ -39,50 +39,38 @@
         <Small-title :hasBlock="true">
           <span class="flexOne ml-16px">诊所药房</span>
         </Small-title>
-        <div class="goods-item">
-          <div class="goods-item-middle">
-            <img src="../../../assets/img/nophoto.png">
-          </div>
-          <div class="goods-item-right">
-            <div class="goods-info">
-              <span>葵花牌 葵花健儿消食口服液口服液</span><span>10ml*6支/盒 10盒</span>
+        <div v-for="(item, index) in orderDetail.goods_order_items" :key="item.id">
+          <div class="goods-item">
+            <div class="goods-item-middle">
+              <img src="../../../assets/img/nophoto.png">
             </div>
-            <div class="goods-num">
+            <div class="goods-item-right">
+              <div class="goods-info">
+                <span>{{item.name}}</span><span>{{item.spec}}</span>
+              </div>
+              <div class="goods-num">
               <span class="flexOne">
-                ￥13232
+                ￥{{item.price}}
               </span>
-              <div class="num-change">数量：87</div>
+                <div class="num-change">数量：{{item.num}}</div>
+              </div>
             </div>
           </div>
-        </div>
-        <hr class="full-screen-hr">
-        <div class="goods-item">
-          <div class="goods-item-middle">
-            <img src="../../../assets/img/nophoto.png">
-          </div>
-          <div class="goods-item-right">
-            <div class="goods-info">
-              <span>葵花牌 葵花健儿消食口服液口服液</span><span>10ml*6支/盒 10盒</span>
-            </div>
-            <div class="goods-num">
-              <span class="flexOne">
-                ￥13232
-              </span>
-              <div class="num-change">数量：87</div>
-            </div>
-          </div>
+          <hr class="full-screen-hr" v-show="index !== orderDetail.goods_order_items.length - 1">
         </div>
       </div>
       <div class="content-back">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">订单总价</label>
-          <span class="label-red">￥100</span>
+          <span class="label-red">￥{{orderDetail.price}}</span>
         </div>
-        <hr class="full-screen-hr">
-        <div class="line-item">
-          <label class="label-span mr-32px flexOne">支付方式</label>
-          <span class="label-span">支付宝</span>
-        </div>
+        <section v-if="orderDetail.status === 'DELIVER' || orderDetail.status === 'WAIT_INSTOCK' || orderDetail.status === 'DONE'">
+          <hr class="full-screen-hr">
+          <div class="line-item">
+            <label class="label-span mr-32px flexOne">支付方式</label>
+            <span class="label-span">{{orderDetail.pay_type|payTypeFormat}}</span>
+          </div>
+        </section>
       </div>
     </div>
   </div>
