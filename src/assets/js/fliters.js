@@ -142,6 +142,25 @@ const treatOrderStatus = (status) => {
   return codeToName(list, status)
 }
 /**
+ * @desc： Format treatOrder status(商场订单状态).
+ * @param {String} status
+ * @example mallOrderStatus('DONE') -> '完成'
+ */
+const mallOrderStatus = (status) => {
+  let list = [
+    {code: 'UNKNOWN', name: '未知'},
+    {code: 'AUDIT', name: '待审核'},
+    {code: 'REFUSE', name: '审核拒绝'},
+    {code: 'UNPAID4BUSINESS', name: '待付款'},
+    {code: 'UNPAID4CLIENT', name: '待收款'},
+    {code: 'DELIVER', name: '待发货'},
+    {code: 'WAIT_INSTOCK', name: '待收货'},
+    {code: 'DONE', name: '完成'},
+    {code: 'CANCEL', name: '取消'}
+  ]
+  return codeToName(list, status)
+}
+/**
  * @desc： Format sex(性别类型).
  * @param {Number} type
  * @example sexFormat(1) -> '男'
@@ -199,6 +218,7 @@ export default {
   dateFormat,
   doctorTypes,
   treatOrderStatus,
+  mallOrderStatus,
   sexFormat,
   ageFormat,
   articleType,

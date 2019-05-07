@@ -93,6 +93,8 @@ const changeUser = params => fetch('/user/update', params)
 const fetchCode = params => fetch('/sms/chkCode/mobileBind', params)
 // 修改电话号码
 const savePhone = params => fetch('/user/mobile/update', params)
+// 获取商场订单
+const fetchGoodList = params => fetch('/goodsorder/list', params)
 
 export {
   fetch,
@@ -129,5 +131,6 @@ export {
   removeShop,
   checkEnable,
   updateAddress,
-  createOrder
+  createOrder,
+  fetchGoodList
 }

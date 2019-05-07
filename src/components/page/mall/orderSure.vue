@@ -147,7 +147,7 @@ export default {
         }
       })
       let res = await createOrder({
-        concact: this.addressee.concact,
+        contact: this.addressee.concact,
         phone_num: this.addressee.phoneNum,
         address: this.addressee.address,
         memo: this.memo,
@@ -155,7 +155,9 @@ export default {
       })
       if (res.code === 1000) {
         try {
-          let idsList = JSON.parse(this.ids)
+          let idsList = this.shopCarList.map(item => {
+            return item.id
+          })
           await removeShop({
             ids: idsList
           })

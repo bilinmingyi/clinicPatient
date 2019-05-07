@@ -5,37 +5,33 @@
       <div class="content-back">
         <Small-title :hasBlock="true">
           <span class="flexOne ml-16px">订单信息</span>
-          <span class="label-red">待支付</span>
+          <span class="label-red">{{orderDetail.status|mallOrderStatus}}</span>
         </Small-title>
         <div class="order-infor">
           <div class="flex mb-8px">
             <div class="label-text">下单时间：</div>
-            <div class="input-text">2018-12-23 22:26</div>
+            <div class="input-text">{{orderDetail.create_time|dateFormat}}</div>
           </div>
           <div class="flex mb-8px">
-            <div class="label-text">王大锤：</div>
-            <div class="input-text">82082088520</div>
+            <div class="label-text">订单号：</div>
+            <div class="input-text">{{orderDetail.order_seqno}}</div>
           </div>
-          <div class="flex mb-8px">
+          <div class="flex">
             <div class="label-text">备注：</div>
-            <div class="input-text">早上起床头疼发热</div>
+            <div class="input-text">{{orderDetail.memo}}</div>
           </div>
-          <div class="flex mb-8px">
+          <div class="flex mb-8px mt-40px">
             <div class="label-text"> 收件人：</div>
-            <div class="input-text">王尼玛</div>
+            <div class="input-text">{{orderDetail.contact}}</div>
           </div>
 
           <div class="flex mb-8px">
             <div class="label-text"> 电话：</div>
-            <div class="input-text">15888654678</div>
+            <div class="input-text">{{orderDetail.phone_num}}</div>
           </div>
           <div class="flex">
             <div class="label-text">收货地址：</div>
-            <div class="input-text">广州市天河区珠江新城花城汇XXX街道幸 幸福小区小区6栋601</div>
-          </div>
-          <div class="flex mb-8px">
-            <div class="label-text">发货方式：</div>
-            <div class="input-text">自提</div>
+            <div class="input-text">{{orderDetail.address}}</div>
           </div>
         </div>
       </div>
@@ -94,12 +90,39 @@
 
 <script>
 import {Header, SmallTitle} from '../../common'
+import {fetchGoodList} from '@/fetch/api'
 
 export default {
   name: 'mallOrderDetail',
+  props: ['orderSeqno'],
   components: {
     Header,
     SmallTitle
+  },
+  data () {
+    return {
+      orderDetail: {}
+    }
+  },
+  created () {
+    this.getOrderDetail()
+  },
+  methods: {
+    getOrderDetail () {
+      fetchGoodList({
+        order_seqno: this.orderSeqno,
+        need_detail: 1
+      }).then(res => {
+        console.log(res)
+        if (res.code === 1000) {
+          this.orderDetail = res.data[0]
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>
