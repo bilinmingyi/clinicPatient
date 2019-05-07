@@ -6,38 +6,24 @@
         <Small-title>
           <span>诊所药房</span>
         </Small-title>
-        <div class="goods-item">
-          <div class="goods-item-middle">
-            <img src="../../../assets/img/nophoto.png">
-          </div>
-          <div class="goods-item-right">
-            <div class="goods-info">
-              <span>葵花牌 葵花健儿消食口服液口服液</span><span>10ml*6支/盒 10盒</span>
+        <div v-for="(item, index) in shopCarList" :key="item.id">
+          <div class="goods-item">
+            <div class="goods-item-middle">
+              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
             </div>
-            <div class="goods-num">
+            <div class="goods-item-right">
+              <div class="goods-info">
+                <span>{{item.goods_info.name}}</span><span>{{item.goods_info.spec}}</span>
+              </div>
+              <div class="goods-num">
               <span class="flexOne">
-                ￥13232
+                ￥{{item.goods_info.price*item.num}}
               </span>
-              <div class="num-change">数量：87</div>
+                <div class="num-change">数量：{{item.num}}</div>
+              </div>
             </div>
           </div>
-        </div>
-        <hr class="full-screen-hr">
-        <div class="goods-item">
-          <div class="goods-item-middle">
-            <img src="../../../assets/img/nophoto.png">
-          </div>
-          <div class="goods-item-right">
-            <div class="goods-info">
-              <span>葵花牌 葵花健儿消食口服液口服液</span><span>10ml*6支/盒 10盒</span>
-            </div>
-            <div class="goods-num">
-              <span class="flexOne">
-                ￥13232
-              </span>
-              <div class="num-change">数量：87</div>
-            </div>
-          </div>
+          <hr class="full-screen-hr">
         </div>
       </div>
       <div class="clinic-content">
@@ -58,31 +44,98 @@
         </div>
         <hr class="full-screen-hr">
         <div class="remark">
-          <label>患者姓名</label>
-          <input placeholder="暂无">
+          <label>患者备注</label>
+          <input placeholder="暂无" v-model="memo">
         </div>
       </div>
     </div>
-    <Shop-footer btnText="去支付" :allPrice="100" @click="toPay"></Shop-footer>
+    <Shop-footer :btnText="textList[needCheck]" :allPrice="allPrice" @click="toPay"></Shop-footer>
   </div>
 </template>
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
+import {fetchShopCar, checkEnable} from '@/fetch/api'
+import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'orderSure',
+  props: ['ids'],
   data () {
-    return {}
+    return {
+      shopCarList: [],
+      noImg: noImg,
+      memo: '',
+      needCheck: 0,
+      textList: ['', '提交审核', '去支付']
+    }
   },
   components: {
     Header,
     ShopFooter,
     SmallTitle
   },
+  computed: {
+    allPrice () {
+      if (this.shopCarList.length === 0) {
+        return 0
+      } else {
+        let all = 0
+        this.shopCarList.forEach(item => {
+          all += Number(item.num * item.goods_info.price)
+        })
+        return all
+      }
+    }
+  },
+  created () {
+    this.getShopCar()
+    this.checkEnabled()
+  },
   methods: {
     toPay () {
       console.log('去支付')
+    },
+    imgError (event) {
+      event.target.src = this.noImg
+    },
+    getShopCar () {
+      fetchShopCar({}).then(res => {
+        let idsList = JSON.parse(this.ids)
+        if (res.code === 1000) {
+          this.shopCarList = []
+          res.data.forEach(item => {
+            if (idsList.some(id => {
+              return id === item.goods_id
+            })) {
+              this.shopCarList.push(item)
+            }
+          })
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('获取购物车列表失败!')
+      })
+    },
+    checkEnabled () {
+      checkEnable({}).then(
+        res => {
+          if (res.code === 1000) {
+            if (res.data) {
+              this.needCheck = 1
+            } else {
+              this.needCheck = 2
+            }
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }
+      ).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错!')
+      })
     }
   }
 }
@@ -138,29 +191,36 @@ export default {
       }
     }
   }
-  .address{
+
+  .address {
     padding: 24px 30px;
+
     .displayFlex {
       @extend %flexV;
       font-size: 28px;
       line-height: 40px;
       color: $depthTextColor;
+
       .name {
         line-height: 45px;
         font-size: 32px;
         font-weight: bold;
       }
+
       .edit-btn {
         @include simpleButton(64px, 128px)
       }
     }
   }
+
   .remark {
     padding: 24px 30px;
+
     label {
       color: $lightTextColor;
       font-size: 32px;
     }
+
     input {
       padding-left: 24px;
       border: none;

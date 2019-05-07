@@ -76,7 +76,8 @@ export default new Router({
         {
           path: 'sureOrder',
           name: 'sureOrder',
-          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/orderSure.vue')
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/orderSure.vue'),
+          props: (route) => route.query
         }
       ]
     },
