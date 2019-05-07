@@ -143,6 +143,11 @@ export default new Router({
           name: 'mallOrderDetail',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/mallOrderDetail.vue'),
           props: (route) => route.query
+        },
+        {
+          path: 'addressListPage',
+          name: 'addressListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/addressListPage.vue')
         }
       ]
     }

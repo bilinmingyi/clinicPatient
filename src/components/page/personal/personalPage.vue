@@ -15,6 +15,10 @@
         </div>
       </div>
       <ul class="person-function">
+        <li @click.stop="goRouter(6)">
+          <img src="../../../assets/img/dz.png">
+          <span>地址管理</span>
+        </li>
         <li @click.stop="goRouter(1)">
           <img src="../../../assets/img/qt@2x.png">
           <span>其他就诊人</span>
@@ -87,6 +91,9 @@ export default {
             name: 'editPerson',
             query: {id: this.user_id, name: this.user_name, sex: this.user_sex, birthday: this.user_birthday, mobile: this.mobile}
           })
+          break
+        case 6:
+          this.$router.push({name: 'addressListPage'})
           break
       }
     },

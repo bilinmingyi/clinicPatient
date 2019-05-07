@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <hr class="full-screen-hr">
+          <hr class="full-screen-hr" v-show="index !== shopCarList.length - 1">
         </div>
       </div>
       <div class="clinic-content">

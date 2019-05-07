@@ -55,6 +55,7 @@ const addShopCar = params => fetch('/shopcart/add', params)
 const changeShopNum = params => fetch('/shopcart/update', params)
 const removeShop = params => fetch('/shopcart/remove', params)
 const checkEnable = params => fetch('/goodsorder/checkEnabled', params)
+const updateAddress = params => fetch('/cuser/addrInfo/update', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -117,5 +118,6 @@ export {
   addShopCar,
   changeShopNum,
   removeShop,
-  checkEnable
+  checkEnable,
+  updateAddress
 }
