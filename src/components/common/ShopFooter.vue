@@ -10,7 +10,7 @@
         <span class="red-text">￥{{allPrice}}</span>
       </div>
     </div>
-    <div class="add-car-btn" @click.stop="btnClick">
+    <div :class="['add-car-btn',{'ccc-back': isNoCan}]" @click.stop="btnClick">
       {{btnText}}
     </div>
   </div>
@@ -35,6 +35,10 @@ export default {
     carNum: {
       type: Number,
       default: 0
+    },
+    isNoCan: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -100,6 +104,9 @@ export default {
       font-size: 32px;
       width: 248px;
       text-align: center;
+    }
+    .ccc-back {
+      background: #cccccc;
     }
 
     .red-text {

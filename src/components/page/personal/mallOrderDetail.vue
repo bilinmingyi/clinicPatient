@@ -73,11 +73,12 @@
         </section>
       </div>
     </div>
+    <Shop-footer v-if="orderDetail.status === 'AUDIT' || orderDetail.status === 'UNPAID4BUSINESS'" btnText="去支付" :allPrice="orderDetail.goods_price" :isNoCan="orderDetail.status === 'AUDIT'"></Shop-footer>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '../../common'
+import {Header, SmallTitle, ShopFooter} from '../../common'
 import {fetchGoodList} from '@/fetch/api'
 
 export default {
@@ -85,7 +86,8 @@ export default {
   props: ['orderSeqno'],
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    ShopFooter
   },
   data () {
     return {
