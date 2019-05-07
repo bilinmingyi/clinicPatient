@@ -49,13 +49,22 @@ const saveAppointData = params => fetch('/appointOrder/submit', params)
 // 商场
 // 获取商品列表
 const fetchGoodsList = params => fetch('/goods/list', params)
+// 获取商品详情
 const fetchGoodsDetail = params => fetch('/goods/detail', params)
+// 获取购物车
 const fetchShopCar = params => fetch('/shopcart/list', params)
+// 添加购物车
 const addShopCar = params => fetch('/shopcart/add', params)
+// 更改购物车商品数量
 const changeShopNum = params => fetch('/shopcart/update', params)
+// 删除购物车商品
 const removeShop = params => fetch('/shopcart/remove', params)
+// 创建订单是否需要审核
 const checkEnable = params => fetch('/goodsorder/checkEnabled', params)
+// 更新地址
 const updateAddress = params => fetch('/cuser/addrInfo/update', params)
+// 创建订单
+const createOrder = params => fetch('/goodsorder/create', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -119,5 +128,6 @@ export {
   changeShopNum,
   removeShop,
   checkEnable,
-  updateAddress
+  updateAddress,
+  createOrder
 }

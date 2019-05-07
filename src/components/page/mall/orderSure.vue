@@ -30,8 +30,8 @@
         <div class="address">
           <div class="displayFlex mb-8px">
             <div class="flexOne">
-              <p class="name mb-8px">收件人：王尼玛</p>
-              <P>电话：15888654678</P>
+              <p class="name mb-8px">收件人：{{addressee.concact}}</p>
+              <P>电话：{{addressee.phoneNum}}</P>
             </div>
             <div>
               <button class="edit-btn">编辑</button>
@@ -39,7 +39,7 @@
           </div>
           <div class="flex">
             <span>收货地址：</span>
-            <span class="flexOne">广州市天河区珠江新城花城汇XXX街道幸福小区幸福的 幸福小区小区6栋601</span>
+            <span class="flexOne">{{addressee.address}}</span>
           </div>
         </div>
         <hr class="full-screen-hr">
@@ -49,13 +49,13 @@
         </div>
       </div>
     </div>
-    <Shop-footer :btnText="textList[needCheck]" :allPrice="allPrice" @click="toPay"></Shop-footer>
+    <Shop-footer :btnText="textList[needCheck]" :allPrice="allPrice" @click="submitOrder"></Shop-footer>
   </div>
 </template>
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, checkEnable} from '@/fetch/api'
+import {fetchShopCar, checkEnable, createOrder, removeShop, gotoPay} from '@/fetch/api'
 import noImg from '@/assets/img/nophoto.png'
 
 export default {
@@ -67,7 +67,12 @@ export default {
       noImg: noImg,
       memo: '',
       needCheck: 0,
-      textList: ['', '提交审核', '去支付']
+      textList: ['', '提交审核', '去支付'],
+      addressee: {
+        concact: '王尼玛',
+        phoneNum: '15888654678',
+        address: '广东(省)广州(市)天河(区/县)珠江新城花城汇XXX街道幸福小区'
+      }
     }
   },
   components: {
@@ -93,9 +98,6 @@ export default {
     this.checkEnabled()
   },
   methods: {
-    toPay () {
-      console.log('去支付')
-    },
     imgError (event) {
       event.target.src = this.noImg
     },
@@ -136,6 +138,52 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错!')
       })
+    },
+    async submitOrder () {
+      let resultList = this.shopCarList.map(item => {
+        return {
+          goods_id: item.goods_id,
+          num: item.num
+        }
+      })
+      let res = await createOrder({
+        concact: this.addressee.concact,
+        phone_num: this.addressee.phoneNum,
+        address: this.addressee.address,
+        memo: this.memo,
+        goods_order_items: resultList
+      })
+      if (res.code === 1000) {
+        try {
+          let idsList = JSON.parse(this.ids)
+          await removeShop({
+            ids: idsList
+          })
+          if (this.needCheck === 1) {
+            // 需要提交审核
+            this.$router.push({name: 'mallListPage'})
+          } else if (this.needCheck === 2) {
+            // 不需要提交审核，直接去支付
+            let urlRes = await gotoPay({
+              order_type: 8,
+              order_seqno: res.data
+            })
+            if (urlRes.code === 1000) {
+              try {
+                window.location.href = urlRes.data
+              } catch (e) {
+                console.log(e)
+              }
+            } else {
+              this.$Message.infor(urlRes.msg)
+            }
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      } else {
+        this.$Message.infor(res.msg)
+      }
     }
   }
 }

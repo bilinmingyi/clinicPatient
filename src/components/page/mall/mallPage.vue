@@ -90,7 +90,8 @@ export default {
       fetchGoodsList({
         name: this.query,
         page: this.page,
-        page_size: this.pageSize
+        page_size: this.pageSize,
+        status: 1
       }).then(res => {
         this.showLoad = false
         if (res.code === 1000) {

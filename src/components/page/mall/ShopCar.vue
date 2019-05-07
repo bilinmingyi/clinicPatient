@@ -11,7 +11,7 @@
         </Small-title>
         <div v-for="(item, index) in shopCarList" :key="item.id">
           <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-            <div :class="['goods-item',{'ban_back':!item.goods_info.id}]"
+            <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
                  @touchstart.capture="touchStart"
                  @touchend.capture="touchEnd(item.id, $event)">
               <div>
@@ -87,7 +87,7 @@ export default {
       } else {
         let all = 0
         this.shopCarList.forEach(item => {
-          if (item.goods_info.id !== undefined && item.goods_info.id !== null && item.is_check) {
+          if (item.goods_info.id !== undefined && item.goods_info.id !== null && item.goods_info.status && item.is_check) {
             all += Number(item.num * item.goods_info.price)
           }
         })
@@ -116,7 +116,7 @@ export default {
       this.resource = !this.resource
       if (this.resource) {
         this.shopCarList.forEach(item => {
-          item.goods_info.id ? item.is_check = 1 : item.is_check = 0
+          item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
         })
       } else {
         this.shopCarList.forEach(item => {
@@ -145,7 +145,7 @@ export default {
     },
     selectItem (index) {
       let checkItem = this.shopCarList[index]
-      if (!checkItem.goods_info.id) {
+      if (!checkItem.goods_info.id || checkItem.goods_info.status === 0) {
         this.$Message.infor('该药品已下架，请删除！')
         return
       }

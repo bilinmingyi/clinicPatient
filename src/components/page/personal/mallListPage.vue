@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header titleText="商城订单" :canReturn="true"></Header>
+    <Header titleText="商城订单" :canReturn="true" backUrl="/personal"></Header>
     <div class="mt-88px orderList">
       <order-item @click.native="goRoute"></order-item>
       <Load-more></Load-more>
