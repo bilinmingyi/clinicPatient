@@ -56,15 +56,26 @@ export default {
       userInfoState: state => state.userInfoState
     })
   },
+  watch: {
+    userInfoState: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        this.sex = Number(this.userInfoState.sex)
+        this.id = this.userInfoState.id
+        this.name = this.userInfoState.name
+        this.mobile = this.userInfoState.mobile
+        let birthday = this.userInfoState.birthday
+        this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
+      }
+    }
+  },
   mounted () {
-    setTimeout(() => {
-      this.sex = Number(this.userInfoState.sex)
-      this.id = this.userInfoState.id
-      this.name = this.userInfoState.name
-      this.mobile = this.userInfoState.mobile
-      let birthday = this.userInfoState.birthday
-      this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
-    }, 500)
+    this.sex = Number(this.userInfoState.sex)
+    this.id = this.userInfoState.id
+    this.name = this.userInfoState.name
+    this.mobile = this.userInfoState.mobile
+    let birthday = this.userInfoState.birthday
+    this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
   },
   methods: {
     ...mapActions(['set_user_info']),

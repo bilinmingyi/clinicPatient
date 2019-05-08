@@ -147,7 +147,12 @@ export default new Router({
         {
           path: 'addressListPage',
           name: 'addressListPage',
-          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/addressListPage.vue')
+          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/addressListPage.vue')
+        },
+        {
+          path: 'editAddress',
+          name: 'editAddress',
+          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/editAddress.vue')
         }
       ]
     }

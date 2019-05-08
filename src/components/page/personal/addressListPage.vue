@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="add_block">
-      <button class="add_btn">添加收货地址</button>
+      <button class="add_btn" @click.stop="addAddress">添加收货地址</button>
     </div>
   </div>
 </template>
@@ -41,7 +41,6 @@ export default {
   components: {
     Header
   },
-  created () {},
   mounted () {
     setTimeout(() => {
       this.getAddress()
@@ -61,6 +60,7 @@ export default {
           this.$router.push({name: 'editPerson'})
         })
       }
+      this.$router.push({name: 'editAddress'})
     },
     getAddress () {
       if (this.userInfoState.mobile) {
