@@ -24,96 +24,52 @@
 
 <script>
 import {Header} from '../../common'
-import {fetchUserInfo} from '@/fetch/api'
+import {mapState} from 'vuex'
 
 export default {
   name: 'addressListPage',
   data () {
     return {
-      person: {
-        mobile: '',
-        id: '',
-        name: '',
-        sex: 0,
-        birthday: ''
-      },
       addressList: []
     }
+  },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
   },
   components: {
     Header
   },
-  created () {
-    this.getAddress()
+  created () {},
+  mounted () {
+    setTimeout(() => {
+      this.getAddress()
+    }, 500)
   },
   methods: {
     editAddress () {
-      if (!this.person.mobile) {
+      if (!this.userInfoState.mobile) {
         this.$Message.confirm('请先绑定手机号码！', () => {
-          this.$router.push({
-            name: 'editPerson',
-            query: {
-              id: this.person.id,
-              name: this.person.name,
-              sex: this.person.sex,
-              birthday: this.person.birthday,
-              mobile: this.person.mobile
-            }
-          })
+          this.$router.push({name: 'editPerson'})
         })
       }
     },
     addAddress () {
-      if (!this.person.mobile) {
+      if (!this.userInfoState.mobile) {
         this.$Message.confirm('请先绑定手机号码！', () => {
-          this.$router.push({
-            name: 'editPerson',
-            query: {
-              id: this.person.id,
-              name: this.person.name,
-              sex: this.person.sex,
-              birthday: this.person.birthday,
-              mobile: this.person.mobile
-            }
-          })
+          this.$router.push({name: 'editPerson'})
         })
       }
     },
     getAddress () {
-      fetchUserInfo().then(
-        res => {
-          console.log(res)
-          if (res.code === 1000) {
-            this.person.mobile = res.data.mobile
-            this.person.id = res.data.id
-            this.person.name = res.data.name
-            this.person.sex = res.data.sex
-            this.person.birthday = res.data.birthday
-
-            if (res.data.mobile) {
-              this.addressList = res.data.addr_info === '' ? [] : JSON.parse(res.data.addr_info)
-            } else {
-              this.$Message.confirm('请先绑定手机号码！', () => {
-                this.$router.push({
-                  name: 'editPerson',
-                  query: {
-                    id: res.data.id,
-                    name: res.data.name,
-                    sex: res.data.sex,
-                    birthday: res.data.birthday,
-                    mobile: res.data.mobile
-                  }
-                })
-              })
-            }
-          } else {
-            this.$Message.infor(res.msg)
-          }
-        }
-      ).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错！')
-      })
+      if (this.userInfoState.mobile) {
+        this.addressList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
+      } else {
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
     }
   }
 }
