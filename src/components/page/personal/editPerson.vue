@@ -56,7 +56,7 @@ export default {
       userInfoState: state => state.userInfoState
     })
   },
-  created () {
+  mounted () {
     setTimeout(() => {
       this.sex = Number(this.userInfoState.sex)
       this.id = this.userInfoState.id
@@ -64,7 +64,7 @@ export default {
       this.mobile = this.userInfoState.mobile
       let birthday = this.userInfoState.birthday
       this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
-    }, 0)
+    }, 500)
   },
   methods: {
     ...mapActions(['set_user_info']),
