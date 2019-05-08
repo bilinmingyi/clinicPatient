@@ -20,7 +20,21 @@ const state = {
     address: '',
     logo: ''
   },
-  userInfoState: {}, // 客户信息
+  userInfoState: {
+    addr_info: '',
+    age: 0,
+    avatar: '',
+    birthday: 0,
+    clinic_id: 0,
+    create_time: 0,
+    cuser_id: 0,
+    id: 0,
+    mobile: '',
+    name: '',
+    sex: 0,
+    wx_appid: '',
+    wx_openid: ''
+  }, // 客户信息
   shopCarNum: 0,
   shopCarMoney: 0
 }

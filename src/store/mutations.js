@@ -12,8 +12,10 @@ const mutations = {
   [mutationTypes.SET_SHOP_MONEY] (state, val) {
     state.shopCarMoney = Number(val)
   },
-  updateUserInfo (state, object) {
-    state.userInfoState = object
+  [mutationTypes.SET_USER_INFOR] (state, obj) {
+    Object.keys(obj).forEach(item => {
+      state.userInfoState[item] = obj[item]
+    })
   }
 }
 

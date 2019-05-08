@@ -33,6 +33,7 @@
 <script>
 import {Header, radioGroup} from '@/components/common/index'
 import {changeUser} from '@/fetch/api.js'
+import {mapState, mapActions} from 'vuex'
 
 export default {
   name: 'editPerson',
@@ -47,20 +48,26 @@ export default {
       name: '',
       id: '',
       age: '',
-      mobile: '',
-      isEdit: true
+      mobile: ''
     }
   },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
   created () {
-    this.sex = Number(this.$route.query.sex)
-    this.id = this.$route.query.id
-    this.name = this.$route.query.name
-    this.mobile = this.$route.query.mobile
-    let birthday = this.$route.query.birthday
-    this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
-    this.isEdit = Boolean(this.id)
+    setTimeout(() => {
+      this.sex = Number(this.userInfoState.sex)
+      this.id = this.userInfoState.id
+      this.name = this.userInfoState.name
+      this.mobile = this.userInfoState.mobile
+      let birthday = this.userInfoState.birthday
+      this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
+    }, 0)
   },
   methods: {
+    ...mapActions(['set_user_info']),
     changeSex (val) {
       this.sex = Number(val)
     },
@@ -83,6 +90,12 @@ export default {
         birthday: birthday.getTime()
       }).then(res => {
         if (res.code === 1000) {
+          this.set_user_info({
+            age: Number(this.age),
+            sex: Number(this.sex),
+            name: this.name,
+            birthday: birthday.getTime()
+          })
           this.$router.go(-1)
         } else {
           this.$Message.infor(res.msg)
@@ -157,6 +170,7 @@ export default {
   }
 
   .input-width {
-    width: 26%;
+    width: 18%;
+    text-align: center;
   }
 </style>

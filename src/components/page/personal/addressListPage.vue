@@ -13,7 +13,7 @@
             广州市天河区珠江新城花城汇XXX街道幸福小区幸福的 幸福小区小区6栋601
           </p>
         </div>
-        <div class="edit-btn"></div>
+        <div class="edit-btn" @click.stop="editAddress"></div>
       </div>
     </div>
     <div class="add_block">
@@ -24,19 +24,96 @@
 
 <script>
 import {Header} from '../../common'
-import {updateAddress} from '@/fetch/api'
+import {fetchUserInfo} from '@/fetch/api'
 
 export default {
   name: 'addressListPage',
   data () {
-    return {}
+    return {
+      person: {
+        mobile: '',
+        id: '',
+        name: '',
+        sex: 0,
+        birthday: ''
+      },
+      addressList: []
+    }
   },
   components: {
     Header
   },
+  created () {
+    this.getAddress()
+  },
   methods: {
-    changeAddress () {
-      updateAddress().then().catch(0)
+    editAddress () {
+      if (!this.person.mobile) {
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({
+            name: 'editPerson',
+            query: {
+              id: this.person.id,
+              name: this.person.name,
+              sex: this.person.sex,
+              birthday: this.person.birthday,
+              mobile: this.person.mobile
+            }
+          })
+        })
+      }
+    },
+    addAddress () {
+      if (!this.person.mobile) {
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({
+            name: 'editPerson',
+            query: {
+              id: this.person.id,
+              name: this.person.name,
+              sex: this.person.sex,
+              birthday: this.person.birthday,
+              mobile: this.person.mobile
+            }
+          })
+        })
+      }
+    },
+    getAddress () {
+      fetchUserInfo().then(
+        res => {
+          console.log(res)
+          if (res.code === 1000) {
+            this.person.mobile = res.data.mobile
+            this.person.id = res.data.id
+            this.person.name = res.data.name
+            this.person.sex = res.data.sex
+            this.person.birthday = res.data.birthday
+
+            if (res.data.mobile) {
+              this.addressList = res.data.addr_info === '' ? [] : JSON.parse(res.data.addr_info)
+            } else {
+              this.$Message.confirm('请先绑定手机号码！', () => {
+                this.$router.push({
+                  name: 'editPerson',
+                  query: {
+                    id: res.data.id,
+                    name: res.data.name,
+                    sex: res.data.sex,
+                    birthday: res.data.birthday,
+                    mobile: res.data.mobile
+                  }
+                })
+              })
+            }
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }
+      ).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }

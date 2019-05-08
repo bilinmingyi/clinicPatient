@@ -20,6 +20,7 @@
 <script>
 import {Header} from '@/components/common/index'
 import {fetchCode, savePhone} from '@/fetch/api.js'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'modifyPhone',
@@ -34,6 +35,7 @@ export default {
     Header
   },
   methods: {
+    ...mapActions(['set_user_info']),
     getCode () {
       if (!/^\d{11}$/.test(this.mobile)) {
         this.$Message.infor('请填写正确的手机号码!')
@@ -64,6 +66,9 @@ export default {
         code: this.code
       }).then(res => {
         if (res.code === 1000) {
+          this.set_user_info({
+            mobile: this.mobile
+          })
           if (Number(this.returnType) === 1) {
             this.$router.push({name: 'personal'})
           } else if (Number(this.returnType) === 2) {
