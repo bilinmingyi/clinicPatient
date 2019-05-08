@@ -64,7 +64,8 @@
           <label class="label-span mr-32px flexOne">订单总价</label>
           <span class="label-red">￥{{orderDetail.price}}</span>
         </div>
-        <section v-if="orderDetail.status === 'DELIVER' || orderDetail.status === 'WAIT_INSTOCK' || orderDetail.status === 'DONE'">
+        <section
+          v-if="orderDetail.status === 'DELIVER' || orderDetail.status === 'WAIT_INSTOCK' || orderDetail.status === 'DONE'">
           <hr class="full-screen-hr">
           <div class="line-item">
             <label class="label-span mr-32px flexOne">支付方式</label>
@@ -73,13 +74,15 @@
         </section>
       </div>
     </div>
-    <Shop-footer v-if="orderDetail.status === 'AUDIT' || orderDetail.status === 'UNPAID4BUSINESS'" btnText="去支付" :allPrice="orderDetail.goods_price" :isNoCan="orderDetail.status === 'AUDIT'"></Shop-footer>
+    <Shop-footer @click="goPay" v-if="orderDetail.status === 'AUDIT' || orderDetail.status === 'UNPAID4BUSINESS'"
+                 btnText="去支付" :allPrice="orderDetail.goods_price"
+                 :isNoCan="orderDetail.status === 'AUDIT'"></Shop-footer>
   </div>
 </template>
 
 <script>
 import {Header, SmallTitle, ShopFooter} from '../../common'
-import {fetchGoodList} from '@/fetch/api'
+import {fetchGoodList, gotoPay} from '@/fetch/api'
 
 export default {
   name: 'mallOrderDetail',
@@ -103,7 +106,6 @@ export default {
         order_seqno: this.orderSeqno,
         need_detail: 1
       }).then(res => {
-        console.log(res)
         if (res.code === 1000) {
           this.orderDetail = res.data[0]
         } else {
@@ -112,6 +114,23 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    async goPay () {
+      if (this.orderDetail.status === 'UNPAID4BUSINESS') {
+        let urlRes = await gotoPay({
+          order_type: 8,
+          order_seqno: this.orderDetail.order_seqno
+        })
+        if (urlRes.code === 1000) {
+          try {
+            window.location.href = urlRes.data
+          } catch (e) {
+            console.log(e)
+          }
+        } else {
+          this.$Message.infor(urlRes.msg)
+        }
+      }
     }
   }
 }
