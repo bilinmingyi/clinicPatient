@@ -83,6 +83,7 @@
 <script>
 import {Header, SmallTitle, ShopFooter} from '../../common'
 import {fetchGoodList, gotoPay} from '@/fetch/api'
+import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 
 export default {
@@ -98,6 +99,11 @@ export default {
       noImg: noImg,
       orderDetail: {}
     }
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic
+    })
   },
   created () {
     this.getOrderDetail()
@@ -122,18 +128,22 @@ export default {
     },
     async goPay () {
       if (this.orderDetail.status === 'UNPAID4BUSINESS') {
-        let urlRes = await gotoPay({
-          order_type: 8,
-          order_seqno: this.orderDetail.order_seqno
-        })
-        if (urlRes.code === 1000) {
-          try {
-            window.location.href = urlRes.data
-          } catch (e) {
-            console.log(e)
+        if (this.clinic.szjkPayEnabled === 1) {
+          let urlRes = await gotoPay({
+            order_type: 8,
+            order_seqno: this.orderDetail.order_seqno
+          })
+          if (urlRes.code === 1000) {
+            try {
+              window.location.href = urlRes.data
+            } catch (e) {
+              console.log(e)
+            }
+          } else {
+            this.$Message.infor(urlRes.msg)
           }
         } else {
-          this.$Message.infor(urlRes.msg)
+          this.$Message.infor('该诊所未开通线上支付功能！')
         }
       }
     }

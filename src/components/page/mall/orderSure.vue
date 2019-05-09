@@ -89,7 +89,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfoState: state => state.userInfoState
+      userInfoState: state => state.userInfoState,
+      clinic: state => state.clinic
     }),
     allPrice () {
       if (this.shopCarList.length === 0) {
@@ -215,18 +216,24 @@ export default {
             this.$router.push({name: 'mallListPage'})
           } else if (this.needCheck === 2) {
             // 不需要提交审核，直接去支付
-            let urlRes = await gotoPay({
-              order_type: 8,
-              order_seqno: res.data
-            })
-            if (urlRes.code === 1000) {
-              try {
-                window.location.href = urlRes.data
-              } catch (e) {
-                console.log(e)
+            if (this.clinic.szjkPayEnabled === 1) {
+              let urlRes = await gotoPay({
+                order_type: 8,
+                order_seqno: res.data
+              })
+              if (urlRes.code === 1000) {
+                try {
+                  window.location.href = urlRes.data
+                } catch (e) {
+                  console.log(e)
+                }
+              } else {
+                this.$Message.infor(urlRes.msg)
               }
             } else {
-              this.$Message.infor(urlRes.msg)
+              this.$Message.confirm('该诊所未开通线上支付功能！', () => {
+                this.$router.push({name: 'mallListPage'})
+              }, true)
             }
           }
         } catch (e) {
