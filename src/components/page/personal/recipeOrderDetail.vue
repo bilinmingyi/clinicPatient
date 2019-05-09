@@ -55,6 +55,7 @@
 <script>
 import {Header, SmallTitle} from '../../common'
 import {fecthRecipeDetail, gotoPay} from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'recipeOrderDetail',
@@ -70,6 +71,11 @@ export default {
   components: {
     Header,
     SmallTitle
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic
+    })
   },
   created () {
     this.getDetail()
@@ -92,24 +98,28 @@ export default {
     },
     nextDone () {
       if (this.orderDetail.order_info.status === 'UNPAID') {
-        gotoPay({
-          'order_type': 2,
-          'order_seqno': this.orderSeqno
-        }).then(res => {
-          if (res.code === 1000) {
-            try {
-              window.location.href = res.data
-            } catch (error) {
-              console.log(error)
-              this.$Message.infor('支付跳转失败')
+        if (this.clinic.szjkPayEnabled === 1) {
+          gotoPay({
+            'order_type': 2,
+            'order_seqno': this.orderSeqno
+          }).then(res => {
+            if (res.code === 1000) {
+              try {
+                window.location.href = res.data
+              } catch (error) {
+                console.log(error)
+                this.$Message.infor('支付跳转失败')
+              }
+            } else {
+              this.$Message.infor(res.msg)
             }
-          } else {
-            this.$Message.infor(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-          this.$Message.infor('网络出错！')
-        })
+          }).catch(error => {
+            console.log(error)
+            this.$Message.infor('网络出错！')
+          })
+        } else {
+          this.$Message.infor('该诊所未开通线上支付功能！')
+        }
       } else {
         this.$router.go(-1)
       }

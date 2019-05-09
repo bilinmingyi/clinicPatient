@@ -21,6 +21,7 @@ export default {
     ...mapActions(['set_clinic_info', 'set_user_info']),
     getClinic () {
       getClinicData().then(res => {
+        console.log(res)
         if (res.code === 1000) {
           this.set_clinic_info({
             id: res.data.id,
@@ -33,7 +34,8 @@ export default {
             countyName: res.data.countyName,
             countyCode: res.data.countyCode,
             address: res.data.address,
-            logo: res.data.logo
+            logo: res.data.logo,
+            szjkPayEnabled: res.data.szjkPayEnabled
           })
         } else {
           this.$Message.infor(res.msg)

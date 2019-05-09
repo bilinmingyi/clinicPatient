@@ -42,7 +42,7 @@
         <div v-for="(item, index) in orderDetail.goods_order_items" :key="item.id">
           <div class="goods-item">
             <div class="goods-item-middle">
-              <img src="../../../assets/img/nophoto.png">
+              <img :src="item.img?item.img:noImg" @error="imgError($event)">
             </div>
             <div class="goods-item-right">
               <div class="goods-info">
@@ -83,6 +83,8 @@
 <script>
 import {Header, SmallTitle, ShopFooter} from '../../common'
 import {fetchGoodList, gotoPay} from '@/fetch/api'
+import {mapState} from 'vuex'
+import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'mallOrderDetail',
@@ -94,8 +96,14 @@ export default {
   },
   data () {
     return {
+      noImg: noImg,
       orderDetail: {}
     }
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic
+    })
   },
   created () {
     this.getOrderDetail()
@@ -115,20 +123,27 @@ export default {
         console.log(error)
       })
     },
+    imgError (event) {
+      event.target.src = this.noImg
+    },
     async goPay () {
       if (this.orderDetail.status === 'UNPAID4BUSINESS') {
-        let urlRes = await gotoPay({
-          order_type: 8,
-          order_seqno: this.orderDetail.order_seqno
-        })
-        if (urlRes.code === 1000) {
-          try {
-            window.location.href = urlRes.data
-          } catch (e) {
-            console.log(e)
+        if (this.clinic.szjkPayEnabled === 1) {
+          let urlRes = await gotoPay({
+            order_type: 8,
+            order_seqno: this.orderDetail.order_seqno
+          })
+          if (urlRes.code === 1000) {
+            try {
+              window.location.href = urlRes.data
+            } catch (e) {
+              console.log(e)
+            }
+          } else {
+            this.$Message.infor(urlRes.msg)
           }
         } else {
-          this.$Message.infor(urlRes.msg)
+          this.$Message.infor('该诊所未开通线上支付功能！')
         }
       }
     }

@@ -18,7 +18,8 @@ const state = {
     countyName: '',
     countyCode: '',
     address: '',
-    logo: ''
+    logo: '',
+    szjkPayEnabled: 0
   },
   userInfoState: {
     addr_info: '',

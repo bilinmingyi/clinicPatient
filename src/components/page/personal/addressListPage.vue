@@ -3,7 +3,7 @@
     <Header titleText="地址管理" :canReturn="true"></Header>
     <div class="mt-88px mb-131px">
       <div class="address-item" v-for="(item, index) in addressList" :key="index">
-        <div class="flexOne">
+        <div class="flexOne" @click.stop="selectAddress(index)">
           <p class="first-p">
             <span>{{item.contact}}</span>
             <span class="ml16">{{item.mobile}}</span>
@@ -28,6 +28,7 @@ import {mapState} from 'vuex'
 
 export default {
   name: 'addressListPage',
+  props: ['forSelect', 'ids'],
   data () {
     return {
       addressList: []
@@ -47,6 +48,11 @@ export default {
     }, 500)
   },
   methods: {
+    selectAddress (index) {
+      if (this.forSelect) {
+        this.$router.replace({name: 'sureOrder', query: {ids: this.ids, index: index}})
+      }
+    },
     editAddress (index) {
       if (!this.userInfoState.mobile) {
         this.$Message.confirm('请先绑定手机号码！', () => {
