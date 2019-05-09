@@ -9,7 +9,6 @@ export default {
   methods: {
     // 图片加载错误的时候
     error (item, e) {
-      console.log(e)
       e.target.src = this.getNormalHead(item.sex) // 默认图
     },
     // 头像的默认图
