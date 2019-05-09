@@ -28,19 +28,24 @@
       </div>
       <div class="clinic-content">
         <div class="address">
-          <div class="displayFlex mb-8px">
-            <div class="flexOne">
-              <p class="name mb-8px">收件人：{{addressee.concact}}</p>
-              <P>电话：{{addressee.phoneNum}}</P>
+          <section v-if="hasAddress">
+            <div class="displayFlex mb-8px">
+              <div class="flexOne">
+                <p class="name mb-8px">收件人：{{addressee.concact}}</p>
+                <P>电话：{{addressee.phoneNum}}</P>
+              </div>
+              <div>
+                <button class="edit-btn" @click.stop=editAddress>编辑</button>
+              </div>
             </div>
-            <div>
-              <button class="edit-btn">编辑</button>
+            <div class="flex">
+              <span>收货地址：</span>
+              <span class="flexOne">{{addressee.address}}</span>
             </div>
-          </div>
-          <div class="flex">
-            <span>收货地址：</span>
-            <span class="flexOne">{{addressee.address}}</span>
-          </div>
+          </section>
+          <section v-if="!hasAddress" class="add-address" @click.stop="editAddress">
+            + 添加地址
+          </section>
         </div>
         <hr class="full-screen-hr">
         <div class="remark">
@@ -56,11 +61,12 @@
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
 import {fetchShopCar, checkEnable, createOrder, removeShop, gotoPay} from '@/fetch/api'
+import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'orderSure',
-  props: ['ids'],
+  props: ['ids', 'index'],
   data () {
     return {
       shopCarList: [],
@@ -68,11 +74,13 @@ export default {
       memo: '',
       needCheck: 0,
       textList: ['', '提交审核', '去支付'],
+      hasAddress: false,
       addressee: {
-        concact: '王尼玛',
-        phoneNum: '15888654678',
-        address: '广东(省)广州(市)天河(区/县)珠江新城花城汇XXX街道幸福小区'
+        concact: '',
+        phoneNum: '',
+        address: ''
       }
+      //  广东(省)广州(市)天河(区/县)珠江新城花城汇XXX街道幸福小区
     }
   },
   components: {
@@ -81,6 +89,9 @@ export default {
     SmallTitle
   },
   computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    }),
     allPrice () {
       if (this.shopCarList.length === 0) {
         return 0
@@ -93,11 +104,50 @@ export default {
       }
     }
   },
+  watch: {
+    userInfoState: {
+      deep: true,
+      immediate: true,
+      handler: function () {
+        this.init()
+      }
+    }
+  },
   created () {
     this.getShopCar()
     this.checkEnabled()
   },
+  mounted () {
+    // this.init()
+  },
   methods: {
+    init () {
+      let addressList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
+      if (addressList.length === 0) {
+        this.hasAddress = false
+      } else {
+        this.hasAddress = true
+        if (this.index !== undefined) {
+          this.addressee.concact = addressList[this.index].contact
+          this.addressee.phoneNum = addressList[this.index].mobile
+          this.addressee.address = addressList[this.index].provinceName + '(省)' + addressList[this.index].cityName + '(市)' + addressList[this.index].countyName + '(区/县)' + addressList[this.index].address
+          return
+        }
+
+        let defaultList = addressList.filter(item => {
+          return item.isDefault === 1
+        })
+        if (defaultList.length !== 0) {
+          this.addressee.concact = defaultList[0].contact
+          this.addressee.phoneNum = defaultList[0].mobile
+          this.addressee.address = defaultList[0].provinceName + '(省)' + defaultList[0].cityName + '(市)' + defaultList[0].countyName + '(区/县)' + defaultList[0].address
+        } else {
+          this.addressee.concact = addressList[0].contact
+          this.addressee.phoneNum = addressList[0].mobile
+          this.addressee.address = addressList[0].provinceName + '(省)' + addressList[0].cityName + '(市)' + addressList[0].countyName + '(区/县)' + addressList[0].address
+        }
+      }
+    },
     imgError (event) {
       event.target.src = this.noImg
     },
@@ -186,6 +236,9 @@ export default {
       } else {
         this.$Message.infor(res.msg)
       }
+    },
+    editAddress () {
+      this.$router.replace({name: 'addressListPage', query: {forSelect: 1, ids: this.ids}})
     }
   }
 }
@@ -260,6 +313,12 @@ export default {
       .edit-btn {
         @include simpleButton(64px, 128px)
       }
+    }
+
+    .add-address {
+      text-align: center;
+      color: $depthTextColor;
+      font-size: 32px;
     }
   }
 
