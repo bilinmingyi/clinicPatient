@@ -48,8 +48,12 @@
                     @input="changeDefault"></radioGroup>
       </div>
     </div>
-    <div class="add-block">
+    <div class="add-block" v-if="index !== undefined">
+      <button class="del-btn" @click.stop="deleteItem">删除</button>
       <button class="sure-btn" @click.stop="saveChange">确定</button>
+    </div>
+    <div class="add-block" v-else>
+      <button class="add-btn" @click.stop="saveChange">确定</button>
     </div>
   </div>
 </template>
@@ -170,6 +174,27 @@ export default {
         }
       }
     },
+    deleteItem () {
+      this.$Message.confirm('确定删除？', () => {
+        let addrInfoList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
+        addrInfoList.splice(this.index, 1)
+        updateAddress({
+          addr_info: JSON.stringify(addrInfoList)
+        }).then(res => {
+          if (res.code === 1000) {
+            this.set_user_info({
+              addr_info: JSON.stringify(addrInfoList)
+            })
+            this.$router.back()
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      })
+    },
     saveChange () {
       if (!this.contact) {
         this.$Message.infor('请先填写姓名！')
@@ -228,6 +253,9 @@ export default {
         } else {
           this.$Message.infor(res.msg)
         }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
       })
     }
   }
@@ -282,6 +310,15 @@ export default {
   }
 
   .sure-btn {
+    @include deepButton(80px, 48%);
+    margin-left: 4%;
+  }
+
+  .add-btn {
     @include deepButton(80px, 100%);
+  }
+
+  .del-btn {
+    @include simpleButton(80px, 48%);
   }
 </style>
