@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="编辑信息"></Header>
+    <Header :canReturn="true" titleText="编辑地址"></Header>
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
@@ -15,21 +15,21 @@
       <div class="line-item">
         <label class="label-span mr-32px">地址</label>
         <select type="text" class="input-item select-width" @change="provinceChange" v-model="adrData.province_code">
-          <option value="">省</option>
+          <option value="">请选择</option>
           <option v-for="province in adsListData.provinceList" :value="province.province_code"
                   v-text="province.province_name"
                   :key="province.province_code"
           ></option>
         </select>
-        <select type="text" class="input-item select-width" @change="cityChange" v-model="adrData.city_code">
-          <option value="">市</option>
+        <select type="text" class="input-item select-width" @change.stop="cityChange" v-model="adrData.city_code">
+          <option value="">请选择</option>
           <option v-for="city in adsListData.cityList" :value="city.city_code"
                   v-text="city.city_name"
                   :key="city.city_code"
           ></option>
         </select>
         <select type="text" class="input-item select-width" @change="countyChange" v-model="adrData.county_code">
-          <option value="">区</option>
+          <option value="">请选择</option>
           <option v-for="county in adsListData.countyList" :value="county.county_code"
                   v-text="county.county_name"
                   :key="county.county_code"
@@ -57,6 +57,8 @@
 <script>
 import {Header, radioGroup} from '@/components/common/index'
 import {provinceDate} from '@/assets/js/addr_dict'
+import {mapState, mapActions} from 'vuex'
+import {updateAddress} from '@/fetch/api'
 
 export default {
   name: 'editAddress',
@@ -64,6 +66,7 @@ export default {
     Header,
     radioGroup
   },
+  props: ['index'],
   data () {
     return {
       defaultList: [{id: 'yes', label: '是', value: 1}, {id: 'no', label: '否', value: 0}],
@@ -89,22 +92,143 @@ export default {
   created () {
     this.adsListData.provinceList = provinceDate
   },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
+  watch: {
+    userInfoState: {
+      deep: true,
+      immediate: true,
+      handler: function (newVal, oldVal) {
+        try {
+          if (this.index !== undefined) {
+            let addressList = newVal.addr_info === '' ? [] : JSON.parse(newVal.addr_info)
+            if (addressList.length === 0) {
+              return
+            }
+            let curAddress = addressList[this.index]
+            this.contact = curAddress.contact
+            this.mobile = curAddress.mobile
+            this.adrData.province_code = curAddress.provinceCode
+            this.adrData.province_name = curAddress.provinceName
+            this.provinceChange()
+            this.adrData.city_code = curAddress.cityCode
+            this.adrData.city_name = curAddress.cityName
+            this.cityChange()
+            this.adrData.county_code = curAddress.countyCode
+            this.adrData.county_name = curAddress.countyName
+            this.countyChange()
+            this.adrData.address = curAddress.address
+            this.adrData.is_default = curAddress.isDefault
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    }
+  },
+  mounted () {
+
+  },
   methods: {
+    ...mapActions(['set_user_info']),
     changeDefault (val) {
       this.adrData.is_default = Number(val)
     },
     provinceChange () {
-      console.log('修改省份')
+      for (let i = 0, len = provinceDate.length; i < len; i++) {
+        if (this.adrData.province_code === provinceDate[i].province_code) {
+          this.adrData.province_name = provinceDate[i].province_name
+          this.adsListData.cityList = provinceDate[i].city
+          break
+        }
+      }
+      this.adrData.city_code = ''
+      this.adrData.city_name = ''
+      this.adrData.county_code = ''
+      this.adrData.county_name = ''
     },
     cityChange () {
-      console.log('修改城市')
+      let cityList = this.adsListData.cityList
+      for (let i = 0, len = cityList.length; i < len; i++) {
+        if (this.adrData.city_code === cityList[i].city_code) {
+          this.adrData.city_name = cityList[i].city_name
+          this.adsListData.countyList = cityList[i].county
+        }
+      }
+      this.adrData.county_code = ''
+      this.adrData.county_name = ''
     },
 
     countyChange () {
-      console.log('修改区域')
+      let countyList = this.adsListData.countyList
+      for (let i = 0, len = countyList.length; i < len; i++) {
+        if (this.adrData.county_code === countyList[i].county_code) {
+          this.adrData.county_name = countyList[i].county_name
+        }
+      }
     },
     saveChange () {
+      if (!this.contact) {
+        this.$Message.infor('请先填写姓名！')
+        return
+      }
+      if (!this.mobile) {
+        this.$Message.infor('请先填写手机！')
+        return
+      }
+      if (!this.adrData.province_code || !this.adrData.city_code || !this.adrData.county_code || !this.adrData.address) {
+        this.$Message.infor('请先填写地址信息！')
+        return
+      }
+      let addrInfoList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
+      if (this.adrData.is_default === 1) {
+        addrInfoList.forEach(item => {
+          item.isDefault = 0
+        })
+      }
+      if (this.index !== undefined) {
+        addrInfoList[this.index] = {
+          contact: this.contact,
+          mobile: this.mobile,
+          isDefault: this.adrData.is_default,
+          provinceName: this.adrData.province_name,
+          provinceCode: this.adrData.province_code,
+          cityName: this.adrData.city_name,
+          cityCode: this.adrData.city_code,
+          countyName: this.adrData.county_name,
+          countyCode: this.adrData.county_code,
+          address: this.adrData.address
+        }
+      } else {
+        addrInfoList.push({
+          contact: this.contact,
+          mobile: this.mobile,
+          isDefault: this.adrData.is_default,
+          provinceName: this.adrData.province_name,
+          provinceCode: this.adrData.province_code,
+          cityName: this.adrData.city_name,
+          cityCode: this.adrData.city_code,
+          countyName: this.adrData.county_name,
+          countyCode: this.adrData.county_code,
+          address: this.adrData.address
+        })
+      }
 
+      updateAddress({
+        addr_info: JSON.stringify(addrInfoList)
+      }).then(res => {
+        if (res.code === 1000) {
+          this.set_user_info({
+            addr_info: JSON.stringify(addrInfoList)
+          })
+          this.$router.back()
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      })
     }
   }
 }

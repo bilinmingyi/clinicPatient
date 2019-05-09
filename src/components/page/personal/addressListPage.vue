@@ -2,18 +2,18 @@
   <div>
     <Header titleText="地址管理" :canReturn="true"></Header>
     <div class="mt-88px mb-131px">
-      <div class="address-item">
-        <div>
+      <div class="address-item" v-for="(item, index) in addressList" :key="index">
+        <div class="flexOne">
           <p class="first-p">
-            <span>王尼玛</span>
-            <span class="ml16">13678958975</span>
-            <span class="default-address ml16">默认</span>
+            <span>{{item.contact}}</span>
+            <span class="ml16">{{item.mobile}}</span>
+            <span class="default-address ml16" v-if="item.isDefault === 1">默认</span>
           </p>
           <p class="second-p">
-            广州市天河区珠江新城花城汇XXX街道幸福小区幸福的 幸福小区小区6栋601
+            {{item.provinceName+'(省)'+item.cityName+'(市)'+item.countyName+'(区/县)'+item.address}}
           </p>
         </div>
-        <div class="edit-btn" @click.stop="editAddress"></div>
+        <div class="edit-btn" @click.stop="editAddress(index)"></div>
       </div>
     </div>
     <div class="add_block">
@@ -47,12 +47,13 @@ export default {
     }, 500)
   },
   methods: {
-    editAddress () {
+    editAddress (index) {
       if (!this.userInfoState.mobile) {
         this.$Message.confirm('请先绑定手机号码！', () => {
           this.$router.push({name: 'editPerson'})
         })
       }
+      this.$router.push({name: 'editAddress', query: {index: index}})
     },
     addAddress () {
       if (!this.userInfoState.mobile) {

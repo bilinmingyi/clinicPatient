@@ -95,6 +95,8 @@ const fetchCode = params => fetch('/sms/chkCode/mobileBind', params)
 const savePhone = params => fetch('/user/mobile/update', params)
 // 获取商场订单
 const fetchGoodList = params => fetch('/goodsorder/list', params)
+// 更改收件地址
+const updateAds = params => fetch('/cuser/addrInfo/update', params)
 
 export {
   fetch,
@@ -132,5 +134,6 @@ export {
   checkEnable,
   updateAddress,
   createOrder,
-  fetchGoodList
+  fetchGoodList,
+  updateAds
 }

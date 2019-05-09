@@ -152,7 +152,8 @@ export default new Router({
         {
           path: 'editAddress',
           name: 'editAddress',
-          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/editAddress.vue')
+          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/editAddress.vue'),
+          props: (route) => route.query
         }
       ]
     }
