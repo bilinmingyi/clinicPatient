@@ -80,7 +80,6 @@ export default {
         phoneNum: '',
         address: ''
       }
-      //  广东(省)广州(市)天河(区/县)珠江新城花城汇XXX街道幸福小区
     }
   },
   components: {

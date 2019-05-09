@@ -42,7 +42,7 @@
         <div v-for="(item, index) in orderDetail.goods_order_items" :key="item.id">
           <div class="goods-item">
             <div class="goods-item-middle">
-              <img src="../../../assets/img/nophoto.png">
+              <img :src="item.img?item.img:noImg" @error="imgError($event)">
             </div>
             <div class="goods-item-right">
               <div class="goods-info">
@@ -83,6 +83,7 @@
 <script>
 import {Header, SmallTitle, ShopFooter} from '../../common'
 import {fetchGoodList, gotoPay} from '@/fetch/api'
+import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'mallOrderDetail',
@@ -94,6 +95,7 @@ export default {
   },
   data () {
     return {
+      noImg: noImg,
       orderDetail: {}
     }
   },
@@ -114,6 +116,9 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    imgError (event) {
+      event.target.src = this.noImg
     },
     async goPay () {
       if (this.orderDetail.status === 'UNPAID4BUSINESS') {
