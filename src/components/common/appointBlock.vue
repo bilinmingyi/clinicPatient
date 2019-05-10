@@ -75,7 +75,6 @@ export default {
     }
   },
   created () {
-    console.log(this.resource)
   },
   methods: {
     cancelAppoint () {

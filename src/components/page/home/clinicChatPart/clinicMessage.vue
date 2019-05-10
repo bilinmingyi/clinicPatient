@@ -9,8 +9,9 @@
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
         <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'">
-          <div class="recommond" v-if="chatDetail.msgdata.link_type ===  'treatment_order_create'" @click="goRouter()">
-            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)" class="iconImg">
+          <div class="recommond" v-if="chatDetail.msgdata.link_type ===  'treatment_order_create'" @click="goRouter(1)">
+            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)"
+                 class="iconImg">
             <div class="recommond-content">
               <p class="recommond-title">
                 {{imgDetail.name}}
@@ -19,7 +20,8 @@
               <p class="recommond-subTitle">请点击进行预约</p>
             </div>
           </div>
-          <div class="recommond recommond2" v-if="chatDetail.msgdata.link_type === 'goods_recommond'">
+          <div class="recommond recommond2" v-if="chatDetail.msgdata.link_type === 'goods_recommond'"
+               @click="goRouter(2)">
             <img :src="imgDetail.avatar||defaultGoods" class="iconImg2">
             <div class="recommond-content">
               <p class="grayText">
@@ -31,7 +33,8 @@
         </div>
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='image'">
           <div class="imgMessage" @click="showImg">
-            <img :src="chatDetail.msgdata.img_url" alt :class="[{'img-loadH':chatDetail.imgLoadH},{'img-loadW':chatDetail.imgLoadW}]">
+            <img :src="chatDetail.msgdata.img_url" alt
+                 :class="[{'img-loadH':chatDetail.imgLoadH},{'img-loadW':chatDetail.imgLoadW}]">
           </div>
         </div>
         <!-- <div
@@ -63,8 +66,14 @@ export default {
     }
   },
   methods: {
-    goRouter () {
-      this.$router.push({ path: `/doctor/detail/${this.imgDetail.id}`, query: { resource: 'chat' } })
+    goRouter (type) {
+      switch (type) {
+        case 1:
+          this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`, query: {resource: 'chat'}})
+          break
+        case 2:
+          this.$router.push({path: `/mall/goodsDetail/${this.imgDetail.id}`})
+      }
     },
     // 调用微信接口展示图片
     showImg () {
@@ -106,140 +115,146 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-p {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 400;
-  color: $simpleGray;
-}
-
-.chat-content {
-  margin-left: 20px;
-
-  .reply-content {
-    background: $bgwhite2;
-    border: 1px solid $simpleGray;
-    max-width: 480px;
-    height: auto;
-    border-radius: 16px;
-    z-index: 99;
-    padding: 22px 30px;
-    @extend %normalTitle;
-  }
-
-  a {
-    color: $deepBlue;
-    text-decoration: underline;
-    padding-left: 20px;
-    font-weight: 600;
-  }
-
-  display: flex;
-
-  .iconImg {
-    @extend %minICon;
-    border-radius: 100px;
-  }
-  .iconImg2 {
-    width: 120px !important;
-    height: 120px !important;
-  }
-
-  .imgMessage {
-    img {
-      width: 300px;
-      height: 300px;
-    }
-    .img-loadH {
-      height: 300px;
-      width: auto;
-    }
-    .img-loadW {
-      width: 300px;
-      height: auto;
-    }
-  }
-  .grayText {
+  p {
+    text-align: center;
     font-size: 26px;
-    padding-bottom: 6px;
+    font-weight: 400;
     color: $simpleGray;
   }
-  .recommond2 {
-    align-items: stretch;
-  }
 
-  .recommond {
-    @extend %flexV;
+  .chat-content {
+    margin-left: 20px;
 
-    img {
-      @extend %mediumIcon;
-    }
-
-    &-content {
-      padding-left: 16px;
-
-      p {
-        text-align: left;
-      }
-    }
-
-    &-title {
+    .reply-content {
+      background: $bgwhite2;
+      border: 1px solid $simpleGray;
+      max-width: 480px;
+      height: auto;
+      border-radius: 16px;
+      z-index: 99;
+      padding: 22px 30px;
       @extend %normalTitle;
-      font-weight: 600;
+    }
 
-      span {
-        min-width: 72px;
-        height: 40px;
-        padding: 0px 10px;
-        border-radius: 8px;
-        line-height: 40px;
-        text-align: center;
-        margin-left: 16px;
-        color: $bgwhite2;
-        font-size: 20px;
-        font-weight: 400;
-        display: inline-block;
+    a {
+      color: $deepBlue;
+      text-decoration: underline;
+      padding-left: 20px;
+      font-weight: 600;
+    }
+
+    display: flex;
+
+    .iconImg {
+      @extend %minICon;
+      border-radius: 100px;
+    }
+
+    .iconImg2 {
+      width: 120px !important;
+      height: 120px !important;
+    }
+
+    .imgMessage {
+      img {
+        width: 300px;
+        height: 300px;
+      }
+
+      .img-loadH {
+        height: 300px;
+        width: auto;
+      }
+
+      .img-loadW {
+        width: 300px;
+        height: auto;
       }
     }
 
-    &-subTitle {
-      padding-top: 6px;
-      font-size: 28px;
+    .grayText {
+      font-size: 26px;
+      padding-bottom: 6px;
       color: $simpleGray;
     }
-    &-subTitle2 {
-      padding-top: 6px;
-      @include textEllipsis(90px, 256px, 2, 28px, #3f3f3f);
+
+    .recommond2 {
+      align-items: stretch;
+    }
+
+    .recommond {
+      @extend %flexV;
+
+      img {
+        @extend %mediumIcon;
+      }
+
+      &-content {
+        padding-left: 16px;
+
+        p {
+          text-align: left;
+        }
+      }
+
+      &-title {
+        @extend %normalTitle;
+        font-weight: 600;
+
+        span {
+          min-width: 72px;
+          height: 40px;
+          padding: 0px 10px;
+          border-radius: 8px;
+          line-height: 40px;
+          text-align: center;
+          margin-left: 16px;
+          color: $bgwhite2;
+          font-size: 20px;
+          font-weight: 400;
+          display: inline-block;
+        }
+      }
+
+      &-subTitle {
+        padding-top: 6px;
+        font-size: 28px;
+        color: $simpleGray;
+      }
+
+      &-subTitle2 {
+        padding-top: 6px;
+        @include textEllipsis(90px, 256px, 2, 28px, #3f3f3f);
+      }
     }
   }
-}
 
-.right-chat {
-  .chat-content {
-    justify-content: flex-end;
-    display: flex;
+  .right-chat {
+    .chat-content {
+      justify-content: flex-end;
+      display: flex;
+    }
   }
-}
 
-.cancel {
-  color: $gray3;
-  font-size: 28px;
-  @extend %flexV;
-}
+  .cancel {
+    color: $gray3;
+    font-size: 28px;
+    @extend %flexV;
+  }
 
-.color-29BBFF {
-  background: #29bbff;
-}
+  .color-29BBFF {
+    background: #29bbff;
+  }
 
-.color-4DBC89 {
-  background: #4dbc89;
-}
+  .color-4DBC89 {
+    background: #4dbc89;
+  }
 
-.color-08BAC6 {
-  background: #08bac6;
-}
+  .color-08BAC6 {
+    background: #08bac6;
+  }
 
-.color-EDAB15 {
-  background: #edab15;
-}
+  .color-EDAB15 {
+    background: #edab15;
+  }
 </style>
