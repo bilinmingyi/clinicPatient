@@ -1,12 +1,12 @@
 <template>
   <div v-cloak>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
+import { mapActions } from 'vuex'
+import { getClinicData, fetchUserInfo } from '@/fetch/api.js'
 
 export default {
   name: 'App',
@@ -21,7 +21,6 @@ export default {
     ...mapActions(['set_clinic_info', 'set_user_info']),
     getClinic () {
       getClinicData().then(res => {
-        console.log(res)
         if (res.code === 1000) {
           this.set_clinic_info({
             id: res.data.id,
