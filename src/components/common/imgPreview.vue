@@ -10,7 +10,9 @@
     </div>
     <div class="img-block">
       <div class="img-content">
-        <img :src="imgUrls" id="img-canvas" @load="loadImg($event)">
+        <img :src="imgUrls" id="img-canvas"
+             :class="imgData.naturalWidth>=imgData.naturalHeight?'width-img':''"
+             @load="loadImg($event)">
         <div v-show="waitCut" id="zxxCropBox">
           <div id="zxxDragBg"></div>
           <div id="dragLeftTop"></div>
@@ -73,37 +75,44 @@ export default {
       },
       imgUrls: '',
       canRestore: false,
-      showLoad: false
+      showLoad: false,
+      curImgSize: 0
     }
   },
   created () {
     this.imgUrls = this.imgUrl
   },
   mounted () {
-    let zxxCropBox = document.getElementById('zxxCropBox')
-    this.startDrag(document.getElementById('dragLeftTop'), zxxCropBox, 'nw')
-    this.startDrag(document.getElementById('dragLeftBot'), zxxCropBox, 'sw')
-    this.startDrag(document.getElementById('dragRightTop'), zxxCropBox, 'ne')
-    this.startDrag(document.getElementById('dragRightBot'), zxxCropBox, 'se')
-    this.startDrag(document.getElementById('dragTopCenter'), zxxCropBox, 'n')
-    this.startDrag(document.getElementById('dragBotCenter'), zxxCropBox, 's')
-    this.startDrag(document.getElementById('dragRightCenter'), zxxCropBox, 'e')
-    this.startDrag(document.getElementById('dragLeftCenter'), zxxCropBox, 'w')
-    this.startDrag(document.getElementById('zxxDragBg'), zxxCropBox, 'drag')
   },
   methods: {
+    init () {
+      let zxxCropBox = document.getElementById('zxxCropBox')
+      this.startDrag(document.getElementById('dragLeftTop'), zxxCropBox, 'nw')
+      this.startDrag(document.getElementById('dragLeftBot'), zxxCropBox, 'sw')
+      this.startDrag(document.getElementById('dragRightTop'), zxxCropBox, 'ne')
+      this.startDrag(document.getElementById('dragRightBot'), zxxCropBox, 'se')
+      this.startDrag(document.getElementById('dragTopCenter'), zxxCropBox, 'n')
+      this.startDrag(document.getElementById('dragBotCenter'), zxxCropBox, 's')
+      this.startDrag(document.getElementById('dragRightCenter'), zxxCropBox, 'e')
+      this.startDrag(document.getElementById('dragLeftCenter'), zxxCropBox, 'w')
+      this.startDrag(document.getElementById('zxxDragBg'), zxxCropBox, 'drag')
+    },
     loadImg (e) {
       let boxObj = document.getElementById('zxxCropBox')
+      let resultData = this.dataURLtoFile(this.imgUrls, new Date().getTime().toString())
+      this.curImgSize = resultData.size
+
+      this.imgData.naturalWidth = e.target.naturalWidth
+      this.imgData.naturalHeight = e.target.naturalHeight
       this.imgData.width = e.target.width
       this.imgData.height = e.target.height
       this.result.cropW = e.target.width
       this.result.cropH = e.target.height
-      this.imgData.naturalWidth = e.target.naturalWidth
-      this.imgData.naturalHeight = e.target.naturalHeight
       this.imgData.scaleX = this.imgData.width / this.imgData.naturalWidth
       this.imgData.scaleY = this.imgData.height / this.imgData.naturalHeight
       boxObj.style.width = parseInt(this.imgData.width) + 'px'
       boxObj.style.height = parseInt(this.imgData.height) + 'px'
+      this.init()
     },
     sendImg () {
       this.showLoad = true
@@ -125,6 +134,7 @@ export default {
         })
       }).catch(error => {
         this.$Message.infor(error.message)
+        this.showLoad = false
       })
     },
     compress () {
@@ -132,19 +142,8 @@ export default {
         let img = document.getElementById('img-canvas')
         let canvas = document.createElement('canvas')
         let ctx = canvas.getContext('2d')
-        let width = img.width
-        let height = img.height
-
-        // 图片像素大于400万像素，计算压缩到400万以下
-        let ratio
-
-        if ((ratio = width * height / 4000000) > 1) {
-          ratio = Math.sqrt(ratio)
-          width /= ratio
-          height /= ratio
-        } else {
-          ratio = 1
-        }
+        let width = img.naturalWidth
+        let height = img.naturalHeight
         canvas.width = width
         canvas.height = height
         ctx.save()
@@ -223,8 +222,8 @@ export default {
       // kind 为操作的类型
       let self = this
       // 初始化宽高
-      self.params.width = self.getCss(target, 'width')
-      self.params.height = self.getCss(target, 'height')
+      self.params.width = self.imgData.width
+      self.params.height = self.imgData.height
       // 初始化坐标
       if (self.getCss(target, 'left') !== 'auto') {
         self.params.left = self.getCss(target, 'left')
@@ -255,6 +254,7 @@ export default {
                 // 上拉伸
                 target.style.top = parseInt(self.params.top) + disY + 'px'
                 target.style.height = parseInt(self.params.height) - disY + 'px'
+                console.log(self.params.height)
                 break
               case 'w':
                 // 左拉伸
@@ -359,6 +359,10 @@ export default {
 
         img {
           margin: 0 auto;
+          max-height: 70vh;
+        }
+
+        .width-img {
           width: 100%;
         }
       }

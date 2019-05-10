@@ -141,6 +141,7 @@ export default {
       // let img = new Image()
       reader.onload = (e) => {
         // img.src = e.target.result
+        // console.log(e.target.result)
         this.imgUrl = e.target.result
         this.showLoad = false
         document.querySelector('#img-get').value = null
