@@ -83,23 +83,24 @@ export default {
     this.imgUrls = this.imgUrl
   },
   mounted () {
-    let zxxCropBox = document.getElementById('zxxCropBox')
-    this.startDrag(document.getElementById('dragLeftTop'), zxxCropBox, 'nw')
-    this.startDrag(document.getElementById('dragLeftBot'), zxxCropBox, 'sw')
-    this.startDrag(document.getElementById('dragRightTop'), zxxCropBox, 'ne')
-    this.startDrag(document.getElementById('dragRightBot'), zxxCropBox, 'se')
-    this.startDrag(document.getElementById('dragTopCenter'), zxxCropBox, 'n')
-    this.startDrag(document.getElementById('dragBotCenter'), zxxCropBox, 's')
-    this.startDrag(document.getElementById('dragRightCenter'), zxxCropBox, 'e')
-    this.startDrag(document.getElementById('dragLeftCenter'), zxxCropBox, 'w')
-    this.startDrag(document.getElementById('zxxDragBg'), zxxCropBox, 'drag')
   },
   methods: {
+    init () {
+      let zxxCropBox = document.getElementById('zxxCropBox')
+      this.startDrag(document.getElementById('dragLeftTop'), zxxCropBox, 'nw')
+      this.startDrag(document.getElementById('dragLeftBot'), zxxCropBox, 'sw')
+      this.startDrag(document.getElementById('dragRightTop'), zxxCropBox, 'ne')
+      this.startDrag(document.getElementById('dragRightBot'), zxxCropBox, 'se')
+      this.startDrag(document.getElementById('dragTopCenter'), zxxCropBox, 'n')
+      this.startDrag(document.getElementById('dragBotCenter'), zxxCropBox, 's')
+      this.startDrag(document.getElementById('dragRightCenter'), zxxCropBox, 'e')
+      this.startDrag(document.getElementById('dragLeftCenter'), zxxCropBox, 'w')
+      this.startDrag(document.getElementById('zxxDragBg'), zxxCropBox, 'drag')
+    },
     loadImg (e) {
       let boxObj = document.getElementById('zxxCropBox')
       let resultData = this.dataURLtoFile(this.imgUrls, new Date().getTime().toString())
       this.curImgSize = resultData.size
-      console.log(this.imgData)
 
       this.imgData.naturalWidth = e.target.naturalWidth
       this.imgData.naturalHeight = e.target.naturalHeight
@@ -111,6 +112,7 @@ export default {
       this.imgData.scaleY = this.imgData.height / this.imgData.naturalHeight
       boxObj.style.width = parseInt(this.imgData.width) + 'px'
       boxObj.style.height = parseInt(this.imgData.height) + 'px'
+      this.init()
     },
     sendImg () {
       this.showLoad = true
@@ -151,25 +153,7 @@ export default {
         ctx.drawImage(img, 0, 0, width, height)
         ctx.restore()
         // 进行最小压缩
-        // let size = this.curImgSize
-        let ndata = ''
-        // if (size < 204800) {
-        //   ndata = canvas.toDataURL('image/jpeg', 1)
-        // } else if (size >= 204800 && size < 409600) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.9)
-        // } else if (size >= 409600 && size < 614400) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.8)
-        // } else if (size >= 614400 && size < 819200) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.7)
-        // } else if (size >= 819200 && size < 1024000) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.6)
-        // } else if (size >= 1024000 && size < 1228800) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.5)
-        // } else if (size >= 1228800 && size < 1433600) {
-        //   ndata = canvas.toDataURL('image/jpeg', 0.4)
-        // } else if (size >= 1433600) {
-        ndata = canvas.toDataURL('image/jpeg', 0.3)
-        // }
+        let ndata = canvas.toDataURL('image/jpeg', 0.3)
         canvas.width = canvas.height = 0
         canvas = null
         resolve(ndata)
@@ -238,8 +222,8 @@ export default {
       // kind 为操作的类型
       let self = this
       // 初始化宽高
-      self.params.width = self.getCss(target, 'width')
-      self.params.height = self.getCss(target, 'height')
+      self.params.width = self.imgData.width
+      self.params.height = self.imgData.height
       // 初始化坐标
       if (self.getCss(target, 'left') !== 'auto') {
         self.params.left = self.getCss(target, 'left')
@@ -270,6 +254,7 @@ export default {
                 // 上拉伸
                 target.style.top = parseInt(self.params.top) + disY + 'px'
                 target.style.height = parseInt(self.params.height) - disY + 'px'
+                console.log(self.params.height)
                 break
               case 'w':
                 // 左拉伸
