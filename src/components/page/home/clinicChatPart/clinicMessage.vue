@@ -112,10 +112,8 @@ p {
   font-weight: 400;
   color: $simpleGray;
 }
-
 .chat-content {
   margin-left: 20px;
-
   .reply-content {
     background: $bgwhite2;
     border: 1px solid $simpleGray;
@@ -126,25 +124,21 @@ p {
     padding: 22px 30px;
     @extend %normalTitle;
   }
-
   a {
     color: $deepBlue;
     text-decoration: underline;
     padding-left: 20px;
     font-weight: 600;
   }
-
   display: flex;
-
   .iconImg {
     @extend %minICon;
     border-radius: 100px;
   }
   .iconImg2 {
-    width: 120px !important;
-    height: 120px !important;
+    width: 140px !important;
+    height: 140px !important;
   }
-
   .imgMessage {
     img {
       width: 300px;
@@ -167,26 +161,20 @@ p {
   .recommond2 {
     align-items: stretch;
   }
-
   .recommond {
     @extend %flexV;
-
     img {
       @extend %mediumIcon;
     }
-
     &-content {
       padding-left: 16px;
-
       p {
         text-align: left;
       }
     }
-
     &-title {
       @extend %normalTitle;
       font-weight: 600;
-
       span {
         min-width: 72px;
         height: 40px;
@@ -201,7 +189,6 @@ p {
         display: inline-block;
       }
     }
-
     &-subTitle {
       padding-top: 6px;
       font-size: 28px;
@@ -213,14 +200,12 @@ p {
     }
   }
 }
-
 .right-chat {
   .chat-content {
     justify-content: flex-end;
     display: flex;
   }
 }
-
 .cancel {
   color: $gray3;
   font-size: 28px;
