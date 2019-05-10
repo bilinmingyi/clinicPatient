@@ -9,8 +9,9 @@
           <span>{{chatDetail.msgdata.text}}</span>
         </div>
         <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'">
-          <div class="recommond" v-if="chatDetail.msgdata.link_type ===  'treatment_order_create'" @click="goRouter()">
-            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)" class="iconImg">
+          <div class="recommond" v-if="chatDetail.msgdata.link_type ===  'treatment_order_create'" @click="goRouter(1)">
+            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)"
+                 class="iconImg">
             <div class="recommond-content">
               <p class="recommond-title">
                 {{imgDetail.name}}
@@ -19,7 +20,8 @@
               <p class="recommond-subTitle">请点击进行预约</p>
             </div>
           </div>
-          <div class="recommond recommond2" v-if="chatDetail.msgdata.link_type === 'goods_recommond'">
+          <div class="recommond recommond2" v-if="chatDetail.msgdata.link_type === 'goods_recommond'"
+               @click="goRouter(2)">
             <img :src="imgDetail.avatar||defaultGoods" class="iconImg2">
             <div class="recommond-content">
               <p class="grayText">
@@ -31,7 +33,8 @@
         </div>
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='image'">
           <div class="imgMessage" @click="showImg">
-            <img :src="chatDetail.msgdata.img_url" alt :class="[{'img-loadH':chatDetail.imgLoadH},{'img-loadW':chatDetail.imgLoadW}]">
+            <img :src="chatDetail.msgdata.img_url" alt
+                 :class="[{'img-loadH':chatDetail.imgLoadH},{'img-loadW':chatDetail.imgLoadW}]">
           </div>
         </div>
         <!-- <div
@@ -63,8 +66,14 @@ export default {
     }
   },
   methods: {
-    goRouter () {
-      this.$router.push({ path: `/doctor/detail/${this.imgDetail.id}`, query: { resource: 'chat' } })
+    goRouter (type) {
+      switch (type) {
+        case 1:
+          this.$router.push({path: `/doctor/detail/${this.imgDetail.id}`, query: {resource: 'chat'}})
+          break
+        case 2:
+          this.$router.push({path: `/mall/goodsDetail/${this.imgDetail.id}`})
+      }
     },
     // 调用微信接口展示图片
     showImg () {
@@ -112,8 +121,10 @@ p {
   font-weight: 400;
   color: $simpleGray;
 }
+
 .chat-content {
   margin-left: 20px;
+
   .reply-content {
     background: $bgwhite2;
     border: 1px solid $simpleGray;
@@ -124,13 +135,16 @@ p {
     padding: 22px 30px;
     @extend %normalTitle;
   }
+
   a {
     color: $deepBlue;
     text-decoration: underline;
     padding-left: 20px;
     font-weight: 600;
   }
+
   display: flex;
+
   .iconImg {
     @extend %minICon;
     border-radius: 100px;
@@ -139,6 +153,7 @@ p {
     width: 140px !important;
     height: 140px !important;
   }
+
   .imgMessage {
     img {
       width: 300px;
@@ -161,20 +176,26 @@ p {
   .recommond2 {
     align-items: stretch;
   }
+
   .recommond {
     @extend %flexV;
+
     img {
       @extend %mediumIcon;
     }
+
     &-content {
       padding-left: 16px;
+
       p {
         text-align: left;
       }
     }
+
     &-title {
       @extend %normalTitle;
       font-weight: 600;
+
       span {
         min-width: 72px;
         height: 40px;
@@ -189,6 +210,7 @@ p {
         display: inline-block;
       }
     }
+
     &-subTitle {
       padding-top: 6px;
       font-size: 28px;
@@ -200,31 +222,33 @@ p {
     }
   }
 }
+
 .right-chat {
   .chat-content {
     justify-content: flex-end;
     display: flex;
   }
 }
+
 .cancel {
   color: $gray3;
   font-size: 28px;
   @extend %flexV;
 }
 
-.color-29BBFF {
-  background: #29bbff;
-}
+  .color-29BBFF {
+    background: #29bbff;
+  }
 
-.color-4DBC89 {
-  background: #4dbc89;
-}
+  .color-4DBC89 {
+    background: #4dbc89;
+  }
 
-.color-08BAC6 {
-  background: #08bac6;
-}
+  .color-08BAC6 {
+    background: #08bac6;
+  }
 
-.color-EDAB15 {
-  background: #edab15;
-}
+  .color-EDAB15 {
+    background: #edab15;
+  }
 </style>

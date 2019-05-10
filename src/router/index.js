@@ -55,7 +55,7 @@ export default new Router({
       ]
     },
     {
-      path: '/mall',
+      path: '/mall/mall',
       component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/index.vue'),
       children: [
         {

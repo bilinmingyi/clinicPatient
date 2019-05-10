@@ -67,7 +67,7 @@ import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
-  props: ['orderSeqno'],
+  props: ['orderSeqno', 'shouldPay'],
   components: {
     Header,
     SmallTitle
@@ -82,8 +82,13 @@ export default {
       clinic: state => state.clinic
     })
   },
-  created () {
-    this.getDetail()
+  mounted () {
+    if (Number(this.shouldPay) === 1) {
+      this.toPay()
+      this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})
+    } else {
+      this.getDetail()
+    }
   },
   methods: {
     getDetail () {
@@ -105,30 +110,33 @@ export default {
     nextDone () {
       if (this.orderInfo.status === 'SZJK_PAYING') {
         if (this.clinic.szjkPayEnabled === 1) {
-          gotoPay({
-            'order_type': 1,
-            'order_seqno': this.orderInfo.orderSeqno
-          }).then(res => {
-            if (res.code === 1000) {
-              try {
-                window.location.href = res.data
-              } catch (error) {
-                console.log(error)
-                this.$Message.infor('支付跳转失败')
-              }
-            } else {
-              this.$Message.infor(res.msg)
-            }
-          }).catch(error => {
-            console.log(error)
-            this.$Message.infor('网络出错！')
-          })
+          this.toPay()
         } else {
           this.$Message.infor('该诊所未开通线上支付功能！')
         }
       } else {
         this.$router.go(-1)
       }
+    },
+    toPay () {
+      gotoPay({
+        'order_type': 1,
+        'order_seqno': this.orderSeqno
+      }).then(res => {
+        if (res.code === 1000) {
+          try {
+            window.location.href = res.data
+          } catch (error) {
+            console.log(error)
+            this.$Message.infor('支付跳转失败')
+          }
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }
