@@ -115,132 +115,126 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  p {
-    text-align: center;
+p {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 400;
+  color: $simpleGray;
+}
+
+.chat-content {
+  margin-left: 20px;
+
+  .reply-content {
+    background: $bgwhite2;
+    border: 1px solid $simpleGray;
+    max-width: 480px;
+    height: auto;
+    border-radius: 16px;
+    z-index: 99;
+    padding: 22px 30px;
+    @extend %normalTitle;
+  }
+
+  a {
+    color: $deepBlue;
+    text-decoration: underline;
+    padding-left: 20px;
+    font-weight: 600;
+  }
+
+  display: flex;
+
+  .iconImg {
+    @extend %minICon;
+    border-radius: 100px;
+  }
+  .iconImg2 {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .imgMessage {
+    img {
+      width: 300px;
+      height: 300px;
+    }
+    .img-loadH {
+      height: 300px;
+      width: auto;
+    }
+    .img-loadW {
+      width: 300px;
+      height: auto;
+    }
+  }
+  .grayText {
     font-size: 26px;
-    font-weight: 400;
+    padding-bottom: 6px;
     color: $simpleGray;
   }
+  .recommond2 {
+    align-items: stretch;
+  }
 
-  .chat-content {
-    margin-left: 20px;
+  .recommond {
+    @extend %flexV;
 
-    .reply-content {
-      background: $bgwhite2;
-      border: 1px solid $simpleGray;
-      max-width: 480px;
-      height: auto;
-      border-radius: 16px;
-      z-index: 99;
-      padding: 22px 30px;
+    img {
+      @extend %mediumIcon;
+    }
+
+    &-content {
+      padding-left: 16px;
+
+      p {
+        text-align: left;
+      }
+    }
+
+    &-title {
       @extend %normalTitle;
-    }
-
-    a {
-      color: $deepBlue;
-      text-decoration: underline;
-      padding-left: 20px;
       font-weight: 600;
-    }
 
-    display: flex;
-
-    .iconImg {
-      @extend %minICon;
-      border-radius: 100px;
-    }
-
-    .iconImg2 {
-      width: 120px !important;
-      height: 120px !important;
-    }
-
-    .imgMessage {
-      img {
-        width: 300px;
-        height: 300px;
-      }
-
-      .img-loadH {
-        height: 300px;
-        width: auto;
-      }
-
-      .img-loadW {
-        width: 300px;
-        height: auto;
+      span {
+        min-width: 72px;
+        height: 40px;
+        padding: 0px 10px;
+        border-radius: 8px;
+        line-height: 40px;
+        text-align: center;
+        margin-left: 16px;
+        color: $bgwhite2;
+        font-size: 20px;
+        font-weight: 400;
+        display: inline-block;
       }
     }
 
-    .grayText {
-      font-size: 26px;
-      padding-bottom: 6px;
+    &-subTitle {
+      padding-top: 6px;
+      font-size: 28px;
       color: $simpleGray;
     }
-
-    .recommond2 {
-      align-items: stretch;
-    }
-
-    .recommond {
-      @extend %flexV;
-
-      img {
-        @extend %mediumIcon;
-      }
-
-      &-content {
-        padding-left: 16px;
-
-        p {
-          text-align: left;
-        }
-      }
-
-      &-title {
-        @extend %normalTitle;
-        font-weight: 600;
-
-        span {
-          min-width: 72px;
-          height: 40px;
-          padding: 0px 10px;
-          border-radius: 8px;
-          line-height: 40px;
-          text-align: center;
-          margin-left: 16px;
-          color: $bgwhite2;
-          font-size: 20px;
-          font-weight: 400;
-          display: inline-block;
-        }
-      }
-
-      &-subTitle {
-        padding-top: 6px;
-        font-size: 28px;
-        color: $simpleGray;
-      }
-
-      &-subTitle2 {
-        padding-top: 6px;
-        @include textEllipsis(90px, 256px, 2, 28px, #3f3f3f);
-      }
+    &-subTitle2 {
+      padding-top: 6px;
+      @include textEllipsis(90px, 256px, 2, 28px, #3f3f3f);
     }
   }
+}
 
-  .right-chat {
-    .chat-content {
-      justify-content: flex-end;
-      display: flex;
-    }
+.right-chat {
+  .chat-content {
+    justify-content: flex-end;
+    display: flex;
   }
+}
 
-  .cancel {
-    color: $gray3;
-    font-size: 28px;
-    @extend %flexV;
-  }
+.cancel {
+  color: $gray3;
+  font-size: 28px;
+  @extend %flexV;
+}
 
   .color-29BBFF {
     background: #29bbff;
