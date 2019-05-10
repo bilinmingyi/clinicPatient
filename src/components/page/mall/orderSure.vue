@@ -60,7 +60,7 @@
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, checkEnable, createOrder, removeShop, gotoPay} from '@/fetch/api'
+import {fetchShopCar, checkEnable, createOrder, removeShop} from '@/fetch/api'
 import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 
@@ -89,8 +89,7 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfoState: state => state.userInfoState,
-      clinic: state => state.clinic
+      userInfoState: state => state.userInfoState
     }),
     allPrice () {
       if (this.shopCarList.length === 0) {
@@ -213,28 +212,29 @@ export default {
           })
           if (this.needCheck === 1) {
             // 需要提交审核
-            this.$router.push({name: 'mallListPage'})
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data}})
           } else if (this.needCheck === 2) {
             // 不需要提交审核，直接去支付
-            if (this.clinic.szjkPayEnabled === 1) {
-              let urlRes = await gotoPay({
-                order_type: 8,
-                order_seqno: res.data
-              })
-              if (urlRes.code === 1000) {
-                try {
-                  window.location.href = urlRes.data
-                } catch (e) {
-                  console.log(e)
-                }
-              } else {
-                this.$Message.infor(urlRes.msg)
-              }
-            } else {
-              this.$Message.confirm('该诊所未开通线上支付功能！', () => {
-                this.$router.push({name: 'mallListPage'})
-              }, true)
-            }
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data, shouldPay: 1}})
+            // if (this.clinic.szjkPayEnabled === 1) {
+            //   let urlRes = await gotoPay({
+            //     order_type: 8,
+            //     order_seqno: res.data
+            //   })
+            //   if (urlRes.code === 1000) {
+            //     try {
+            //       window.location.href = urlRes.data
+            //     } catch (e) {
+            //       console.log(e)
+            //     }
+            //   } else {
+            //     this.$Message.infor(urlRes.msg)
+            //   }
+            // } else {
+            //   this.$Message.confirm('该诊所未开通线上支付功能！', () => {
+            //     this.$router.push({name: 'mallListPage'})
+            //   }, true)
+            // }
           }
         } catch (e) {
           console.log(e)
@@ -340,6 +340,13 @@ export default {
       padding-left: 24px;
       border: none;
       outline: none;
+      color: $depthTextColor;
+      font-size: 32px;
+
+      &::-webkit-input-placeholder {
+        color: $lightTextColor;
+        font-size: 32px;
+      }
     }
   }
 </style>

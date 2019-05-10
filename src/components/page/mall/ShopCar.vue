@@ -158,7 +158,7 @@ export default {
       }
       let oldNum = currItem.num
       if (type === 1) {
-        currItem.num > 0 ? currItem.num-- : currItem.num = 0
+        currItem.num > 1 ? currItem.num-- : currItem.num = 1
       } else if (type === 2) {
         currItem.num++
       }

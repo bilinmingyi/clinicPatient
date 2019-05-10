@@ -74,7 +74,7 @@
         </section>
       </div>
     </div>
-    <Shop-footer @click="goPay" v-if="orderDetail.status === 'AUDIT' || orderDetail.status === 'UNPAID4BUSINESS'"
+    <Shop-footer @click="goPay" v-if="orderDetail.status === 'AUDIT' || orderDetail.status === 'UNPAID4CLIENT'"
                  btnText="去支付" :allPrice="orderDetail.goods_price"
                  :isNoCan="orderDetail.status === 'AUDIT'"></Shop-footer>
   </div>
@@ -88,7 +88,7 @@ import noImg from '@/assets/img/nophoto.png'
 
 export default {
   name: 'mallOrderDetail',
-  props: ['orderSeqno'],
+  props: ['orderSeqno', 'shouldPay'],
   components: {
     Header,
     SmallTitle,
@@ -105,8 +105,13 @@ export default {
       clinic: state => state.clinic
     })
   },
-  created () {
-    this.getOrderDetail()
+  mounted () {
+    if (Number(this.shouldPay) === 1) {
+      this.toPay()
+      this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: this.orderSeqno}})
+    } else {
+      this.getOrderDetail()
+    }
   },
   methods: {
     getOrderDetail () {
@@ -126,25 +131,28 @@ export default {
     imgError (event) {
       event.target.src = this.noImg
     },
-    async goPay () {
-      if (this.orderDetail.status === 'UNPAID4BUSINESS') {
+    goPay () {
+      if (this.orderDetail.status === 'UNPAID4CLIENT') {
         if (this.clinic.szjkPayEnabled === 1) {
-          let urlRes = await gotoPay({
-            order_type: 8,
-            order_seqno: this.orderDetail.order_seqno
-          })
-          if (urlRes.code === 1000) {
-            try {
-              window.location.href = urlRes.data
-            } catch (e) {
-              console.log(e)
-            }
-          } else {
-            this.$Message.infor(urlRes.msg)
-          }
+          this.toPay()
         } else {
           this.$Message.infor('该诊所未开通线上支付功能！')
         }
+      }
+    },
+    async toPay () {
+      let urlRes = await gotoPay({
+        order_type: 8,
+        order_seqno: this.orderSeqno
+      })
+      if (urlRes.code === 1000) {
+        try {
+          window.location.href = urlRes.data
+        } catch (e) {
+          console.log(e)
+        }
+      } else {
+        this.$Message.infor(urlRes.msg)
       }
     }
   }
