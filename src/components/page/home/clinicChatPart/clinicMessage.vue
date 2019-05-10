@@ -150,8 +150,8 @@ p {
     border-radius: 100px;
   }
   .iconImg2 {
-    width: 120px !important;
-    height: 120px !important;
+    width: 140px !important;
+    height: 140px !important;
   }
 
   .imgMessage {
