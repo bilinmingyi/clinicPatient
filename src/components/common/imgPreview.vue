@@ -10,7 +10,9 @@
     </div>
     <div class="img-block">
       <div class="img-content">
-        <img :src="imgUrls" id="img-canvas" @load="loadImg($event)">
+        <img :src="imgUrls" id="img-canvas"
+             :class="imgData.naturalWidth>=imgData.naturalHeight?'width-img':''"
+             @load="loadImg($event)">
         <div v-show="waitCut" id="zxxCropBox">
           <div id="zxxDragBg"></div>
           <div id="dragLeftTop"></div>
@@ -73,7 +75,8 @@ export default {
       },
       imgUrls: '',
       canRestore: false,
-      showLoad: false
+      showLoad: false,
+      curImgSize: 0
     }
   },
   created () {
@@ -94,12 +97,16 @@ export default {
   methods: {
     loadImg (e) {
       let boxObj = document.getElementById('zxxCropBox')
+      let resultData = this.dataURLtoFile(this.imgUrls, new Date().getTime().toString())
+      this.curImgSize = resultData.size
+      console.log(this.imgData)
+
+      this.imgData.naturalWidth = e.target.naturalWidth
+      this.imgData.naturalHeight = e.target.naturalHeight
       this.imgData.width = e.target.width
       this.imgData.height = e.target.height
       this.result.cropW = e.target.width
       this.result.cropH = e.target.height
-      this.imgData.naturalWidth = e.target.naturalWidth
-      this.imgData.naturalHeight = e.target.naturalHeight
       this.imgData.scaleX = this.imgData.width / this.imgData.naturalWidth
       this.imgData.scaleY = this.imgData.height / this.imgData.naturalHeight
       boxObj.style.width = parseInt(this.imgData.width) + 'px'
@@ -125,6 +132,7 @@ export default {
         })
       }).catch(error => {
         this.$Message.infor(error.message)
+        this.showLoad = false
       })
     },
     compress () {
@@ -132,19 +140,8 @@ export default {
         let img = document.getElementById('img-canvas')
         let canvas = document.createElement('canvas')
         let ctx = canvas.getContext('2d')
-        let width = img.width
-        let height = img.height
-
-        // 图片像素大于400万像素，计算压缩到400万以下
-        let ratio
-
-        if ((ratio = width * height / 4000000) > 1) {
-          ratio = Math.sqrt(ratio)
-          width /= ratio
-          height /= ratio
-        } else {
-          ratio = 1
-        }
+        let width = img.naturalWidth
+        let height = img.naturalHeight
         canvas.width = width
         canvas.height = height
         ctx.save()
@@ -154,7 +151,25 @@ export default {
         ctx.drawImage(img, 0, 0, width, height)
         ctx.restore()
         // 进行最小压缩
-        let ndata = canvas.toDataURL('image/jpeg', 0.3)
+        // let size = this.curImgSize
+        let ndata = ''
+        // if (size < 204800) {
+        //   ndata = canvas.toDataURL('image/jpeg', 1)
+        // } else if (size >= 204800 && size < 409600) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.9)
+        // } else if (size >= 409600 && size < 614400) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.8)
+        // } else if (size >= 614400 && size < 819200) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.7)
+        // } else if (size >= 819200 && size < 1024000) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.6)
+        // } else if (size >= 1024000 && size < 1228800) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.5)
+        // } else if (size >= 1228800 && size < 1433600) {
+        //   ndata = canvas.toDataURL('image/jpeg', 0.4)
+        // } else if (size >= 1433600) {
+        ndata = canvas.toDataURL('image/jpeg', 0.3)
+        // }
         canvas.width = canvas.height = 0
         canvas = null
         resolve(ndata)
@@ -359,6 +374,10 @@ export default {
 
         img {
           margin: 0 auto;
+          max-height: 70vh;
+        }
+
+        .width-img {
           width: 100%;
         }
       }
