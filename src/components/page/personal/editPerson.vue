@@ -167,6 +167,7 @@ export default {
     color: $depthTextColor;
     line-height: 64px;
     font-size: 32px;
+    width: 64px;
   }
 
   .input-item {
