@@ -54,6 +54,7 @@ export default {
   },
   created () {
     this.getGoodsDetail()
+    this.getShopCar()
   },
   methods: {
     ...mapActions(['set_shop_num', 'set_shop_money']),
