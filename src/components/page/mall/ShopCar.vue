@@ -95,6 +95,20 @@ export default {
       }
     }
   },
+  watch: {
+    shopCarList: {
+      deep: true,
+      handler: function (newVal) {
+        let isAll = 1
+        newVal.forEach(item => {
+          if (item.is_check === 0) {
+            isAll = 0
+          }
+        })
+        isAll === 1 ? this.resource = true : this.resource = false
+      }
+    }
+  },
   methods: {
     toCount () {
       if (this.shopCarList.some(item => {
