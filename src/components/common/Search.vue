@@ -4,6 +4,7 @@
       <div class="search_left">
         <img src="../../assets/img/ss.png">
         <input type="text" v-bind="$attrs" v-model="searchName" :placeholder="placeholder" @input="searchInput()"
+               @blur="scrollToTop"
                id="dsearch"/>
       </div>
       <div class="search_btn_block" v-if="hasBtn">
@@ -40,13 +41,20 @@ export default {
     }
   },
   methods: {
-    searchInput: function () {
+    searchInput () {
       let self = this
       // 防抖
       clearTimeout(self.timer)
       self.timer = setTimeout(function () {
         self.$emit('on-search', self.searchName)
       }, 500)
+    },
+    scrollToTop () {
+      try {
+        window.scrollTo(0, 0)
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
@@ -94,9 +102,11 @@ export default {
     font-size: 28px !important;
     color: #8C8C8C !important;
   }
-  .search_btn_block{
+
+  .search_btn_block {
     @extend %flexV;
   }
+
   .search_btn {
     @include deepButton(64px, 104px);
   }

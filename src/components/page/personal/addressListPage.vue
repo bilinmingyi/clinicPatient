@@ -15,6 +15,7 @@
         </div>
         <div class="edit-btn" @click.stop="editAddress(index)"></div>
       </div>
+      <div v-if="addressList.length === 0" class="no-address-back"></div>
     </div>
     <div class="add_block">
       <button class="add_btn" @click.stop="addAddress">添加收货地址</button>
@@ -125,7 +126,7 @@ export default {
   .no-address-back {
     height: calc(100vh - 219px);
     background: url("../../../assets/img/ps.png") no-repeat center center;
-    background-size: 100%;
+    background-size: 60%;
   }
 
   .add_block {

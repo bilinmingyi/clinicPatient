@@ -16,6 +16,11 @@
                   :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
+      <div class="no-address-back" v-if="goodsList.lenght === 0">
+        <div>
+          暂无商品
+        </div>
+      </div>
     </div>
     <Shop-car :num="Number(shopCar.length)"></Shop-car>
     <Footer navtiveIndex="3"></Footer>
@@ -129,6 +134,7 @@ export default {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
+
   .white-back {
     background: $bgWhite;
   }
@@ -152,5 +158,22 @@ export default {
   .good-list {
     @extend %displayFlex;
     flex-wrap: wrap;
+  }
+
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>
