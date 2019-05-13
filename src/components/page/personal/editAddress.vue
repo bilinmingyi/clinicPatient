@@ -4,31 +4,34 @@
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
-        <input type="text" class="input-item" placeholder="请填写" v-model="contact">
+        <input type="text" class="input-item" placeholder="请填写" v-model="contact" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">手机</label>
-        <input type="text" class="input-item" placeholder="请填写" v-model="mobile">
+        <input type="text" class="input-item" placeholder="请填写" v-model="mobile" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px label-width">地址</label>
-        <select type="text" class="input-item select-width" @change="provinceChange" v-model="adrData.province_code">
+        <select type="text" class="input-item select-width" @change="provinceChange" @blur="scrollToTop"
+                v-model="adrData.province_code">
           <option value="">请选择</option>
           <option v-for="province in adsListData.provinceList" :value="province.province_code"
                   v-text="province.province_name"
                   :key="province.province_code"
           ></option>
         </select>
-        <select type="text" class="input-item select-width" @change.stop="cityChange" v-model="adrData.city_code">
+        <select type="text" class="input-item select-width" @change.stop="cityChange" @blur="scrollToTop"
+                v-model="adrData.city_code">
           <option value="">请选择</option>
           <option v-for="city in adsListData.cityList" :value="city.city_code"
                   v-text="city.city_name"
                   :key="city.city_code"
           ></option>
         </select>
-        <select type="text" class="input-item select-width" @change="countyChange" v-model="adrData.county_code">
+        <select type="text" class="input-item select-width" @change="countyChange" @blur="scrollToTop"
+                v-model="adrData.county_code">
           <option value="">请选择</option>
           <option v-for="county in adsListData.countyList" :value="county.county_code"
                   v-text="county.county_name"
@@ -39,7 +42,7 @@
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">详细地址</label>
-        <input type="text" class="input-item" placeholder="请填写" v-model="adrData.address">
+        <input type="text" class="input-item" placeholder="请填写" v-model="adrData.address" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
@@ -63,8 +66,10 @@ import {Header, radioGroup} from '@/components/common/index'
 import {provinceDate} from '@/assets/js/addr_dict'
 import {mapState, mapActions} from 'vuex'
 import {updateAddress} from '@/fetch/api'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'editAddress',
   components: {
     Header,

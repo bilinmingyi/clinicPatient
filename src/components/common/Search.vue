@@ -17,7 +17,10 @@
 </template>
 
 <script>
+import inputBlur from '@/assets/js/inputBlur'
+
 export default {
+  mixins: [inputBlur],
   name: 'Search',
   props: {
     placeholder: {
@@ -48,13 +51,6 @@ export default {
       self.timer = setTimeout(function () {
         self.$emit('on-search', self.searchName)
       }, 500)
-    },
-    scrollToTop () {
-      try {
-        window.scrollTo(0, 0)
-      } catch (e) {
-        console.log(e)
-      }
     }
   }
 

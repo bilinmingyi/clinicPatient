@@ -3,12 +3,12 @@
     <Header :canReturn="true" titleText="绑定手机"></Header>
     <div class="mt-88px mb-131px list-content">
       <div class="line-items">
-        <input type="text" placeholder="请输入手机号码" class="input-item flexOne" v-model="mobile">
+        <input type="text" placeholder="请输入手机号码" class="input-item flexOne" v-model="mobile" @blur="scrollToTop">
         <button :class="['get-code-btn', {'ban-code': currNum!==0}]" @click.stop="getCode">{{currNum===0?'获取验证码':currNum+'s'}}</button>
       </div>
       <hr class="line-hr">
       <div class="line-item">
-        <input type="text" placeholder="请输入短信验证码" class="input-item all-input-width" v-model="code">
+        <input type="text" placeholder="请输入短信验证码" class="input-item all-input-width" v-model="code" @blur="scrollToTop">
       </div>
     </div>
     <div class="add-block">
@@ -21,8 +21,10 @@
 import {Header} from '@/components/common/index'
 import {fetchCode, savePhone} from '@/fetch/api.js'
 import {mapActions} from 'vuex'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'modifyPhone',
   props: ['returnType'],
   data () {

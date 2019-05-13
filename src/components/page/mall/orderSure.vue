@@ -55,7 +55,7 @@
         <hr class="full-screen-hr">
         <div class="remark">
           <label>患者备注</label>
-          <input placeholder="暂无" v-model="memo">
+          <input placeholder="暂无" v-model="memo" @blur="scrollToTop">
         </div>
       </div>
     </div>
@@ -68,9 +68,11 @@ import {Header, ShopFooter, SmallTitle} from '../../common'
 import {fetchShopCar, createOrder, removeShop, deliverPrice} from '@/fetch/api'
 import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
   name: 'orderSure',
+  mixins: [inputBlur],
   props: ['ids', 'index'],
   data () {
     return {

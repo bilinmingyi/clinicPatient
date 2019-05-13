@@ -64,7 +64,7 @@
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">年龄</label>
-            <input type="number" class="input-item input-width" v-model="patient.user_age">
+            <input type="number" class="input-item input-width" v-model="patient.user_age" @blur="scrollToTop">
             <span class="label-span">岁</span>
           </div>
         </div>
@@ -81,8 +81,10 @@ import {Header, SmallTitle, radioGroup} from '@/components/common'
 import {mapState} from 'vuex'
 import {fetchPatientList, saveAppointData, fetchUserInfo} from '@/fetch/api.js'
 import filters from '../../../assets/js/fliters'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'appointSure',
   components: {
     Header,
@@ -215,6 +217,7 @@ export default {
       }
     },
     hideSelect () {
+      this.scrollToTop()
       setTimeout(() => {
         this.showSelect = false
       }, 30)

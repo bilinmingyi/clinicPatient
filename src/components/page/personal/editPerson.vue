@@ -4,12 +4,12 @@
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
-        <input type="text" class="input-item" v-model="name">
+        <input type="text" class="input-item" v-model="name" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">年龄</label>
-        <input type="number" class="input-item input-width" v-model="age">
+        <input type="number" class="input-item input-width" v-model="age" @blur="scrollToTop">
         <span class="label-span">岁</span>
       </div>
       <hr class="line-hr">
@@ -34,8 +34,10 @@
 import {Header, radioGroup} from '@/components/common/index'
 import {changeUser} from '@/fetch/api.js'
 import {mapState, mapActions} from 'vuex'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'editPerson',
   components: {
     Header,

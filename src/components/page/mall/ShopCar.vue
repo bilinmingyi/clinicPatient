@@ -34,7 +34,7 @@
               </span>
                   <div class="num-change">
                     <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                    <input class="num-word" v-model="item.num">
+                    <input class="num-word" v-model="item.num" @blur="scrollToTop">
                     <div class="num-add" @click.stop="changeNum(2, index)"></div>
                   </div>
                 </div>
@@ -57,9 +57,11 @@
 import {Header, ShopFooter, SmallTitle} from '../../common'
 import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
 import noImg from '@/assets/img/nophoto.png'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
   name: 'ShopCar',
+  mixins: [inputBlur],
   components: {
     Header,
     ShopFooter,
