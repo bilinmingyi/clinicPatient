@@ -13,7 +13,7 @@
       </div>
       <hr class="line-hr">
       <div class="line-item">
-        <label class="label-span mr-32px">地址</label>
+        <label class="label-span mr-32px label-width">地址</label>
         <select type="text" class="input-item select-width" @change="provinceChange" v-model="adrData.province_code">
           <option value="">请选择</option>
           <option v-for="province in adsListData.provinceList" :value="province.province_code"
@@ -298,6 +298,10 @@ export default {
     color: $depthTextColor;
     line-height: 45px;
     font-size: 32px;
+  }
+
+  .label-width {
+    width: 64px;
   }
 
   .add-block {
