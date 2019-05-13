@@ -114,7 +114,6 @@ export default {
   },
   created () {
     this.getShopCar()
-    this.checkEnabled()
   },
   mounted () {
     // this.init()
@@ -162,6 +161,7 @@ export default {
               this.shopCarList.push(item)
             }
           })
+          this.checkEnabled()
         } else {
           this.$Message.infor(res.msg)
         }
@@ -171,22 +171,13 @@ export default {
       })
     },
     checkEnabled () {
-      checkEnable({}).then(
-        res => {
-          if (res.code === 1000) {
-            if (res.data) {
-              this.needCheck = 1
-            } else {
-              this.needCheck = 2
-            }
-          } else {
-            this.$Message.infor(res.msg)
-          }
-        }
-      ).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错!')
-      })
+      if (this.shopCarList.some((item) => {
+        return item.goods_info.is_Rx === 1
+      })) {
+        this.needCheck = 1
+      } else {
+        this.needCheck = 2
+      }
     },
     async submitOrder () {
       let resultList = this.shopCarList.map(item => {
