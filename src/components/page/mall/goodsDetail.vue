@@ -78,7 +78,6 @@ export default {
       }).then(res => {
         if (res.code === 1000) {
           this.GoodDetail = res.data
-          console.log(res)
         } else {
           this.$Message.infor(res.msg)
         }
@@ -93,7 +92,7 @@ export default {
         res.data.forEach(item => {
           allPrice += Number(item.num * item.goods_info.price)
         })
-        this.set_shop_money(allPrice)
+        this.set_shop_money(allPrice.toFixed(2))
         this.set_shop_num(Number(res.data.length))
       }).catch(e => {
         console.log(e)

@@ -112,7 +112,7 @@ export default {
         this.shopCar.forEach(item => {
           allPrice += Number(item.num * item.goods_info.price)
         })
-        this.set_shop_money(allPrice)
+        this.set_shop_money(allPrice.toFixed(2))
         this.set_shop_num(Number(this.shopCar.length))
       }).catch(e => {
         console.log(e)

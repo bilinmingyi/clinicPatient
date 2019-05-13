@@ -7,7 +7,7 @@
       </div>
       <div class="amount-block">
         <span>合计：</span>
-        <span class="red-text">￥{{allPrice}}</span>
+        <span class="red-text">￥{{allPrice.toFixed(2)}}</span>
       </div>
     </div>
     <div :class="['add-car-btn',{'ccc-back': isNoCan}]" @click.stop="btnClick">
