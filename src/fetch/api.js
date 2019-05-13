@@ -60,11 +60,13 @@ const changeShopNum = params => fetch('/shopcart/update', params)
 // 删除购物车商品
 const removeShop = params => fetch('/shopcart/remove', params)
 // 创建订单是否需要审核
-const checkEnable = params => fetch('/goodsorder/checkEnabled', params)
+// const checkEnable = params => fetch('/goodsorder/checkEnabled', params)
 // 更新地址
 const updateAddress = params => fetch('/cuser/addrInfo/update', params)
 // 创建订单
 const createOrder = params => fetch('/goodsorder/create', params)
+// 获取运费
+const deliverPrice = params => fetch('/goodsorder/deliverPrice', params)
 
 // 个人中心
 // 获取预约订单列表
@@ -131,9 +133,9 @@ export {
   addShopCar,
   changeShopNum,
   removeShop,
-  checkEnable,
   updateAddress,
   createOrder,
   fetchGoodList,
+  deliverPrice,
   updateAds
 }

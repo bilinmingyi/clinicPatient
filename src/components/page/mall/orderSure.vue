@@ -49,6 +49,11 @@
         </div>
         <hr class="full-screen-hr">
         <div class="remark">
+          <label>运费</label>
+          <input placeholder="暂无" readonly :value="deliver+'元'">
+        </div>
+        <hr class="full-screen-hr">
+        <div class="remark">
           <label>患者备注</label>
           <input placeholder="暂无" v-model="memo">
         </div>
@@ -60,7 +65,7 @@
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, checkEnable, createOrder, removeShop} from '@/fetch/api'
+import {fetchShopCar, createOrder, removeShop, deliverPrice} from '@/fetch/api'
 import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 
@@ -79,7 +84,8 @@ export default {
         concact: '',
         phoneNum: '',
         address: ''
-      }
+      },
+      deliver: 0
     }
   },
   components: {
@@ -99,7 +105,7 @@ export default {
         this.shopCarList.forEach(item => {
           all += Number(item.num * item.goods_info.price)
         })
-        return all
+        return all + this.deliver
       }
     }
   },
@@ -114,6 +120,7 @@ export default {
   },
   created () {
     this.getShopCar()
+    this.getDeliverPrice()
   },
   mounted () {
     // this.init()
@@ -236,6 +243,17 @@ export default {
     },
     editAddress () {
       this.$router.replace({name: 'addressListPage', query: {forSelect: 1, ids: this.ids}})
+    },
+    getDeliverPrice () {
+      deliverPrice().then(res => {
+        if (res.code === 1000) {
+          this.deliver = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
