@@ -49,6 +49,11 @@
         </div>
         <hr class="full-screen-hr">
         <div class="remark">
+          <label>运费</label>
+          <input placeholder="暂无" readonly :value="deliver+'元'">
+        </div>
+        <hr class="full-screen-hr">
+        <div class="remark">
           <label>患者备注</label>
           <input placeholder="暂无" v-model="memo">
         </div>
@@ -60,7 +65,7 @@
 
 <script>
 import {Header, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, checkEnable, createOrder, removeShop, gotoPay} from '@/fetch/api'
+import {fetchShopCar, createOrder, removeShop, deliverPrice} from '@/fetch/api'
 import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 
@@ -79,7 +84,8 @@ export default {
         concact: '',
         phoneNum: '',
         address: ''
-      }
+      },
+      deliver: 0
     }
   },
   components: {
@@ -89,8 +95,7 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfoState: state => state.userInfoState,
-      clinic: state => state.clinic
+      userInfoState: state => state.userInfoState
     }),
     allPrice () {
       if (this.shopCarList.length === 0) {
@@ -100,7 +105,7 @@ export default {
         this.shopCarList.forEach(item => {
           all += Number(item.num * item.goods_info.price)
         })
-        return all
+        return all + this.deliver
       }
     }
   },
@@ -115,7 +120,7 @@ export default {
   },
   created () {
     this.getShopCar()
-    this.checkEnabled()
+    this.getDeliverPrice()
   },
   mounted () {
     // this.init()
@@ -163,6 +168,7 @@ export default {
               this.shopCarList.push(item)
             }
           })
+          this.checkEnabled()
         } else {
           this.$Message.infor(res.msg)
         }
@@ -172,22 +178,13 @@ export default {
       })
     },
     checkEnabled () {
-      checkEnable({}).then(
-        res => {
-          if (res.code === 1000) {
-            if (res.data) {
-              this.needCheck = 1
-            } else {
-              this.needCheck = 2
-            }
-          } else {
-            this.$Message.infor(res.msg)
-          }
-        }
-      ).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错!')
-      })
+      if (this.shopCarList.some((item) => {
+        return item.goods_info.is_Rx === 1
+      })) {
+        this.needCheck = 1
+      } else {
+        this.needCheck = 2
+      }
     },
     async submitOrder () {
       let resultList = this.shopCarList.map(item => {
@@ -213,28 +210,29 @@ export default {
           })
           if (this.needCheck === 1) {
             // 需要提交审核
-            this.$router.push({name: 'mallListPage'})
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data}})
           } else if (this.needCheck === 2) {
             // 不需要提交审核，直接去支付
-            if (this.clinic.szjkPayEnabled === 1) {
-              let urlRes = await gotoPay({
-                order_type: 8,
-                order_seqno: res.data
-              })
-              if (urlRes.code === 1000) {
-                try {
-                  window.location.href = urlRes.data
-                } catch (e) {
-                  console.log(e)
-                }
-              } else {
-                this.$Message.infor(urlRes.msg)
-              }
-            } else {
-              this.$Message.confirm('该诊所未开通线上支付功能！', () => {
-                this.$router.push({name: 'mallListPage'})
-              }, true)
-            }
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data, shouldPay: 1}})
+            // if (this.clinic.szjkPayEnabled === 1) {
+            //   let urlRes = await gotoPay({
+            //     order_type: 8,
+            //     order_seqno: res.data
+            //   })
+            //   if (urlRes.code === 1000) {
+            //     try {
+            //       window.location.href = urlRes.data
+            //     } catch (e) {
+            //       console.log(e)
+            //     }
+            //   } else {
+            //     this.$Message.infor(urlRes.msg)
+            //   }
+            // } else {
+            //   this.$Message.confirm('该诊所未开通线上支付功能！', () => {
+            //     this.$router.push({name: 'mallListPage'})
+            //   }, true)
+            // }
           }
         } catch (e) {
           console.log(e)
@@ -245,6 +243,17 @@ export default {
     },
     editAddress () {
       this.$router.replace({name: 'addressListPage', query: {forSelect: 1, ids: this.ids}})
+    },
+    getDeliverPrice () {
+      deliverPrice().then(res => {
+        if (res.code === 1000) {
+          this.deliver = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
@@ -340,6 +349,13 @@ export default {
       padding-left: 24px;
       border: none;
       outline: none;
+      color: $depthTextColor;
+      font-size: 32px;
+
+      &::-webkit-input-placeholder {
+        color: $lightTextColor;
+        font-size: 32px;
+      }
     }
   }
 </style>

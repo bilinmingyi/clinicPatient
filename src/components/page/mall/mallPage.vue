@@ -1,5 +1,5 @@
 <template>
-  <div ref="scrollContent" @scroll="scrollEvent" style="height: 100vh;overflow-y: scroll">
+  <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
     <Header titleText="诊所商城"></Header>
     <div class="mt-88px pb-128px">
       <Search placeholder="请输入药品/产品名称" :hasBtn="false" @on-search="searchByName"></Search>
@@ -112,7 +112,7 @@ export default {
         this.shopCar.forEach(item => {
           allPrice += Number(item.num * item.goods_info.price)
         })
-        this.set_shop_money(allPrice)
+        this.set_shop_money(allPrice.toFixed(2))
         this.set_shop_num(Number(this.shopCar.length))
       }).catch(e => {
         console.log(e)
@@ -124,6 +124,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .scoll-block {
+    height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
   .white-back {
     background: $bgWhite;
   }

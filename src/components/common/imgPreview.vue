@@ -233,6 +233,7 @@ export default {
       }
       // target是移动对象
       point.ontouchstart = function (event) {
+        event.stopPropagation()
         self.params.kind = kind
         self.params.flag = true
         if (!event) {
@@ -243,6 +244,7 @@ export default {
         self.params.currentY = e.changedTouches[0].clientY
 
         document.ontouchmove = function (event) {
+          event.stopPropagation()
           let e = event || window.event
           if (self.params.flag) {
             let nowX = e.changedTouches[0].clientX
@@ -301,7 +303,8 @@ export default {
             }
           }
         }
-        document.ontouchend = () => {
+        document.ontouchend = (event) => {
+          event.stopPropagation()
           let imgCurWidth = self.imgData.width
           let imgCurHeight = self.imgData.height
           self.params.flag = false

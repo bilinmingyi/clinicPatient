@@ -41,7 +41,7 @@ export default {
         page_size: this.pageSize
       }).then(res => {
         if (res.code === 1000) {
-          this.dataList = res.data
+          this.dataList = this.dataList.concat(res.data)
           this.totalNum = res.total_num
         } else {
           this.$Message.infor(res.msg)

@@ -4,11 +4,11 @@
     <div class="mt-88px mb-131px list-content">
       <div class="line-items">
         <input type="text" placeholder="请输入手机号码" class="input-item flexOne" v-model="mobile">
-        <button class="get-code-btn" @click.stop="getCode">获取验证码</button>
+        <button :class="['get-code-btn', {'ban-code': currNum!==0}]" @click.stop="getCode">{{currNum===0?'获取验证码':currNum+'s'}}</button>
       </div>
       <hr class="line-hr">
       <div class="line-item">
-        <input type="text" placeholder="请输入短信验证码" class="input-item" v-model="code">
+        <input type="text" placeholder="请输入短信验证码" class="input-item all-input-width" v-model="code">
       </div>
     </div>
     <div class="add-block">
@@ -28,7 +28,9 @@ export default {
   data () {
     return {
       mobile: '',
-      code: ''
+      code: '',
+      currNum: 0,
+      timer: ''
     }
   },
   components: {
@@ -37,6 +39,9 @@ export default {
   methods: {
     ...mapActions(['set_user_info']),
     getCode () {
+      if (this.currNum !== 0) {
+        return
+      }
       if (!/^\d{11}$/.test(this.mobile)) {
         this.$Message.infor('请填写正确的手机号码!')
         // this.$refs.phoneNum.focus()
@@ -46,6 +51,14 @@ export default {
         mobile: this.mobile
       }).then(res => {
         if (res.code === 1000) {
+          this.currNum = 60
+          this.timer = setInterval(() => {
+            if (this.currNum > 0) {
+              this.currNum--
+            } else {
+              clearInterval(this.timer)
+            }
+          }, 1000)
         } else {
           this.$Message.infor(res.msg)
         }
@@ -70,7 +83,7 @@ export default {
             mobile: this.mobile
           })
           if (Number(this.returnType) === 1) {
-            this.$router.push({name: 'personal'})
+            this.$router.push({path: '/personal'})
           } else if (Number(this.returnType) === 2) {
             this.$router.go(-1)
           }
@@ -117,6 +130,10 @@ export default {
     @extend %lineHr;
   }
 
+  .all-input-width {
+    width: 100%;
+  }
+
   .input-item {
     background: transparent;
     border: none;
@@ -141,5 +158,9 @@ export default {
     font-size: 28px;
     padding: 10px 12px;
     line-height: 40px;
+    width: 164px;
+  }
+  .ban-code {
+    background: #cccccc;
   }
 </style>

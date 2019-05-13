@@ -95,6 +95,20 @@ export default {
       }
     }
   },
+  watch: {
+    shopCarList: {
+      deep: true,
+      handler: function (newVal) {
+        let isAll = 1
+        newVal.forEach(item => {
+          if (item.is_check === 0) {
+            isAll = 0
+          }
+        })
+        isAll === 1 ? this.resource = true : this.resource = false
+      }
+    }
+  },
   methods: {
     toCount () {
       if (this.shopCarList.some(item => {
@@ -158,7 +172,7 @@ export default {
       }
       let oldNum = currItem.num
       if (type === 1) {
-        currItem.num > 0 ? currItem.num-- : currItem.num = 0
+        currItem.num > 1 ? currItem.num-- : currItem.num = 1
       } else if (type === 2) {
         currItem.num++
       }

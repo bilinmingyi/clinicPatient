@@ -6,7 +6,7 @@
     </div>
     <div class="item-line">
       <span class="flexOne">金额：￥{{itemData.price}}</span>
-      <span v-if="isMall" :class="itemData.status == 'UNPAID4BUSINESS'?'color-red':'order-status'">{{itemData.status|mallOrderStatus}}</span>
+      <span v-if="isMall" :class="itemData.status == 'UNPAID4CLIENT'?'color-red':'order-status'">{{itemData.status|mallOrderStatus}}</span>
       <span v-else :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
     </div>
   </div>
