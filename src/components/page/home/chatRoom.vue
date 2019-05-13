@@ -45,7 +45,8 @@ export default {
       noPull: true,
       first: '',
       second: '',
-      isShowChat: false // 兼容安卓机子第一次加载抖动问题
+      isShowChat: false, // 兼容安卓机子第一次加载抖动问题
+      getDataSet: ''
     }
   },
   components: {
@@ -305,9 +306,12 @@ export default {
             }, 0)
 
             this.$refs.wrapper.addEventListener('scroll', () => {
-              if (this.$refs.wrapper.scrollTop === 0 && this.unfinalPulling) {
-                this.getUpLoadData()
-              }
+              clearTimeout(this.getDataSet)
+              this.getDataSet = setTimeout(() => {
+                if (this.$refs.wrapper.scrollTop === 0 && this.unfinalPulling) {
+                  this.getUpLoadData()
+                }
+              }, 500)
             }, false)
           })
         } else {
