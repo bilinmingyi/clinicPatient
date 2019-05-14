@@ -15,7 +15,7 @@
         </div>
         <div class="edit-btn" @click.stop="editAddress(index)"></div>
       </div>
-      <div v-if="addressList.length === 0" class="no-address-back"></div>
+      <div v-if="addressList.length === 0 && !isFirst" class="no-address-back"></div>
     </div>
     <div class="add_block">
       <button class="add_btn" @click.stop="addAddress">添加收货地址</button>
@@ -32,7 +32,8 @@ export default {
   props: ['forSelect', 'ids'],
   data () {
     return {
-      addressList: []
+      addressList: [],
+      isFirst: true
     }
   },
   computed: {
@@ -46,7 +47,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.getAddress()
-    }, 500)
+    }, 450)
   },
   methods: {
     selectAddress (index) {
@@ -73,6 +74,7 @@ export default {
     getAddress () {
       if (this.userInfoState.mobile) {
         this.addressList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
+        this.isFirst = false
       } else {
         this.$Message.confirm('请先绑定手机号码！', () => {
           this.$router.push({name: 'editPerson'})

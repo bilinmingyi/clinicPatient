@@ -60,10 +60,15 @@
         </div>
       </div>
       <div class="content-back">
-<!--        <div class="line-item">-->
-<!--          <label class="label-span mr-32px flexOne">订单总价</label>-->
-<!--          <span class="label-red">￥{{orderDetail.price}}</span>-->
-<!--        </div>-->
+        <div class="line-item">
+          <label class="label-span mr-32px flexOne">邮寄费用</label>
+          <span class="label-red">￥{{orderDetail.deliver_price}}</span>
+        </div>
+        <hr class="full-screen-hr">
+        <div class="line-item" v-if="orderDetail.status !== 'AUDIT' && orderDetail.status !== 'UNPAID4CLIENT'">
+          <label class="label-span mr-32px flexOne">订单总价</label>
+          <span class="label-red">￥{{orderDetail.price}}</span>
+        </div>
         <section
           v-if="orderDetail.status === 'DELIVER' || orderDetail.status === 'WAIT_INSTOCK' || orderDetail.status === 'DONE'">
           <hr class="full-screen-hr">

@@ -306,7 +306,8 @@ export default {
   }
 
   .label-width {
-    width: 64px;
+    width: 66px;
+    display: inline-block;
   }
 
   .add-block {
