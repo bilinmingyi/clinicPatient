@@ -86,6 +86,7 @@ export default {
     // 调用微信接口展示图片
     showImg () {
       try {
+        // eslint-disable-next-line no-undef
         WeixinJSBridge.invoke('imagePreview', {
           'current': this.chatDetail.msgdata.img_url,
           'urls': [this.chatDetail.msgdata.img_url]
@@ -103,8 +104,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-
   p {
     text-align: center;
     font-size: 26px;
