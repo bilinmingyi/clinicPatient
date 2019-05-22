@@ -6,19 +6,28 @@
                   :noLine="(dataList.length - 1) === index" @click.stop.native="goRoute(item)"></order-item>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header, orderItem, LoadMore} from '../../common'
+import {Header, orderItem, LoadMore, Loading} from '../../common'
 import {fetchRecipeList} from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'recipeListPage',
   components: {
     Header,
     orderItem,
-    LoadMore
+    LoadMore,
+    Loading
+  },
+  computed: {
+    ...mapState({
+      clinic: state => state.clinic,
+      userInfoState: state => state.userInfoState
+    })
   },
   data () {
     return {
@@ -26,19 +35,33 @@ export default {
       page: 1,
       pageSize: 10,
       dataList: [],
-      canShowAdd: false
+      canShowAdd: false,
+      showLoad: true
     }
   },
-  created () {
-    this.getList()
+  mounted () {
+    setTimeout(() => {
+      this.getData()
+    }, 500)
   },
   methods: {
+    getData () {
+      if (this.userInfoState.mobile) {
+        this.getList()
+      } else {
+        this.showLoad = false
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
+    },
     getList () {
       fetchRecipeList({
         'page': this.page,
         'page_size': this.pageSize,
         'status': this.status
       }).then(res => {
+        this.showLoad = false
         if (res.code === 1000) {
           if (res.data.length < this.pageSize) {
             this.canShowAdd = false

@@ -20,11 +20,12 @@
     <div class="add_block">
       <button class="add_btn" @click.stop="addAddress">添加收货地址</button>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header} from '../../common'
+import {Header, Loading} from '../../common'
 import {mapState} from 'vuex'
 
 export default {
@@ -33,7 +34,8 @@ export default {
   data () {
     return {
       addressList: [],
-      isFirst: true
+      isFirst: true,
+      showLoad: true
     }
   },
   computed: {
@@ -42,12 +44,13 @@ export default {
     })
   },
   components: {
-    Header
+    Header,
+    Loading
   },
   mounted () {
     setTimeout(() => {
       this.getAddress()
-    }, 450)
+    }, 500)
   },
   methods: {
     selectAddress (index) {
@@ -73,9 +76,11 @@ export default {
     },
     getAddress () {
       if (this.userInfoState.mobile) {
+        this.showLoad = false
         this.addressList = this.userInfoState.addr_info === '' ? [] : JSON.parse(this.userInfoState.addr_info)
         this.isFirst = false
       } else {
+        this.showLoad = false
         this.$Message.confirm('请先绑定手机号码！', () => {
           this.$router.push({name: 'editPerson'})
         })

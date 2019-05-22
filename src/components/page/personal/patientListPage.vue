@@ -14,34 +14,56 @@
     <div class="add_block" @click.stop="goRoute">
       <button class="add_btn">添加就诊人</button>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '@/components/common/index'
+import {Header, SmallTitle, Loading} from '@/components/common/index'
 import man from '@/assets/img/mhz@2x.png'
 import woman from '@/assets/img/whz@2x.png'
 import {fetchPatientList} from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'patientListPage',
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    Loading
   },
   data () {
     return {
       man_img: man,
       woman_img: woman,
-      patientList: []
+      patientList: [],
+      showLoad: true
     }
   },
-  created () {
-    this.getList()
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
+  mounted () {
+    setTimeout(() => {
+      this.getData()
+    }, 500)
   },
   methods: {
+    getData () {
+      if (this.userInfoState.mobile) {
+        this.getList()
+      } else {
+        this.showLoad = false
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
+    },
     getList () {
       fetchPatientList({}).then(res => {
+        this.showLoad = false
         if (res.code === 1000) {
           this.patientList = res.data
         } else {
@@ -56,6 +78,11 @@ export default {
       if (item) {
         this.$router.push({name: 'editPatient', query: {id: item.id, name: item.name, sex: item.sex, birthday: item.birthday}})
       } else {
+        if (!this.userInfoState.mobile) {
+          this.$Message.confirm('请先绑定手机号码！', () => {
+            this.$router.push({name: 'editPerson'})
+          })
+        }
         this.$router.push({name: 'editPatient'})
       }
     }

@@ -31,12 +31,13 @@
         </section>
       </div>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
+      <Loading v-if="showLoad"></Loading>
     </div>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle, LoadMore} from '../../common'
+import {Header, SmallTitle, LoadMore, Loading} from '../../common'
 import {getAppointList} from '@/fetch/api.js'
 import {mapState} from 'vuex'
 
@@ -45,11 +46,13 @@ export default {
   components: {
     Header,
     SmallTitle,
-    LoadMore
+    LoadMore,
+    Loading
   },
   computed: {
     ...mapState({
-      clinic: state => state.clinic
+      clinic: state => state.clinic,
+      userInfoState: state => state.userInfoState
     })
   },
   data () {
@@ -58,13 +61,26 @@ export default {
       pageSize: 10,
       status: ['UNPAID', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
       dataList: [],
-      canShowAdd: false
+      canShowAdd: false,
+      showLoad: true
     }
   },
-  created () {
-    this.getList()
+  mounted () {
+    setTimeout(() => {
+      this.getData()
+    }, 500)
   },
   methods: {
+    getData () {
+      if (this.userInfoState.mobile) {
+        this.getList()
+      } else {
+        this.showLoad = false
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
+    },
     async getList () {
       try {
         let res = await getAppointList({
@@ -72,6 +88,7 @@ export default {
           'page_size': this.pageSize,
           'status': this.status
         })
+        this.showLoad = false
         if (res.code === 1000) {
           if (res.data.length < this.pageSize) {
             this.canShowAdd = false
