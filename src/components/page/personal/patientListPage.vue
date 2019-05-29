@@ -1,14 +1,21 @@
 <template>
   <div>
     <Header :canReturn="true" titleText="就诊人管理"></Header>
-    <div class="mt-88px mb-131px list-content">
-      <Small-title :hasBlock="true">
-        <span class="title-span">就诊人列表</span>
-      </Small-title>
-      <div class="patient-item" v-for="patient in patientList" :key="patient.id" @click.stop="goRoute(patient)">
-        <img :src="patient.sex == 2 ? woman_img : man_img" class="avatar-img">
-        <div class="flexOne ml-24px">{{patient.name}}/{{patient.sex|sexFormat}}/{{patient.birthday|ageFormat}}</div>
-        <img class="return-icon" src="../../../assets/img/xiayibu@2x.png">
+    <div class="mt-88px mb-131px">
+      <div class="list-content">
+        <Small-title :hasBlock="true">
+          <span class="title-span">就诊人列表</span>
+        </Small-title>
+        <div class="patient-item" v-for="patient in patientList" :key="patient.id" @click.stop="goRoute(patient)">
+          <img :src="patient.sex == 2 ? woman_img : man_img" class="avatar-img">
+          <div class="flexOne ml-24px">{{patient.name}}/{{patient.sex|sexFormat}}/{{patient.birthday|ageFormat}}</div>
+          <img class="return-icon" src="../../../assets/img/xiayibu@2x.png">
+        </div>
+      </div>
+      <div class="no-address-back" v-if="patientList.length === 0 && !isFirst">
+        <div>
+          暂无就诊人
+        </div>
       </div>
     </div>
     <div class="add_block" @click.stop="goRoute">
@@ -37,7 +44,8 @@ export default {
       man_img: man,
       woman_img: woman,
       patientList: [],
-      showLoad: true
+      showLoad: true,
+      isFirst: true
     }
   },
   computed: {
@@ -64,6 +72,7 @@ export default {
     getList () {
       fetchPatientList({}).then(res => {
         this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           this.patientList = res.data
         } else {
@@ -128,5 +137,21 @@ export default {
 
   .add_btn {
     @include deepButton(80px, 100%)
+  }
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>

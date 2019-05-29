@@ -16,7 +16,7 @@
                   :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
-      <div class="no-address-back" v-if="goodsList.lenght === 0">
+      <div class="no-address-back" v-if="goodsList.length === 0">
         <div>
           暂无商品
         </div>

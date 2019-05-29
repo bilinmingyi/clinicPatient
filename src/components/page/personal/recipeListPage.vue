@@ -1,9 +1,16 @@
 <template>
   <div>
     <Header :canReturn="true" titleText="处方订单"></Header>
-    <div class="mt-88px orderList">
-      <order-item v-for="(item,index) in dataList" :itemData="item" :key="item.id"
-                  :noLine="(dataList.length - 1) === index" @click.stop.native="goRoute(item)"></order-item>
+    <div class="mt-88px">
+      <div class="orderList">
+        <order-item v-for="(item,index) in dataList" :itemData="item" :key="item.id"
+                    :noLine="(dataList.length - 1) === index" @click.stop.native="goRoute(item)"></order-item>
+      </div>
+      <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
+        <div>
+          暂无处方订单
+        </div>
+      </div>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
     <Loading v-if="showLoad"></Loading>
@@ -36,7 +43,8 @@ export default {
       pageSize: 10,
       dataList: [],
       canShowAdd: false,
-      showLoad: true
+      showLoad: true,
+      isFirst: true
     }
   },
   mounted () {
@@ -62,6 +70,7 @@ export default {
         'status': this.status
       }).then(res => {
         this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           if (res.data.length < this.pageSize) {
             this.canShowAdd = false
@@ -91,5 +100,21 @@ export default {
 <style lang="scss" scoped>
   .orderList {
     background: $backColor;
+  }
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>

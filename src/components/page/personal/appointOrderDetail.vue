@@ -89,6 +89,7 @@ export default {
         this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})
       } else {
         this.$Message.infor('该诊所未开通线上支付功能！')
+        this.getDetail()
       }
     } else {
       this.getDetail()

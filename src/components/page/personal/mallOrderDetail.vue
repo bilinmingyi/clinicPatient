@@ -117,6 +117,7 @@ export default {
         this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: this.orderSeqno}})
       } else {
         this.$Message.infor('该诊所未开通线上支付功能！')
+        this.getOrderDetail()
       }
     } else {
       this.getOrderDetail()

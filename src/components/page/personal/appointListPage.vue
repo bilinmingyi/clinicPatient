@@ -30,6 +30,11 @@
           </div>
         </section>
       </div>
+      <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
+        <div>
+          暂无预约订单
+        </div>
+      </div>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
       <Loading v-if="showLoad"></Loading>
     </div>
@@ -62,7 +67,8 @@ export default {
       status: ['UNPAID', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
       dataList: [],
       canShowAdd: false,
-      showLoad: true
+      showLoad: true,
+      isFirst: true
     }
   },
   mounted () {
@@ -89,6 +95,7 @@ export default {
           'status': this.status
         })
         this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           if (res.data.length < this.pageSize) {
             this.canShowAdd = false
@@ -176,5 +183,21 @@ export default {
     color: $depthTextColor;
     line-height: 45px;
     margin-right: 22px;
+  }
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>

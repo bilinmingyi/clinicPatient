@@ -1,8 +1,15 @@
 <template>
   <div>
     <Header titleText="商城订单" :canReturn="true" backUrl="/personal"></Header>
-    <div class="mt-88px orderList">
-      <order-item v-for="(item, index) in dataList" :itemData="item" :isMall="true" :noLine="index === dataList.length - 1" :key="item.id" @click.native="goRoute(item.order_seqno)"></order-item>
+    <div class="mt-88px">
+      <div class="orderList">
+        <order-item v-for="(item, index) in dataList" :itemData="item" :isMall="true" :noLine="index === dataList.length - 1" :key="item.id" @click.native="goRoute(item.order_seqno)"></order-item>
+      </div>
+      <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
+        <div>
+          暂无商场订单
+        </div>
+      </div>
       <Load-more @click.stop.native="addMore" v-if="page < Math.ceil(totalNum/pageSize)"></Load-more>
     </div>
     <Loading v-if="showLoad"></Loading>
@@ -29,7 +36,8 @@ export default {
       pageSize: 10,
       dataList: [],
       totalNum: 0,
-      showLoad: true
+      showLoad: true,
+      isFirst: true
     }
   },
   computed: {
@@ -62,6 +70,7 @@ export default {
         page_size: this.pageSize
       }).then(res => {
         this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           this.dataList = this.dataList.concat(res.data)
           this.totalNum = res.total_num
@@ -84,5 +93,21 @@ export default {
 <style lang="scss" scoped>
   .orderList {
     background: $backColor;
+  }
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>
