@@ -16,7 +16,7 @@
                   :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
-      <div class="no-address-back" v-if="goodsList.length === 0">
+      <div class="no-address-back" v-if="goodsList.length === 0 && !isFirst">
         <div>
           暂无商品
         </div>
@@ -64,7 +64,8 @@ export default {
       pageSize: 10,
       totalNum: 0,
       goodsList: [],
-      shopCar: []
+      shopCar: [],
+      isFirst: true
     }
   },
   created () {
@@ -99,6 +100,7 @@ export default {
         status: 1
       }).then(res => {
         this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           this.goodsList = this.goodsList.concat(res.data)
           this.totalNum = res.total_num
