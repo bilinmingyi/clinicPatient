@@ -112,8 +112,12 @@ export default {
   },
   mounted () {
     if (Number(this.shouldPay) === 1) {
-      this.toPay()
-      this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: this.orderSeqno}})
+      if (this.clinic.szjkPayEnabled === 1) {
+        this.toPay()
+        this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: this.orderSeqno}})
+      } else {
+        this.$Message.infor('该诊所未开通线上支付功能！')
+      }
     } else {
       this.getOrderDetail()
     }

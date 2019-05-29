@@ -56,7 +56,7 @@ export default {
     patientMessage
   },
   computed: {
-    ...mapState(['userInfoState'])
+    ...mapState(['userInfoState', 'clinic'])
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -379,24 +379,26 @@ export default {
     }, 3000)
     if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
-      gotoPay({
-        'order_type': 1,
-        'order_seqno': this.orderSeqno
-      }).then(res => {
-        if (res.code === 1000) {
-          try {
-            window.location.href = res.data
-          } catch (error) {
-            console.log(error)
-            this.$Message.infor('支付跳转失败')
+      if (this.clinic.szjkPayEnabled === 1) {
+        gotoPay({
+          'order_type': 1,
+          'order_seqno': this.orderSeqno
+        }).then(res => {
+          if (res.code === 1000) {
+            try {
+              window.location.href = res.data
+            } catch (error) {
+              console.log(error)
+              this.$Message.infor('支付跳转失败')
+            }
+          } else {
+            this.$Message.infor(res.msg)
           }
-        } else {
-          this.$Message.infor(res.msg)
-        }
-      }).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错！')
-      })
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      }
       this.$router.replace({ name: 'chatRoom' })
     }
   },
