@@ -46,9 +46,9 @@
         </div>
       </div>
     </div>
-    <div class="add-block">
-      <button class="add-btn" @click.stop="nextDone">{{orderDetail.order_info.status === 'UNPAID'?'去支付':'关闭'}}</button>
-    </div>
+<!--    <div class="add-block">-->
+<!--      <button class="add-btn" @click.stop="nextDone">{{orderDetail.order_info.status === 'UNPAID'?'去支付':'关闭'}}</button>-->
+<!--    </div>-->
   </div>
 </template>
 

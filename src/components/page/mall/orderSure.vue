@@ -55,7 +55,7 @@
         <hr class="full-screen-hr">
         <div class="remark">
           <label>患者备注</label>
-          <input placeholder="暂无" v-model="memo" @blur="scrollToTop">
+          <input placeholder="选填" v-model="memo" @blur="scrollToTop">
         </div>
       </div>
     </div>
