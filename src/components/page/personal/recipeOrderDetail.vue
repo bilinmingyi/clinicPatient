@@ -5,50 +5,50 @@
       <div class="content-back">
         <Small-title :hasBlock="true">
           <span class="ml-16px flexOne">订单信息</span>
-          <span class="label-red">{{orderDetail.order_info.status|treatOrderStatus}}</span>
+          <span class="label-red">{{orderDetail.status|treatOrderStatus}}</span>
         </Small-title>
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">下单时间：</span>
-            <!--<span class="label-two">{{orderDetail.order_info.createTime|dateFormat}}</span>-->
+            <span class="label-two">{{orderDetail.create_time|dateFormat}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">患者信息：</span>
             <span
-              class="label-two">{{orderDetail.order_info.patientName}}/{{orderDetail.order_info.patientSex|sexFormat}}/{{orderDetail.order_info.patientAge}}岁</span>
+              class="label-two">{{orderDetail.patient_name}}/{{orderDetail.patient_sex|sexFormat}}/{{orderDetail.patient_age}}岁</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">患者主诉：</span>
             <span
-              class="label-two">{{orderDetail.order_info.chiefComplaint}}</span>
+              class="label-two">{{orderDetail.chief_complaint}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">医生姓名：</span>
             <span
-              class="label-two">{{orderDetail.order_info.doctorName}}</span>
+              class="label-two">{{orderDetail.doctor_name}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">医生备案：</span>
             <span
-              class="label-two">{{orderDetail.order_info.memo}}</span>
+              class="label-two">{{orderDetail.memo}}</span>
           </div>
         </div>
       </div>
       <div class="content-back">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">订单总价</label>
-          <span class="label-red">￥{{orderDetail.order_info.price}}</span>
+          <span class="label-red">￥{{orderDetail.price}}</span>
         </div>
         <hr class="line-hr">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">支付方式</label>
-          <span class="label-span">{{orderDetail.order_info.payType|payTypeFormat}}</span>
+          <span class="label-span">{{orderDetail.pay_type|payTypeFormat}}</span>
         </div>
       </div>
     </div>
-<!--    <div class="add-block">-->
-<!--      <button class="add-btn" @click.stop="nextDone">{{orderDetail.order_info.status === 'UNPAID'?'去支付':'关闭'}}</button>-->
-<!--    </div>-->
+    <div class="add-block">
+      <button class="add-btn" @click.stop="nextDone">{{orderDetail.status === 'UNPAID'?'去支付':'关闭'}}</button>
+    </div>
   </div>
 </template>
 
@@ -62,10 +62,7 @@ export default {
   props: ['orderSeqno'],
   data () {
     return {
-      orderDetail: {
-        order_info: {},
-        user_info: {}
-      }
+      orderDetail: {}
     }
   },
   components: {
@@ -97,7 +94,13 @@ export default {
       })
     },
     nextDone () {
-      if (this.orderDetail.order_info.status === 'UNPAID') {
+      if (this.orderDetail.recipe_list.some(item => {
+        return Number(item.is_cloud) === 1
+      })) {
+        this.$Message.infor('暂不支持云处方支付！')
+        return
+      }
+      if (this.orderDetail.status === 'UNPAID') {
         if (this.clinic.szjkPayEnabled === 1) {
           gotoPay({
             'order_type': 2,
