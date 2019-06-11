@@ -196,7 +196,7 @@ export default {
               query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}
             })
           } else {
-            this.$router.replace({name: 'appointOrderDetail', query: {shouldPay: 1, orderSeqno: res.order_seqno}})
+            this.$router.replace({name: 'appointOrderDetail', query: {shouldPay: 1, orderSeqno: res.order_seqno, price: this.price}})
           }
         } else {
           this.$Message.infor(res.msg)

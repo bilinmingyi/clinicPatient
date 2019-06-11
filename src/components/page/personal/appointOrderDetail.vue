@@ -67,7 +67,7 @@ import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
-  props: ['orderSeqno', 'shouldPay'],
+  props: ['orderSeqno', 'shouldPay', 'price'],
   components: {
     Header,
     SmallTitle
@@ -83,7 +83,7 @@ export default {
     })
   },
   mounted () {
-    if (Number(this.shouldPay) === 1) {
+    if (Number(this.shouldPay) === 1 && this.price > 0) {
       if (this.clinic.szjkPayEnabled === 1) {
         this.toPay()
         this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})

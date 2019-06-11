@@ -379,7 +379,7 @@ export default {
     }, 3000)
     if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
-      if (this.clinic.szjkPayEnabled === 1) {
+      if (this.clinic.szjkPayEnabled === 1 && this.price > 0) {
         gotoPay({
           'order_type': 1,
           'order_seqno': this.orderSeqno
