@@ -63,16 +63,18 @@ export default {
         this.$Message.confirm('请先绑定手机号码！', () => {
           this.$router.push({name: 'editPerson'})
         })
+      } else {
+        this.$router.push({name: 'editAddress', query: {index: index}})
       }
-      this.$router.push({name: 'editAddress', query: {index: index}})
     },
     addAddress () {
       if (!this.userInfoState.mobile) {
         this.$Message.confirm('请先绑定手机号码！', () => {
           this.$router.push({name: 'editPerson'})
         })
+      } else {
+        this.$router.push({name: 'editAddress'})
       }
-      this.$router.push({name: 'editAddress'})
     },
     getAddress () {
       if (this.userInfoState.mobile) {

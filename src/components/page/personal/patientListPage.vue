@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="add_block" @click.stop="goRoute">
+    <div class="add_block" @click.stop="goRoute()">
       <button class="add_btn">添加就诊人</button>
     </div>
     <Loading v-if="showLoad"></Loading>
@@ -85,14 +85,16 @@ export default {
     },
     goRoute (item) {
       if (item) {
+        console.log()
         this.$router.push({name: 'editPatient', query: {id: item.id, name: item.name, sex: item.sex, birthday: item.birthday}})
       } else {
         if (!this.userInfoState.mobile) {
           this.$Message.confirm('请先绑定手机号码！', () => {
             this.$router.push({name: 'editPerson'})
           })
+        } else {
+          this.$router.push({name: 'editPatient'})
         }
-        this.$router.push({name: 'editPatient'})
       }
     }
   }
