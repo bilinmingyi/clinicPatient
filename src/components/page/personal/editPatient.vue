@@ -159,8 +159,8 @@ export default {
   }
 
   .del-btn {
-    @include simpleButton(80px, 48%);
-  }
+      @include simpleButton(80px, 48%);
+    }
 
   .line-item {
     padding: 26px 30px;

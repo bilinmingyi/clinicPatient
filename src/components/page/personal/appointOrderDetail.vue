@@ -55,7 +55,9 @@
       </div>
     </div>
     <div class="add-block">
-      <button class="add-btn" @click.stop="nextDone">{{orderInfo.status === 'SZJK_PAYING'?'去支付':'关闭'}}</button>
+<!--      还有一个add-btn-->
+      <button class="sure-btn" @click.stop="nextDone">{{orderInfo.status === 'SZJK_PAYING'?'去支付':'关闭'}}</button>
+      <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
   </div>
 </template>
@@ -173,6 +175,15 @@ export default {
     font-size: 30px;
     color: $lightTextColor;
     line-height: 42px;
+  }
+
+  .del-btn {
+    @include simpleButton(80px, 48%);
+    margin-left: 4%;
+  }
+
+  .sure-btn {
+    @include deepButton(80px, 48%);
   }
 
   .label-red {

@@ -4,7 +4,6 @@
       <p class="chat-time mb24" v-show="chatDetail.showTime">{{chatDetail.msgts|dateFormat('MM月dd日 hh:mm')}}</p>
 
       <div class="chat-content">
-<<<<<<< HEAD
         <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState.sex,$event)" class="iconImg">
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
           <span>{{chatDetail.msgdata.text}}</span>
@@ -17,16 +16,6 @@
               @error="error(imgDetail.sex,$event)"
               class="iconImg"
             >
-=======
-        <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState,$event)" class="iconImg">
-        <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type==='text' ">
-          <span>{{chatDetail.msgdata.text}}</span>
-        </div>
-        <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'">
-          <div class="recommond" v-if="chatDetail.msgdata.link_type ===  'treatment_order_create'" @click="goRouter(1)">
-            <img :src="imgNormalToggle(imgDetail.avatar,imgDetail)" alt @error="error(imgDetail,$event)"
-                 class="iconImg">
->>>>>>> use_mall
             <div class="recommond-content">
               <p class="recommond-title">
                 {{imgDetail.name}}

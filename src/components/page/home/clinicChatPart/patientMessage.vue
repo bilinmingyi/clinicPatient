@@ -26,16 +26,12 @@
         <!-- <div
               class="reply-content"
         >医生，我想要咨询鼻炎之类的问题呢，最近不舒服医<a href="www.baidu.com">打开</a></div>-->
-<<<<<<< HEAD
         <img
           :src="imgNormalToggle(userInfoState.avatar, userInfoState.sex)"
           alt
           class="ml20 iconImg"
           @error="error(userInfoState.sex,$event,'patient')"
         >
-=======
-        <img :src="imgNormalToggle(userInfoState.avatar, userInfoState)" alt class="ml20 iconImg" @error="error(userInfoState,$event)">
->>>>>>> use_mall
       </div>
     </div>
   </div>
@@ -113,13 +109,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-<<<<<<< HEAD
-  p {
-    text-align: center;
-    font-size: 26px;
-    font-weight: 400;
-    color: $simpleGray;
-=======
 p {
   text-align: center;
   font-size: 26px;
@@ -142,7 +131,6 @@ p {
 
   span {
     border-bottom: 1px solid $gray3;
->>>>>>> use_mall
   }
 }
 
