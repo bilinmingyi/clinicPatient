@@ -61,6 +61,23 @@ export default new Router({
         {
           path: '',
           component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/mallPage.vue')
+        },
+        {
+          path: 'goodsDetail/:id',
+          name: 'goodsDetail',
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/goodsDetail.vue'),
+          props: true
+        },
+        {
+          path: 'shopCar',
+          name: 'shopCar',
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/ShopCar.vue')
+        },
+        {
+          path: 'sureOrder',
+          name: 'sureOrder',
+          component: () => import(/* webpackChunkName: 'mall' */'@/components/page/mall/orderSure.vue'),
+          props: (route) => route.query
         }
       ]
     },
@@ -114,6 +131,29 @@ export default new Router({
           path: 'appointListPage/appointOrderDetail',
           name: 'appointOrderDetail',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/appointOrderDetail.vue'),
+          props: (route) => route.query
+        },
+        {
+          path: 'mallListPage',
+          name: 'mallListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/mallListPage.vue')
+        },
+        {
+          path: 'mallListPage/mallOrderDetail',
+          name: 'mallOrderDetail',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/mallOrderDetail.vue'),
+          props: (route) => route.query
+        },
+        {
+          path: 'addressListPage',
+          name: 'addressListPage',
+          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/addressListPage.vue'),
+          props: (route) => route.query
+        },
+        {
+          path: 'editAddress',
+          name: 'editAddress',
+          component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/editAddress.vue'),
           props: (route) => route.query
         }
       ]

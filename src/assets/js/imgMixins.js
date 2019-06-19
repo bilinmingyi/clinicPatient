@@ -10,10 +10,15 @@ export default {
   },
   methods: {
     // 图片加载错误的时候
+<<<<<<< HEAD
     error (sex, e, type = 'doctor') {
       return type === 'doctor'
         ? (e.target.src = this.getNormalHead(sex))
         : (e.target.src = this.getPatientImg(sex)) // 默认图
+=======
+    error (item, e) {
+      e.target.src = this.getNormalHead(item.sex) // 默认图
+>>>>>>> use_mall
     },
     // 医生头像的默认图
     getNormalHead (sex) {

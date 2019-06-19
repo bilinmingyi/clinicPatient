@@ -6,7 +6,7 @@
 
 <script>
 import {mapActions} from 'vuex'
-import {getClinicData} from '@/fetch/api.js'
+import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
 
 export default {
   name: 'App',
@@ -14,12 +14,12 @@ export default {
     return {}
   },
   created () {
-    this.getCLinic()
+    this.getClinic()
     this.getUserInfo()
   },
   methods: {
-    ...mapActions(['set_clinic_info', 'getUserInfo']),
-    getCLinic () {
+    ...mapActions(['set_clinic_info', 'set_user_info']),
+    getClinic () {
       getClinicData().then(res => {
         if (res.code === 1000) {
           this.set_clinic_info({
@@ -33,8 +33,21 @@ export default {
             countyName: res.data.countyName,
             countyCode: res.data.countyCode,
             address: res.data.address,
-            logo: res.data.logo
+            logo: res.data.logo,
+            szjkPayEnabled: res.data.szjkPayEnabled
           })
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    getUserInfo () {
+      fetchUserInfo({}).then(res => {
+        if (res.code === 1000) {
+          this.set_user_info(res.data)
         } else {
           this.$Message.infor(res.msg)
         }

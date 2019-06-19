@@ -1,17 +1,16 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="处方订单"></Header>
+    <Header titleText="商城订单" :canReturn="true" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="orderList">
-        <order-item v-for="(item,index) in dataList" :itemData="item" :key="item.id"
-                    :noLine="(dataList.length - 1) === index" @click.stop.native="goRoute(item)"></order-item>
+        <order-item v-for="(item, index) in dataList" :itemData="item" :isMall="true" :noLine="index === dataList.length - 1" :key="item.id" @click.native="goRoute(item.order_seqno)"></order-item>
       </div>
       <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
         <div>
-          暂无处方订单
+          暂无商场订单
         </div>
       </div>
-      <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
+      <Load-more @click.stop.native="addMore" v-if="page < Math.ceil(totalNum/pageSize)"></Load-more>
     </div>
     <Loading v-if="showLoad"></Loading>
   </div>
@@ -19,33 +18,32 @@
 
 <script>
 import {Header, orderItem, LoadMore, Loading} from '../../common'
-import {fetchRecipeList} from '@/fetch/api.js'
+import {fetchGoodList} from '@/fetch/api'
 import {mapState} from 'vuex'
 
 export default {
-  name: 'recipeListPage',
+  name: 'mallListPage',
   components: {
     Header,
     orderItem,
     LoadMore,
     Loading
   },
-  computed: {
-    ...mapState({
-      clinic: state => state.clinic,
-      userInfoState: state => state.userInfoState
-    })
-  },
   data () {
     return {
-      status: ['UNPAID', 'DISPENSING', 'DONE', 'CANCEL'],
+      canShowAdd: false,
       page: 1,
       pageSize: 10,
       dataList: [],
-      canShowAdd: false,
+      totalNum: 0,
       showLoad: true,
       isFirst: true
     }
+  },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
   },
   mounted () {
     setTimeout(() => {
@@ -55,7 +53,7 @@ export default {
   methods: {
     getData () {
       if (this.userInfoState.mobile) {
-        this.getList()
+        this.getGoodList()
       } else {
         this.showLoad = false
         this.$Message.confirm('请先绑定手机号码！', () => {
@@ -63,21 +61,19 @@ export default {
         })
       }
     },
-    getList () {
-      fetchRecipeList({
-        'page': this.page,
-        'page_size': this.pageSize,
-        'status': this.status
+    goRoute (orderSeqno) {
+      this.$router.push({name: 'mallOrderDetail', query: {orderSeqno: orderSeqno}})
+    },
+    getGoodList () {
+      fetchGoodList({
+        page: this.page,
+        page_size: this.pageSize
       }).then(res => {
         this.showLoad = false
         this.isFirst = false
         if (res.code === 1000) {
-          if (res.data.length < this.pageSize) {
-            this.canShowAdd = false
-          } else {
-            this.canShowAdd = true
-          }
           this.dataList = this.dataList.concat(res.data)
+          this.totalNum = res.total_num
         } else {
           this.$Message.infor(res.msg)
         }
@@ -88,10 +84,7 @@ export default {
     },
     addMore () {
       this.page++
-      this.getList()
-    },
-    goRoute (item) {
-      this.$router.push({name: 'recipeOrderDetail', query: {orderSeqno: item.order_seqno}})
+      this.getGoodList()
     }
   }
 }

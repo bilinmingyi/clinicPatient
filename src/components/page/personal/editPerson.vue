@@ -4,12 +4,12 @@
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
-        <input type="text" class="input-item" v-model="name">
+        <input type="text" class="input-item" v-model="name" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">年龄</label>
-        <input type="number" class="input-item input-width" v-model="age">
+        <input type="number" class="input-item input-width" v-model="age" @blur="scrollToTop">
         <span class="label-span">岁</span>
       </div>
       <hr class="line-hr">
@@ -33,8 +33,11 @@
 <script>
 import {Header, radioGroup} from '@/components/common/index'
 import {changeUser} from '@/fetch/api.js'
+import {mapState, mapActions} from 'vuex'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'editPerson',
   components: {
     Header,
@@ -47,20 +50,37 @@ export default {
       name: '',
       id: '',
       age: '',
-      mobile: '',
-      isEdit: true
+      mobile: ''
     }
   },
-  created () {
-    this.sex = Number(this.$route.query.sex)
-    this.id = this.$route.query.id
-    this.name = this.$route.query.name
-    this.mobile = this.$route.query.mobile
-    let birthday = this.$route.query.birthday
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
+  watch: {
+    userInfoState: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        this.sex = Number(this.userInfoState.sex)
+        this.id = this.userInfoState.id
+        this.name = this.userInfoState.name
+        this.mobile = this.userInfoState.mobile
+        let birthday = this.userInfoState.birthday
+        this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
+      }
+    }
+  },
+  mounted () {
+    this.sex = Number(this.userInfoState.sex)
+    this.id = this.userInfoState.id
+    this.name = this.userInfoState.name
+    this.mobile = this.userInfoState.mobile
+    let birthday = this.userInfoState.birthday
     this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
-    this.isEdit = Boolean(this.id)
   },
   methods: {
+    ...mapActions(['set_user_info']),
     changeSex (val) {
       this.sex = Number(val)
     },
@@ -83,6 +103,12 @@ export default {
         birthday: birthday.getTime()
       }).then(res => {
         if (res.code === 1000) {
+          this.set_user_info({
+            age: Number(this.age),
+            sex: Number(this.sex),
+            name: this.name,
+            birthday: birthday.getTime()
+          })
           this.$router.go(-1)
         } else {
           this.$Message.infor(res.msg)
@@ -141,6 +167,8 @@ export default {
     color: $depthTextColor;
     line-height: 64px;
     font-size: 32px;
+    width: 70px;
+    display: inline-block;
   }
 
   .input-item {
@@ -157,6 +185,7 @@ export default {
   }
 
   .input-width {
-    width: 26%;
+    width: 18%;
+    text-align: center;
   }
 </style>

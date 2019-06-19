@@ -162,6 +162,10 @@ input {
     color: #d9d9d9;
 }
 
+.flex {
+  display: flex;
+}
+
 .flexOne {
     flex: 1;
 }
@@ -172,6 +176,10 @@ input {
 
 .ml-16px {
     margin-left: 16px;
+}
+
+.ml-20px {
+  margin-left: 20px;
 }
 
 .ml-24px {
@@ -206,6 +214,10 @@ input {
     margin-bottom: 131px;
 }
 
+.mt-40px {
+  margin-top: 40px;
+}
+
 .mt-88px {
     margin-top: 88px;
 }
@@ -224,6 +236,10 @@ input {
 
 .pb-128px {
     padding-bottom: 128px;
+}
+
+.mr-10px {
+  margin-right: 10px;
 }
 
 .mr64 {

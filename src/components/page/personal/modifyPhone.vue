@@ -3,12 +3,12 @@
     <Header :canReturn="true" titleText="绑定手机"></Header>
     <div class="mt-88px mb-131px list-content">
       <div class="line-items">
-        <input type="text" placeholder="请输入手机号码" class="input-item flexOne" v-model="mobile">
-        <button class="get-code-btn" @click.stop="getCode">获取验证码</button>
+        <input type="text" placeholder="请输入手机号码" class="input-item flexOne" v-model="mobile" @blur="scrollToTop">
+        <button :class="['get-code-btn', {'ban-code': currNum!==0}]" @click.stop="getCode">{{currNum===0?'获取验证码':currNum+'s'}}</button>
       </div>
       <hr class="line-hr">
       <div class="line-item">
-        <input type="text" placeholder="请输入短信验证码" class="input-item" v-model="code">
+        <input type="text" placeholder="请输入短信验证码" class="input-item all-input-width" v-model="code" @blur="scrollToTop">
       </div>
     </div>
     <div class="add-block">
@@ -20,21 +20,30 @@
 <script>
 import {Header} from '@/components/common/index'
 import {fetchCode, savePhone} from '@/fetch/api.js'
+import {mapActions} from 'vuex'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'modifyPhone',
   props: ['returnType'],
   data () {
     return {
       mobile: '',
-      code: ''
+      code: '',
+      currNum: 0,
+      timer: ''
     }
   },
   components: {
     Header
   },
   methods: {
+    ...mapActions(['set_user_info']),
     getCode () {
+      if (this.currNum !== 0) {
+        return
+      }
       if (!/^\d{11}$/.test(this.mobile)) {
         this.$Message.infor('请填写正确的手机号码!')
         // this.$refs.phoneNum.focus()
@@ -44,6 +53,14 @@ export default {
         mobile: this.mobile
       }).then(res => {
         if (res.code === 1000) {
+          this.currNum = 60
+          this.timer = setInterval(() => {
+            if (this.currNum > 0) {
+              this.currNum--
+            } else {
+              clearInterval(this.timer)
+            }
+          }, 1000)
         } else {
           this.$Message.infor(res.msg)
         }
@@ -64,8 +81,11 @@ export default {
         code: this.code
       }).then(res => {
         if (res.code === 1000) {
+          this.set_user_info({
+            mobile: this.mobile
+          })
           if (Number(this.returnType) === 1) {
-            this.$router.push({name: 'personal'})
+            this.$router.push({path: '/personal'})
           } else if (Number(this.returnType) === 2) {
             this.$router.go(-1)
           }
@@ -112,6 +132,10 @@ export default {
     @extend %lineHr;
   }
 
+  .all-input-width {
+    width: 100%;
+  }
+
   .input-item {
     background: transparent;
     border: none;
@@ -136,5 +160,9 @@ export default {
     font-size: 28px;
     padding: 10px 12px;
     line-height: 40px;
+    width: 164px;
+  }
+  .ban-code {
+    background: #cccccc;
   }
 </style>

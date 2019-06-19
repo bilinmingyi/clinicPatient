@@ -30,13 +30,19 @@
           </div>
         </section>
       </div>
+      <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
+        <div>
+          暂无预约订单
+        </div>
+      </div>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
+      <Loading v-if="showLoad"></Loading>
     </div>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle, LoadMore} from '../../common'
+import {Header, SmallTitle, LoadMore, Loading} from '../../common'
 import {getAppointList} from '@/fetch/api.js'
 import {mapState} from 'vuex'
 
@@ -45,11 +51,13 @@ export default {
   components: {
     Header,
     SmallTitle,
-    LoadMore
+    LoadMore,
+    Loading
   },
   computed: {
     ...mapState({
-      clinic: state => state.clinic
+      clinic: state => state.clinic,
+      userInfoState: state => state.userInfoState
     })
   },
   data () {
@@ -58,13 +66,27 @@ export default {
       pageSize: 10,
       status: ['UNPAID', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
       dataList: [],
-      canShowAdd: false
+      canShowAdd: false,
+      showLoad: true,
+      isFirst: true
     }
   },
-  created () {
-    this.getList()
+  mounted () {
+    setTimeout(() => {
+      this.getData()
+    }, 500)
   },
   methods: {
+    getData () {
+      if (this.userInfoState.mobile) {
+        this.getList()
+      } else {
+        this.showLoad = false
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
+    },
     async getList () {
       try {
         let res = await getAppointList({
@@ -72,6 +94,8 @@ export default {
           'page_size': this.pageSize,
           'status': this.status
         })
+        this.showLoad = false
+        this.isFirst = false
         if (res.code === 1000) {
           if (res.data.length < this.pageSize) {
             this.canShowAdd = false
@@ -159,5 +183,21 @@ export default {
     color: $depthTextColor;
     line-height: 45px;
     margin-right: 22px;
+  }
+  .no-address-back {
+    height: calc(100vh - 419px);
+    background: url("../../../assets/img/noGood.png") no-repeat center center;
+    background-size: 60%;
+    color: $lightTextColor;
+    font-size: 32px;
+    @extend %flexVC;
+
+    div {
+      -webkit-transform: translateY(13vh);
+      -moz-transform: translateY(13vh);
+      -ms-transform: translateY(13vh);
+      -o-transform: translateY(13vh);
+      transform: translateY(13vh);
+    }
   }
 </style>

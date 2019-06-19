@@ -14,12 +14,12 @@
           </div>
           <div class="mb-8px">
             <span class="label-three">预约时间：</span>
-            <span class="label-two">{{orderInfo.appointDate|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.startTime}}-{{orderInfo.endTime}}</span>
+            <span class="label-two">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约医生：</span>
             <span
-              class="label-two">{{orderInfo.doctorName}}</span>
+              class="label-two">{{orderInfo.doctor_name}}</span>
           </div>
           <div>
             <span class="label-three">挂号费用：</span>
@@ -34,22 +34,22 @@
         <div class="patient-infor">
           <div class="line-item">
             <label class="label-span mr-32px">手机号码</label>
-            <span class="label-span">{{orderInfo.patientMobile}}</span>
+            <span class="label-span">{{orderInfo.patient_mobile}}</span>
           </div>
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-96px">姓名</label>
-            <span class="label-span">{{orderInfo.patientName}}</span>
+            <span class="label-span">{{orderInfo.patient_name}}</span>
           </div>
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-96px">性别</label>
-            <span class="label-span">{{orderInfo.patientSex|sexFormat}}</span>
+            <span class="label-span">{{orderInfo.patient_sex|sexFormat}}</span>
           </div>
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-96px">年龄</label>
-            <span class="label-span">{{orderInfo.patientAge}}</span>
+            <span class="label-span">{{orderInfo.patient_age}}</span>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
-  props: ['orderSeqno'],
+  props: ['orderSeqno', 'shouldPay', 'price'],
   components: {
     Header,
     SmallTitle
@@ -82,8 +82,18 @@ export default {
       clinic: state => state.clinic
     })
   },
-  created () {
-    this.getDetail()
+  mounted () {
+    if (Number(this.shouldPay) === 1 && this.price > 0) {
+      if (this.clinic.szjkPayEnabled === 1) {
+        this.toPay()
+        this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})
+      } else {
+        this.$Message.infor('该诊所未开通线上支付功能！')
+        this.getDetail()
+      }
+    } else {
+      this.getDetail()
+    }
   },
   methods: {
     getDetail () {
@@ -91,9 +101,9 @@ export default {
         order_seqno: this.orderSeqno
       }).then(res => {
         if (res.code === 1000) {
-          this.orderInfo = res.data.order_info
-          let time = this.orderInfo.appointDate
-          this.orderInfo.appointDate = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2))
+          this.orderInfo = res.data
+          // let time = this.orderInfo.appoint_date
+          // this.orderInfo.appoint_date = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2))
         } else {
           this.$Message.infor(res.msg)
         }
@@ -104,27 +114,34 @@ export default {
     },
     nextDone () {
       if (this.orderInfo.status === 'SZJK_PAYING') {
-        gotoPay({
-          'order_type': 1,
-          'order_seqno': this.orderInfo.orderSeqno
-        }).then(res => {
-          if (res.code === 1000) {
-            try {
-              window.location.href = res.data
-            } catch (error) {
-              console.log(error)
-              this.$Message.infor('支付跳转失败')
-            }
-          } else {
-            this.$Message.infor(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-          this.$Message.infor('网络出错！')
-        })
+        if (this.clinic.szjkPayEnabled === 1) {
+          this.toPay()
+        } else {
+          this.$Message.infor('该诊所未开通线上支付功能！')
+        }
       } else {
         this.$router.go(-1)
       }
+    },
+    toPay () {
+      gotoPay({
+        'order_type': 1,
+        'order_seqno': this.orderSeqno
+      }).then(res => {
+        if (res.code === 1000) {
+          try {
+            window.location.href = res.data
+          } catch (error) {
+            console.log(error)
+            this.$Message.infor('支付跳转失败')
+          }
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }

@@ -4,9 +4,10 @@
       <div class="search_left">
         <img src="../../assets/img/ss.png">
         <input type="text" v-bind="$attrs" v-model="searchName" :placeholder="placeholder" @input="searchInput()"
+               @blur="scrollToTop"
                id="dsearch"/>
       </div>
-      <div class="search_btn_block">
+      <div class="search_btn_block" v-if="hasBtn">
         <button class="search_btn" @click.stop="searchInput()">{{btnText}}</button>
       </div>
     </div>
@@ -16,7 +17,10 @@
 </template>
 
 <script>
+import inputBlur from '@/assets/js/inputBlur'
+
 export default {
+  mixins: [inputBlur],
   name: 'Search',
   props: {
     placeholder: {
@@ -26,6 +30,10 @@ export default {
     btnText: {
       type: String,
       default: '查询'
+    },
+    hasBtn: {
+      type: Boolean,
+      default: true
     }
   },
   inheritAttrs: false,
@@ -36,13 +44,13 @@ export default {
     }
   },
   methods: {
-    searchInput: function () {
+    searchInput () {
       let self = this
       // 防抖
       clearTimeout(self.timer)
       self.timer = setTimeout(function () {
         self.$emit('on-search', self.searchName)
-      }, 300)
+      }, 500)
     }
   }
 
@@ -90,9 +98,11 @@ export default {
     font-size: 28px !important;
     color: #8C8C8C !important;
   }
-  .search_btn_block{
+
+  .search_btn_block {
     @extend %flexV;
   }
+
   .search_btn {
     @include deepButton(64px, 104px);
   }

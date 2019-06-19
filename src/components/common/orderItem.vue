@@ -6,7 +6,8 @@
     </div>
     <div class="item-line">
       <span class="flexOne">金额：￥{{itemData.price}}</span>
-      <span :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
+      <span v-if="isMall" :class="itemData.status == 'UNPAID4CLIENT'?'color-red':'order-status'">{{itemData.status|mallOrderStatus}}</span>
+      <span v-else :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
     </div>
   </div>
 </template>
@@ -20,16 +21,20 @@ export default {
       default () {
         return {
           order_seqno: '',
-          doctor_name: '',
+          doctor_name: '测试',
           create_time: '',
           price: 0,
-          status: ''
+          status: 'UNKNOWN'
         }
       }
     },
     noLine: {
       type: Boolean,
       default: true
+    },
+    isMall: {
+      type: Boolean,
+      default: false
     }
   }
 }

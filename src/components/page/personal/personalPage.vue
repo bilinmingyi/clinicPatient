@@ -4,10 +4,10 @@
     <div class="pb-128px mt-88px">
       <div class="patient-block">
         <div class="patient">
-          <img class="avatar" :src="user_avatar === '' ? (user_sex === 2 ? woman_img : man_img) : user_avatar">
+          <img class="avatar" :src="userInfoState.avatar === '' ? (userInfoState.sex === 2 ? woman_img : man_img) : userInfoState.avatar">
           <div class="information">
-            <p>{{user_name}}/{{user_sex|sexFormat}}/{{user_age}}</p>
-            <p>帐号ID：{{user_id}}</p>
+            <p>{{userInfoState.name}}/{{userInfoState.sex|sexFormat}}/{{userInfoState.age}}</p>
+            <p>帐号ID：{{userInfoState.id}}</p>
           </div>
           <div class="return-block" @click.stop="goRouter(5)">
             <img src="../../../assets/img/xiayibu@2x.png">
@@ -15,6 +15,10 @@
         </div>
       </div>
       <ul class="person-function">
+        <li @click.stop="goRouter(6)">
+          <img src="../../../assets/img/dz.png">
+          <span>地址管理</span>
+        </li>
         <li @click.stop="goRouter(1)">
           <img src="../../../assets/img/qt@2x.png">
           <span>其他就诊人</span>
@@ -27,10 +31,10 @@
           <img src="../../../assets/img/cf@2x.png">
           <span>处方订单</span>
         </li>
-        <!--<li>-->
-        <!--<img src="../../../assets/img/dd@2x.png">-->
-        <!--<span>商城订单</span>-->
-        <!--</li>-->
+        <li @click.stop="goRouter(4)">
+          <img src="../../../assets/img/dd@2x.png">
+          <span>商城订单</span>
+        </li>
       </ul>
 
     </div>
@@ -41,9 +45,8 @@
 <script>
 import man from '@/assets/img/mhz@2x.png'
 import woman from '@/assets/img/whz@2x.png'
-
 import {Footer, Header} from '@/components/common/index'
-import {fetchUserInfo} from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'personalPage',
@@ -54,18 +57,15 @@ export default {
   data () {
     return {
       man_img: man,
-      woman_img: woman,
-      user_name: '',
-      user_sex: '',
-      user_id: '',
-      user_age: '',
-      user_birthday: '',
-      user_avatar: '',
-      mobile: ''
+      woman_img: woman
     }
   },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
   created () {
-    this.getUser()
   },
   methods: {
     goRouter (type) {
@@ -79,28 +79,18 @@ export default {
         case 3:
           this.$router.push({name: 'recipeListPage'})
           break
+        case 4:
+          this.$router.push({name: 'mallListPage'})
+          break
         case 5:
           this.$router.push({
-            name: 'editPerson',
-            query: {id: this.user_id, name: this.user_name, sex: this.user_sex, birthday: this.user_birthday, mobile: this.mobile}
+            name: 'editPerson'
           })
           break
+        case 6:
+          this.$router.push({name: 'addressListPage'})
+          break
       }
-    },
-    getUser () {
-      fetchUserInfo({}).then(res => {
-        this.user_id = res.data.id
-        this.user_name = res.data.name
-        this.user_sex = res.data.sex
-        this.user_birthday = res.data.birthday
-
-        this.user_age = res.data.age
-        this.user_avatar = res.data.avatar
-        this.mobile = res.data.mobile
-      }).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错！')
-      })
     }
   }
 }

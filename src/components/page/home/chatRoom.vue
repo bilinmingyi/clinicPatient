@@ -5,47 +5,32 @@
       <div class="clinic-chat">
         <div class="wrapper" ref="wrapper" @click="hideFuc">
           <p v-show="isShowLoad" class="loadData">正在加载数据...</p>
-          <div class="content-detail">
-            <component
-              v-for="(item) in allMsgList"
-              v-if="allMsgList.length>0"
-              :key="item.msgid"
-              :is="RenderComponent(item.from)"
-              :chatDetail="item"
-              :patientImg="queryData.avatar"
-              @cancelMessage="cancelMessage"
-              ref="chatBottoms"
-            ></component>
+          <div class="content-detail" v-if="isShowChat">
+            <component v-for="(item) in allMsgList" v-if="allMsgList.length>0" :key="item.msgid" :is="RenderComponent(item.from)" :chatDetail="item"
+              :patientImg="queryData.avatar" @cancelMessage="cancelMessage" ref="chatBottoms"></component>
           </div>
         </div>
       </div>
       <div class="mb88"></div>
 
-      <chat-bottom
-        :showFuc="isShowFuc"
-        @addFunc="addFunc"
-        @hideFunc="foucs"
-        @sendMessage="sendTextMessage"
-        @sendImg="sendImgMessage"
-        @showReply="showReply"
-        @inputBlur="inputBlur"
-      ></chat-bottom>
+      <chat-bottom :showFuc="isShowFuc" @addFunc="addFunc" @hideFunc="foucs" @sendMessage="sendTextMessage" @sendImg="sendImgMessage" @showReply="showReply"
+        @inputBlur="inputBlur"></chat-bottom>
     </div>
   </div>
 </template>
 
 <script>
-import {Header} from '@/components/common'
+import { Header } from '@/components/common'
 // import BScroll from 'better-scroll'
-import {chatMsgList, msgSend, msgWithdraw} from '@/fetch/api'
-import {mapState} from 'vuex'
+import { chatMsgList, msgSend, msgWithdraw, gotoPay } from '@/fetch/api'
+import { mapState } from 'vuex'
 import chatBottom from './clinicChatPart/chatBottom'
 import clinicMessage from './clinicChatPart/clinicMessage'
 import patientMessage from './clinicChatPart/patientMessage'
 
 export default {
   name: 'chatRoom',
-  props: ['hasAppoint', 'orderSeqno'],
+  props: ['hasAppoint', 'orderSeqno', 'price'],
   data () {
     return {
       isShowFuc: false,
@@ -59,7 +44,9 @@ export default {
       unfinalPulling: true,
       noPull: true,
       first: '',
-      second: ''
+      second: '',
+      isShowChat: false, // 兼容安卓机子第一次加载抖动问题
+      getDataSet: ''
     }
   },
   components: {
@@ -69,7 +56,7 @@ export default {
     patientMessage
   },
   computed: {
-    ...mapState(['userInfoState'])
+    ...mapState(['userInfoState', 'clinic'])
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -112,7 +99,7 @@ export default {
             from_username: this.userInfoState.name,
             from_userimg: this.userInfoState.avatar,
             session_type: 'CLINIC_PATIENT',
-            msgdata: {msg_type: 'text', text: val}
+            msgdata: { msg_type: 'text', text: val }
           }
           break
         case 2:
@@ -122,7 +109,7 @@ export default {
             from_username: this.userInfoState.name,
             from_userimg: this.userInfoState.avatar,
             session_type: 'CLINIC_PATIENT',
-            msgdata: {msg_type: 'image', img_url: val}
+            msgdata: { msg_type: 'image', img_url: val }
           }
           break
         case 3:
@@ -136,7 +123,7 @@ export default {
               msg_type: 'link',
               link_type: 'treatment_order_Submission',
               link_url: `/personal/appointListPage/appointOrderDetail?orderSeqno=${this.orderSeqno}`,
-              link_desc: JSON.stringify({orderSeqno: this.orderSeqno})
+              link_desc: JSON.stringify({ orderSeqno: this.orderSeqno })
             }
           }
           break
@@ -313,13 +300,18 @@ export default {
           this.last_msgid =
             this.allMsgList.length > 0 ? this.allMsgList[0].msgid : null
           this.$nextTick(() => {
+            this.isShowChat = true // 解决安卓机子第一次进来的抖动问题
             setTimeout(() => {
               this.$refs.wrapper.scrollTo(0, this.$refs.wrapper.scrollHeight)
             }, 0)
+
             this.$refs.wrapper.addEventListener('scroll', () => {
-              if (this.$refs.wrapper.scrollTop === 0 && this.unfinalPulling) {
-                this.getUpLoadData()
-              }
+              clearTimeout(this.getDataSet)
+              this.getDataSet = setTimeout(() => {
+                if (this.$refs.wrapper.scrollTop === 0 && this.unfinalPulling) {
+                  this.getUpLoadData()
+                }
+              }, 500)
             }, false)
           })
         } else {
@@ -387,7 +379,27 @@ export default {
     }, 3000)
     if (Number(this.hasAppoint) === 1) {
       this.sendMessage(3)
-      this.$router.replace({name: 'chatRoom'})
+      if (this.clinic.szjkPayEnabled === 1 && this.price > 0) {
+        gotoPay({
+          'order_type': 1,
+          'order_seqno': this.orderSeqno
+        }).then(res => {
+          if (res.code === 1000) {
+            try {
+              window.location.href = res.data
+            } catch (error) {
+              console.log(error)
+              this.$Message.infor('支付跳转失败')
+            }
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      }
+      this.$router.replace({ name: 'chatRoom' })
     }
   },
   created () {
@@ -396,41 +408,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .allWrapper {
-    position: fixed;
-    width: 100vw;
-    height: 100%;
-  }
+.allWrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100%;
+}
 
-  .clinic-chat {
-    position: relative;
-    height: 100%;
+.clinic-chat {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  .chat-content {
     width: 100%;
+    margin-right: 20px;
+    overflow: hidden;
 
-    .chat-content {
+    .content-detail {
       width: 100%;
-      margin-right: 20px;
-      overflow: hidden;
-
-      .content-detail {
-        width: 100%;
-        margin: 32px 24px;
-      }
+      margin: 32px 24px;
     }
   }
+}
 
-  .wrapper {
-    box-sizing: border-box;
-    overflow: hidden;
-    height: calc(100vh - 200px);
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+.wrapper {
+  box-sizing: border-box;
+  overflow: hidden;
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
 
-  .loadData {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 24px;
-    color: $gray2;
-  }
+.loadData {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 24px;
+  color: $gray2;
+}
 </style>

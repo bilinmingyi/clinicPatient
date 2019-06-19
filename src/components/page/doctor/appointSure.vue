@@ -64,7 +64,7 @@
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">年龄</label>
-            <input type="number" class="input-item input-width" v-model="patient.user_age">
+            <input type="number" class="input-item input-width" v-model="patient.user_age" @blur="scrollToTop">
             <span class="label-span">岁</span>
           </div>
         </div>
@@ -79,10 +79,12 @@
 <script>
 import {Header, SmallTitle, radioGroup} from '@/components/common'
 import {mapState} from 'vuex'
-import {fetchPatientList, saveAppointData, fetchUserInfo, gotoPay} from '@/fetch/api.js'
+import {fetchPatientList, saveAppointData, fetchUserInfo} from '@/fetch/api.js'
 import filters from '../../../assets/js/fliters'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
+  mixins: [inputBlur],
   name: 'appointSure',
   components: {
     Header,
@@ -188,30 +190,13 @@ export default {
         patient_name: this.patient.user_name
       }).then(res => {
         if (res.code === 1000) {
-          if (Number(this.price) > 0) {
-            gotoPay({
-              'order_type': 1,
-              'order_seqno': res.order_seqno
-            }).then(res => {
-              if (res.code === 1000) {
-                try {
-                  window.location.href = res.data
-                } catch (error) {
-                  console.log(error)
-                  this.$Message.infor('支付跳转失败')
-                }
-              } else {
-                this.$Message.infor(res.msg)
-              }
-            }).catch(error => {
-              console.log(error)
-              this.$Message.infor('网络出错！')
-            })
-          }
           if (this.resource) {
-            this.$router.push({name: 'chatRoom', query: {hasAppoint: 1, orderSeqno: res.order_seqno}})
+            this.$router.push({
+              name: 'chatRoom',
+              query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}
+            })
           } else {
-            this.$router.push({name: 'appointListPage'})
+            this.$router.replace({name: 'appointOrderDetail', query: {shouldPay: 1, orderSeqno: res.order_seqno, price: this.price}})
           }
         } else {
           this.$Message.infor(res.msg)
@@ -232,6 +217,7 @@ export default {
       }
     },
     hideSelect () {
+      this.scrollToTop()
       setTimeout(() => {
         this.showSelect = false
       }, 30)
