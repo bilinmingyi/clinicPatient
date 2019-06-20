@@ -94,12 +94,12 @@ export default {
       })
     },
     nextDone () {
-      // if (this.orderDetail.recipe_list.some(item => {
-      //   return Number(item.is_cloud) === 1
-      // })) {
-      //   this.$Message.infor('暂不支持云处方支付！')
-      //   return
-      // }
+      if (this.orderDetail.recipe_list.some(item => {
+        return Number(item.is_cloud) === 1
+      })) {
+        this.$Message.infor('暂不支持云处方支付！')
+        return
+      }
       if (this.orderDetail.status === 'UNPAID') {
         if (this.clinic.szjkPayEnabled === 1) {
           gotoPay({
