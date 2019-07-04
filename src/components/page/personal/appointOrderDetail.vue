@@ -54,10 +54,12 @@
         </div>
       </div>
     </div>
-    <div class="add-block">
-<!--      还有一个add-btn-->
-      <button class="sure-btn" @click.stop="nextDone">{{orderInfo.status === 'SZJK_PAYING'?'去支付':'关闭'}}</button>
+    <div class="add-block" v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.sys_source === 'GZH' && orderInfo.is_online === 1">
+      <button class="sure-btn" @click.stop="nextDone">关闭</button>
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
+    </div>
+    <div class="add-block" v-else>
+      <button class="sure-btn" @click.stop="nextDone" style="width: 100%">{{orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0 ?'去支付':'关闭'}}</button>
     </div>
   </div>
 </template>
@@ -65,7 +67,7 @@
 <script>
 import {Header, SmallTitle} from '../../common'
 import {mapState} from 'vuex'
-import {fetchAppointDetail, gotoPay} from '@/fetch/api.js'
+import {fetchAppointDetail, gotoPay, cancelAppoint} from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
@@ -115,7 +117,7 @@ export default {
       })
     },
     nextDone () {
-      if (this.orderInfo.status === 'SZJK_PAYING') {
+      if (this.orderInfo.status === 'UNPAID' && this.orderInfo.amount_receipts === 0) {
         if (this.clinic.szjkPayEnabled === 1) {
           this.toPay()
         } else {
@@ -137,6 +139,20 @@ export default {
             console.log(error)
             this.$Message.infor('支付跳转失败')
           }
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    deleteItem () {
+      cancelAppoint({
+        'order_seqno': this.orderSeqno
+      }).then(res => {
+        if (res.code === 1000) {
+          this.$router.back()
         } else {
           this.$Message.infor(res.msg)
         }

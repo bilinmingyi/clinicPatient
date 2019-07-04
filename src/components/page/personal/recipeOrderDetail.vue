@@ -37,7 +37,7 @@
       <div class="content-back">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">订单总价</label>
-          <span class="label-red">￥{{orderDetail.price}}</span>
+          <span class="label-red">￥{{orderDetail.amount_receivable}}</span>
         </div>
         <hr class="line-hr">
         <div class="line-item">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="add-block">
-      <button class="add-btn" @click.stop="nextDone">{{orderDetail.status === 'UNPAID'?'去支付':'关闭'}}</button>
+      <button class="add-btn" @click.stop="nextDone">{{orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0 ?'去支付':'关闭'}}</button>
     </div>
   </div>
 </template>
@@ -94,13 +94,13 @@ export default {
       })
     },
     nextDone () {
-      if (this.orderDetail.recipe_list.some(item => {
-        return Number(item.is_cloud) === 1
-      })) {
-        this.$Message.infor('暂不支持云处方支付！')
-        return
-      }
-      if (this.orderDetail.status === 'UNPAID') {
+      // if (this.orderDetail.recipe_list.some(item => {
+      //   return Number(item.is_cloud) === 1
+      // })) {
+      //   this.$Message.infor('暂不支持云处方支付！')
+      //   return
+      // }
+      if (this.orderDetail.status === 'UNPAID' && this.orderDetail.amount_receipts === 0) {
         if (this.clinic.szjkPayEnabled === 1) {
           gotoPay({
             'order_type': 2,

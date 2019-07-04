@@ -85,6 +85,8 @@ const deletePatient = params => fetch('/patient/delete', params)
 const addPatient = params => fetch('/patient/add', params)
 // 获取预约订单详情
 const fetchAppointDetail = params => fetch('/appointOrder/detail', params)
+// 取消预约订单
+const cancelAppoint = params => fetch('/appointOrder/cancel', params)
 // 获取处方订单详情
 const fecthRecipeDetail = params => fetch('/treatOrder/detail', params)
 // 支付跳转
@@ -137,5 +139,6 @@ export {
   createOrder,
   fetchGoodList,
   deliverPrice,
-  updateAds
+  updateAds,
+  cancelAppoint
 }

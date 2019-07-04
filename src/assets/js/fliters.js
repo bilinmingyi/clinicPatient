@@ -42,6 +42,9 @@ const appointStatus = (val) => {
     {code: 'UNPAID', name: '待支付'},
     {code: 'SIGN_WAITING', name: '待登记'},
     {code: 'TREAT_WAITING', name: '待就诊'},
+    {code: 'UNCONFIRM', name: '待确认'},
+    {code: 'UNPAID', name: '待支付'},
+    {code: 'DISPENSING', name: '配药中'},
     {code: 'DONE', name: '完成'},
     {code: 'SZJK_PAYING', name: '深圳健康支付'},
     {code: 'CANCEL', name: '取消'}
@@ -133,6 +136,7 @@ const treatOrderStatus = (status) => {
     {code: 'UNCOMMIT', name: '未提交'},
     {code: 'UNKNOWN', name: '未知'},
     {code: 'UNCOMMIT', name: '就诊中'},
+    {code: 'UNCONFIRM', name: '待确认'},
     {code: 'UNPAID', name: '待支付'},
     {code: 'DISPENSING', name: '配药中'},
     {code: 'DELIVER', name: '配送中'},
