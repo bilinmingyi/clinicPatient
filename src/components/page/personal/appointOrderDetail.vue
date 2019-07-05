@@ -148,17 +148,19 @@ export default {
       })
     },
     deleteItem () {
-      cancelAppoint({
-        'order_seqno': this.orderSeqno
-      }).then(res => {
-        if (res.code === 1000) {
-          this.$router.back()
-        } else {
-          this.$Message.infor(res.msg)
-        }
-      }).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错！')
+      this.$Message.confirm('确定取消?', () => {
+        cancelAppoint({
+          'order_seqno': this.orderSeqno
+        }).then(res => {
+          if (res.code === 1000) {
+            this.$router.back()
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
       })
     }
   }
