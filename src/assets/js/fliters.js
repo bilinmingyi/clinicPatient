@@ -46,7 +46,7 @@ const appointStatus = (val) => {
     {code: 'UNPAID', name: '待支付'},
     {code: 'DISPENSING', name: '配药中'},
     {code: 'DONE', name: '完成'},
-    {code: 'SZJK_PAYING', name: '深圳健康支付'},
+    {code: 'SZJK_PAYING', name: '预约待支付'},
     {code: 'CANCEL', name: '取消'}
   ]
   return codeToName(statusList, val)
