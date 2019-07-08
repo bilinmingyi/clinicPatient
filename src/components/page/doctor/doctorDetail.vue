@@ -33,7 +33,7 @@
               <td>{{item.treat_date|dateFormat('MM/dd W')}}</td>
               <td v-for="(schedule, index) in item.sched_list" :key="String(index)+schedule.treat_time" :class="{'back-EBF8F9':schedule.quota_used != schedule.quota_total}">
                 <div v-if="schedule.quota_used == 0 && schedule.quota_total == 0"></div>
-                <div v-else-if="schedule.quota_used == schedule.quota_total" class="td-content">挂满</div>
+                <div v-else-if="schedule.quota_used >= schedule.quota_total" class="td-content">挂满</div>
                 <div v-else @click.stop="selectTime(schedule, item.treat_date)">{{schedule.quota_used}}/{{schedule.quota_total}}</div>
               </td>
             </tr>
