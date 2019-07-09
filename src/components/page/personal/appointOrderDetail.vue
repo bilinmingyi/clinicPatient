@@ -14,7 +14,7 @@
           </div>
           <div class="mb-8px">
             <span class="label-three">预约时间：</span>
-            <span class="label-two">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
+            <span class="label-two">{{orderInfo.appoint_date|dateFirst}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约医生：</span>
@@ -61,11 +61,12 @@
     <div class="add-block" v-else>
       <button class="sure-btn" @click.stop="nextDone" style="width: 100%">{{orderInfo.status === 'SZJK_PAYING' && orderInfo.amount_receipts === 0 ?'去支付':'关闭'}}</button>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '../../common'
+import {Header, SmallTitle, Loading} from '../../common'
 import {mapState} from 'vuex'
 import {fetchAppointDetail, gotoPay, cancelAppoint} from '@/fetch/api.js'
 
@@ -74,11 +75,13 @@ export default {
   props: ['orderSeqno', 'shouldPay', 'price'],
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    Loading
   },
   data () {
     return {
-      orderInfo: {}
+      orderInfo: {},
+      showLoad: false
     }
   },
   computed: {
@@ -99,11 +102,23 @@ export default {
       this.getDetail()
     }
   },
+  filters: {
+    dateFirst (val) {
+      if (val) {
+        var newDate = new Date(val.substring(0, 4) + '-' + val.substring(4, 6) + '-' + val.substring(6))
+        return newDate.Format('yyyy-MM-dd   W   ')
+      } else {
+        return ''
+      }
+    }
+  },
   methods: {
     getDetail () {
+      this.showLoad = true
       fetchAppointDetail({
         order_seqno: this.orderSeqno
       }).then(res => {
+        this.showLoad = false
         if (res.code === 1000) {
           this.orderInfo = res.data
           // let time = this.orderInfo.appoint_date
@@ -112,6 +127,7 @@ export default {
           this.$Message.infor(res.msg)
         }
       }).catch(error => {
+        this.showLoad = false
         console.log(error)
         this.$Message.infor('网络出错！')
       })

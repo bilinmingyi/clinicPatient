@@ -10,12 +10,11 @@
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">下单时间：</span>
-            <span class="label-two">{{orderDetail.create_time|dateFormat}}</span>
+            <span class="label-two" v-if="orderDetail.create_time">{{orderDetail.create_time|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">患者信息：</span>
-            <span
-              class="label-two">{{orderDetail.patient_name}}/{{orderDetail.patient_sex|sexFormat}}/{{orderDetail.patient_age}}岁</span>
+            <span class="label-two" v-if="orderDetail.patient_name">{{orderDetail.patient_name}}/{{orderDetail.patient_sex|sexFormat}}/{{orderDetail.patient_age}}岁</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">患者主诉：</span>
@@ -49,11 +48,12 @@
     <div class="add-block">
       <button class="add-btn" @click.stop="nextDone">{{orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0 ?'去支付':'关闭'}}</button>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle} from '../../common'
+import {Header, SmallTitle, Loading} from '../../common'
 import {fecthRecipeDetail, gotoPay} from '@/fetch/api.js'
 import {mapState} from 'vuex'
 
@@ -62,12 +62,14 @@ export default {
   props: ['orderSeqno'],
   data () {
     return {
-      orderDetail: {}
+      orderDetail: {},
+      showLoad: false
     }
   },
   components: {
     Header,
-    SmallTitle
+    SmallTitle,
+    Loading
   },
   computed: {
     ...mapState({
@@ -79,27 +81,24 @@ export default {
   },
   methods: {
     getDetail () {
+      this.showLoad = true
       fecthRecipeDetail({
         order_seqno: this.orderSeqno,
         need_recipes: 1
       }).then(res => {
+        this.showLoad = false
         if (res.code === 1000) {
           this.orderDetail = res.data
         } else {
           this.$Message.infor(res.msg)
         }
       }).catch(error => {
+        this.showLoad = false
         this.$Message.infor('网络出错！')
         console.log(error)
       })
     },
     nextDone () {
-      // if (this.orderDetail.recipe_list.some(item => {
-      //   return Number(item.is_cloud) === 1
-      // })) {
-      //   this.$Message.infor('暂不支持云处方支付！')
-      //   return
-      // }
       if (this.orderDetail.status === 'UNPAID' && this.orderDetail.amount_receipts === 0) {
         if (this.clinic.szjkPayEnabled === 1) {
           gotoPay({
