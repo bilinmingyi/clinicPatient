@@ -14,7 +14,7 @@
           </div>
           <div class="mb-8px">
             <span class="label-three">预约时间：</span>
-            <span class="label-two">{{orderInfo.appoint_date|dateFirst}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
+            <span class="label-two" v-if="orderInfo.appoint_date">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约医生：</span>
@@ -102,16 +102,16 @@ export default {
       this.getDetail()
     }
   },
-  filters: {
-    dateFirst (val) {
-      if (val) {
-        var newDate = new Date(val.substring(0, 4) + '-' + val.substring(4, 6) + '-' + val.substring(6))
-        return newDate.Format('yyyy-MM-dd   W   ')
-      } else {
-        return ''
-      }
-    }
-  },
+  // filters: {
+  //   dateFirst (val) {
+  //     if (val) {
+  //       var newDate = new Date(val.substring(0, 4) + '-' + val.substring(4, 6) + '-' + val.substring(6))
+  //       return newDate.Format ? newDate.Format('yyyy-MM-dd   W   ') : ''
+  //     } else {
+  //       return ''
+  //     }
+  //   }
+  // },
   methods: {
     getDetail () {
       this.showLoad = true
@@ -121,8 +121,10 @@ export default {
         this.showLoad = false
         if (res.code === 1000) {
           this.orderInfo = res.data
-          // let time = this.orderInfo.appoint_date
-          // this.orderInfo.appoint_date = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2))
+          let time = this.orderInfo.appoint_date
+          if (time) {
+            this.orderInfo.appoint_date = new Date(time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2))
+          }
         } else {
           this.$Message.infor(res.msg)
         }
