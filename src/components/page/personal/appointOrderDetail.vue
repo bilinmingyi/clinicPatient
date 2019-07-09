@@ -59,7 +59,7 @@
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
     <div class="add-block" v-else>
-      <button class="sure-btn" @click.stop="nextDone" style="width: 100%">{{orderInfo.status === 'SZJK_PAYING' && orderInfo.amount_receipts === 0 ?'去支付':'关闭'}}</button>
+      <button class="sure-btn" @click.stop="nextDone" style="width: 100%">{{orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0) ?'去支付':'关闭'}}</button>
     </div>
     <Loading v-if="showLoad"></Loading>
   </div>
@@ -133,7 +133,7 @@ export default {
       })
     },
     nextDone () {
-      if (this.orderInfo.status === 'SZJK_PAYING' && this.orderInfo.amount_receipts === 0) {
+      if (this.orderInfo.status === 'SZJK_PAYING' || (this.orderInfo.status === 'UNPAID' && this.orderInfo.amount_receipts === 0)) {
         if (this.clinic.szjkPayEnabled === 1) {
           this.toPay()
         } else {
