@@ -16,7 +16,8 @@
         <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]"
              v-for="item in itemData.period_infos" :key="item.start_time+item.end_time"
              @click="select(item.start_time, item.end_time)">
-          {{item.start_time}}~{{item.end_time}}
+          <span v-if="item.quota_total > item.quota_used">{{item.start_time}}~{{item.end_time}}</span>
+          <span v-else>已满</span>
         </div>
       </div>
       <hr class="line-hr">
