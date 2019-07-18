@@ -13,42 +13,44 @@
         <div class="schedule-content">
           <table class="d-table" data-type='2'>
             <thead>
-            <tr>
-              <th>
-                <div>日期</div>
-              </th>
-              <th>
-                <div>上午</div>
-              </th>
-              <th>
-                <div>下午</div>
-              </th>
-              <th>
-                <div>晚上</div>
-              </th>
-            </tr>
+              <tr>
+                <th>
+                  <div>日期</div>
+                </th>
+                <th>
+                  <div>上午</div>
+                </th>
+                <th>
+                  <div>下午</div>
+                </th>
+                <th>
+                  <div>晚上</div>
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="item in scheduleList" :key="item.treat_date">
-              <td>{{item.treat_date|dateFormat('MM/dd W')}}</td>
-              <td v-for="(schedule, index) in item.sched_list" :key="String(index)+schedule.treat_time" :class="{'back-EBF8F9':schedule.quota_used != schedule.quota_total}">
-                <div v-if="schedule.quota_used == 0 && schedule.quota_total == 0"></div>
-                <div v-else-if="schedule.quota_used >= schedule.quota_total" class="td-content">挂满</div>
-                <div v-else @click.stop="selectTime(schedule, item.treat_date)">{{schedule.quota_used}}/{{schedule.quota_total}}</div>
-              </td>
-            </tr>
+              <tr v-for="item in scheduleList" :key="item.treat_date">
+                <td>{{item.treat_date|dateFormat('MM/dd W')}}</td>
+                <td v-for="(schedule, index) in item.sched_list" :key="String(index)+schedule.treat_time"
+                  :class="{'back-EBF8F9':schedule.quota_used != schedule.quota_total}">
+                  <div v-if="schedule.quota_used == 0 && schedule.quota_total == 0"></div>
+                  <div v-else-if="schedule.quota_used >= schedule.quota_total" class="td-content">挂满</div>
+                  <div v-else @click.stop="selectTime(schedule, item.treat_date)">{{schedule.quota_used}}/{{schedule.quota_total}}</div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    <appoint-block :itemData="currBlock" :doctorName="doctor.name" :doctorId="Number(id)" :treatDate="treatDate" v-if="appointBlockShow" @canel-appoint="appointBlockShow=false"></appoint-block>
+    <appoint-block :itemData="currBlock" :doctorName="doctor.name" :doctorId="Number(id)" :treatDate="treatDate" v-if="appointBlockShow"
+      @canel-appoint="appointBlockShow=false"></appoint-block>
   </div>
 </template>
 
 <script>
-import {Header, doctorItem, SmallTitle, appointBlock} from '@/components/common'
-import {fetchDOctorDetail, fetchDoctorSchedule} from '@/fetch/api.js'
+import { Header, doctorItem, SmallTitle, appointBlock } from '@/components/common'
+import { fetchDOctorDetail, fetchDoctorSchedule } from '@/fetch/api.js'
 
 export default {
   name: 'doctorDetail',
@@ -81,7 +83,7 @@ export default {
   },
   methods: {
     getDetail () {
-      fetchDOctorDetail({id: this.id}).then(res => {
+      fetchDOctorDetail({ id: this.id }).then(res => {
         if (res.code === 1000) {
           this.doctor.name = res.data.name
           this.doctor.speciality = res.data.speciality
@@ -98,7 +100,7 @@ export default {
       })
     },
     getSchedule () {
-      fetchDoctorSchedule({id: this.id}).then(res => {
+      fetchDoctorSchedule({ id: this.id }).then(res => {
         if (res.code === 1000) {
           this.scheduleList = res.data
         } else {
@@ -119,30 +121,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .doctor-spec {
-    padding: 0 30px 24px 30px;
-    margin-bottom: 20px;
-    background: $backColor;
+.doctor-spec {
+  padding: 0 30px 24px 30px;
+  margin-bottom: 20px;
+  background: $backColor;
 
-    .spec-content {
-      background: #fafafa;
-      padding: 20px;
-      font-size: 28px;
-      color: #232323;
-      line-height: 40px;
-    }
+  .spec-content {
+    background: #fafafa;
+    padding: 20px;
+    font-size: 28px;
+    color: #232323;
+    line-height: 40px;
   }
+}
 
-  .doctor-schedule {
-    background: $backColor;
-    .back-EBF8F9 {
-      background: #EBF8F9;
-    }
-    .schedule-content {
-      padding: 28px 16px 48px;
-    }
-    .td-content {
-      color: #EB6262;
-    }
+.doctor-schedule {
+  background: $backColor;
+  .back-EBF8F9 {
+    background: #ebf8f9;
   }
+  .schedule-content {
+    padding: 28px 16px 48px;
+  }
+  .td-content {
+    color: #eb6262;
+  }
+}
 </style>

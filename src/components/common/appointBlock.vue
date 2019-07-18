@@ -13,9 +13,9 @@
         <span>{{itemData.treat_time|timeFormat}}</span>
       </div>
       <div class="appoint-time">
-        <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]"
-             v-for="item in itemData.period_infos" :key="item.start_time+item.end_time"
-             @click="select(item.start_time, item.end_time)">
+        <div :class="['time-item', {'select-time': currTime.start == item.start_time && currTime.end ==item.end_time}]" v-for="item in itemData.period_infos"
+          :key="item.start_time+item.end_time" @click="select(item.start_time, item.end_time,item)">
+          <!-- {{item.quota_total}}--{{item.quota_used}}-- -->
           <span v-if="item.quota_total > item.quota_used">{{item.start_time}}~{{item.end_time}}</span>
           <span v-else>已满</span>
         </div>
@@ -81,7 +81,11 @@ export default {
     cancelAppoint () {
       this.$emit('canel-appoint')
     },
-    select (startTime, endTime) {
+    select (startTime, endTime, item) {
+      if (item.quota_total <= item.quota_used) {
+        // 显示已满 不做操作
+        return
+      }
       if (this.currTime.start === startTime && this.currTime.end === endTime) {
         this.currTime.start = ''
         this.currTime.end = ''
@@ -95,7 +99,7 @@ export default {
         this.$Message.infor('请先选择时间段！')
         return
       }
-      this.$router.push({name: 'appointSure',
+      this.$router.push({ name: 'appointSure',
         query: {
           treatDate: this.treatDate,
           price: this.itemData.price,
@@ -113,102 +117,103 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .appoint-block {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
+.appoint-block {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
 
-    .appoint-alert {
-      position: absolute;
-      bottom: 0;
-      background: $backColor;
+  .appoint-alert {
+    position: absolute;
+    bottom: 0;
+    background: $backColor;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+
+    .alert-title {
+      font-size: 32px;
+      font-weight: bold;
+      line-height: 45px;
+      text-align: center;
+      margin: 32px 0 16px 0;
+    }
+
+    .alert-infor {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 16px 18px;
+      color: $depthTextColor;
+      font-size: 32px;
+      line-height: 48px;
+      margin-bottom: 28px;
+    }
+
+    .alert-price {
+      color: $redColor;
+    }
+
+    .small-title {
+      @extend %displayFlex;
+      color: $depthTextColor;
+      font-size: 28px;
+      font-weight: bold;
+      line-height: 40px;
+      margin-bottom: 16px;
+
+      .line-block {
+        margin: 0 16px 0 24px;
+        width: 8px;
+        height: 40px;
+        background: $greenColor;
+      }
+    }
+
+    .appoint-time {
+      padding: 0px 36px;
+      @extend %displayFlex;
+      flex-wrap: wrap;
       width: 100%;
-      border-radius: 16px 16px 0 0;
-
-      .alert-title {
-        font-size: 32px;
-        font-weight: bold;
-        line-height: 45px;
-        text-align: center;
-        margin: 32px 0 16px 0;
-      }
-
-      .alert-infor {
-        background: #FAFAFA;
+      margin-bottom: 24px;
+      max-height: 400px;
+      overflow: auto;
+      .time-item {
+        width: calc((100vw - 144px) / 3);
+        height: 72px;
+        background: rgba(235, 248, 249, 1);
         border-radius: 8px;
-        padding: 16px 18px;
+        border: 2px solid rgba(8, 186, 198, 1);
         color: $depthTextColor;
-        font-size: 32px;
-        line-height: 48px;
-        margin-bottom: 28px;
-      }
-
-      .alert-price {
-        color: $redColor;
-      }
-
-      .small-title {
-        @extend %displayFlex;
-        color: $depthTextColor;
-        font-size: 28px;
-        font-weight: bold;
-        line-height: 40px;
-        margin-bottom: 16px;
-
-        .line-block {
-          margin: 0 16px 0 24px;
-          width: 8px;
-          height: 40px;
-          background: $greenColor;
-        }
-      }
-
-      .appoint-time {
-        padding: 0px 36px;
-        @extend %displayFlex;
-        flex-wrap: wrap;
-        width: 100%;
-        margin-bottom: 24px;
-
-        .time-item {
-          width: calc((100vw - 144px) / 3);
-          height: 72px;
-          background: rgba(235, 248, 249, 1);
-          border-radius: 8px;
-          border: 2px solid rgba(8, 186, 198, 1);
-          color: $depthTextColor;
-          font-size: 30px;
-          line-height: 42px;
-          margin: 0 12px 24px;
-          @extend %flexVC;
-        }
-
-        .select-time {
-          color: #ffffff;
-          background: $greenColor;
-        }
-      }
-
-      .appoint-btn-block {
+        font-size: 30px;
+        line-height: 42px;
+        margin: 0 12px 24px;
         @extend %flexVC;
-        height: 144px;
+      }
 
-        .appoint-delete {
-          @include simpleButton(80px, 264px, 28px);
-        }
+      .select-time {
+        color: #ffffff;
+        background: $greenColor;
+      }
+    }
 
-        .appoint-save {
-          @include deepButton(80px, 264px, 28px);
-        }
+    .appoint-btn-block {
+      @extend %flexVC;
+      height: 144px;
+
+      .appoint-delete {
+        @include simpleButton(80px, 264px, 28px);
+      }
+
+      .appoint-save {
+        @include deepButton(80px, 264px, 28px);
       }
     }
   }
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 </style>
