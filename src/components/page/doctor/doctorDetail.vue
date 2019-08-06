@@ -4,7 +4,7 @@
     <div class="mt-88px">
       <doctor-item :itemData="doctor" :canAppoint="false"></doctor-item>
       <div class="doctor-spec">
-        <div class="spec-content">{{doctor.speciality}}</div>
+        <div class="spec-content">{{doctor.speciality ? doctor.speciality : '暂未填写'}}</div>
       </div>
       <div class="doctor-schedule">
         <Small-title :hasBlock="true">

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Header titleText="首页"></Header>
-    <div class="mt-88px pb-128px">
+<!--    <Header titleText="首页"></Header>-->
+    <div class="pb-128px">
       <section class="clinic-infor">
         <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
         <div class="clinic-NP" style="display: flex;flex-direction: column;justify-content: space-around;">

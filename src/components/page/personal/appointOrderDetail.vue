@@ -59,8 +59,14 @@
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
     <div class="add-block" v-else>
-      <button class="sure-btn" @click.stop="nextDone" style="width: 100%">{{orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0) ?'去支付':'关闭'}}</button>
-    </div>
+      <template v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
+        <button class="sure-btn" @click.stop="nextDone">微信支付</button>
+        <button class="del-btn" @click.stop="nextDone">会员支付</button>
+      </template>
+      <template v-else>
+        <button class="sure-btn" @click.stop="nextDone" style="width: 100%">关闭</button>
+      </template>
+     </div>
     <Loading v-if="showLoad"></Loading>
   </div>
 </template>

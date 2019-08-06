@@ -155,6 +155,16 @@ export default new Router({
           name: 'editAddress',
           component: () => import(/* webpackChunkName: 'address' */'@/components/page/personal/editAddress.vue'),
           props: (route) => route.query
+        },
+        {
+          path: 'membershipCard',
+          name: 'membershipCard',
+          component: () => import(/* webpackChunkName: 'membershipCard' */'@/components/page/personal/membershipCard.vue')
+        },
+        {
+          path: 'membershipCard/paymentCode',
+          name: 'paymentCode',
+          component: () => import(/* webpackChunkName: 'membershipCard' */'@/components/page/personal/paymentCode.vue')
         }
       ]
     }

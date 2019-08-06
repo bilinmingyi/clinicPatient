@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Header titleText="个人中心"></Header>
-    <div class="pb-128px mt-88px">
+<!--    <Header titleText="个人中心"></Header>-->
+    <div class="pb-128px">
       <div class="patient-block">
         <div class="patient">
           <img class="avatar" :src="userInfoState.avatar === '' ? (userInfoState.sex === 2 ? woman_img : man_img) : userInfoState.avatar">
@@ -21,7 +21,11 @@
         </li>
         <li @click.stop="goRouter(1)">
           <img src="../../../assets/img/qt@2x.png">
-          <span>其他就诊人</span>
+          <span>就诊人管理</span>
+        </li>
+        <li @click.stop="goRouter(7)">
+          <img src="../../../assets/img/hy@2x.png">
+          <span>我的会员卡</span>
         </li>
         <li @click.stop="goRouter(2)">
           <img src="../../../assets/img/yy@2x.png">
@@ -89,6 +93,9 @@ export default {
           break
         case 6:
           this.$router.push({name: 'addressListPage'})
+          break
+        case 7:
+          this.$router.push({name: 'membershipCard'})
           break
       }
     }
