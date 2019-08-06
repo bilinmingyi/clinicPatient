@@ -32,26 +32,26 @@
           <span class="ml-16px">就诊人信息</span>
         </SmallTitle>
         <div class="patient-infor">
-          <div class="line-item">
-            <label class="label-span mr-32px">手机号码</label>
-            <span class="label-span">{{orderInfo.patient_mobile}}</span>
-          </div>
-          <hr class="line-hr">
-          <div class="line-item">
-            <label class="label-span mr-96px">姓名</label>
-            <span class="label-span">{{orderInfo.patient_name}}</span>
-          </div>
-          <hr class="line-hr">
-          <div class="line-item">
-            <label class="label-span mr-96px">性别</label>
-            <span class="label-span">{{orderInfo.patient_sex|sexFormat}}</span>
-          </div>
-          <hr class="line-hr">
-          <div class="line-item">
-            <label class="label-span mr-96px">年龄</label>
-            <span class="label-span">{{orderInfo.patient_age}}</span>
-          </div>
+        <div class="line-item">
+          <label class="label-span mr-32px">手机号码</label>
+          <span class="label-span">{{orderInfo.patient_mobile}}</span>
         </div>
+        <hr class="line-hr">
+        <div class="line-item">
+          <label class="label-span mr-96px">姓名</label>
+          <span class="label-span">{{orderInfo.patient_name}}</span>
+        </div>
+        <hr class="line-hr">
+        <div class="line-item">
+          <label class="label-span mr-96px">性别</label>
+          <span class="label-span">{{orderInfo.patient_sex|sexFormat}}</span>
+        </div>
+        <hr class="line-hr">
+        <div class="line-item">
+          <label class="label-span mr-96px">年龄</label>
+          <span class="label-span">{{orderInfo.patient_age}}</span>
+        </div>
+      </div>
       </div>
     </div>
     <div class="add-block" v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.sys_source === 'GZH' && orderInfo.is_online === 1">
@@ -220,12 +220,13 @@ export default {
   }
 
   .del-btn {
-    @include simpleButton(80px, 48%);
+    @include deepButton(80px, 48%);
     margin-left: 4%;
   }
 
   .sure-btn {
-    @include deepButton(80px, 48%);
+    @include simpleButton(80px, 48%);
+
   }
 
   .label-red {

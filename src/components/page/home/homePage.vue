@@ -25,6 +25,18 @@
           <span>咨询诊所</span>
         </div>
       </section>
+      <section class="white-back mb-20px">
+        <div class="item-content">
+          <div class="mb-14px item-line">
+            <span class="flexOne font-bold">现金</span>
+            <span>{{new Date()|dateFormat('yyyy/MM/dd hh:mm')}}</span>
+          </div>
+          <div class="item-line">
+            <span class="flexOne">本金金额：￥1000</span>
+            <span class="font-bold color-red">去支付</span>
+          </div>
+        </div>
+      </section>
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
         <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"
@@ -37,7 +49,7 @@
 </template>
 
 <script>
-import {Footer, Header, SmallTitle, Dynamic, LoadMore} from '@/components/common/index'
+import {Footer, Header, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
 import {getArticleList, unread} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
@@ -49,7 +61,8 @@ export default {
     Header,
     SmallTitle,
     Dynamic,
-    LoadMore
+    LoadMore,
+    orderItem
   },
   data () {
     return {
@@ -130,6 +143,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .white-back {
+    background: $backColor;
+  }
   .clinic-infor {
     @extend %displayFlex;
     background: $backColor;
@@ -217,5 +233,25 @@ export default {
 
   .clinic-dynamic {
     background: $backColor;
+  }
+
+  .item-content {
+    padding: 20px 30px;
+    font-size: 30px;
+    color: $depthTextColor;
+    line-height: 42px;
+    border-bottom: 1px solid $lineColor;
+  }
+
+  .no-border-bottom {
+    border-bottom: none;
+  }
+
+  .item-line {
+    @extend %displayFlex;
+  }
+
+  .font-bold {
+    font-weight: bold;
   }
 </style>
