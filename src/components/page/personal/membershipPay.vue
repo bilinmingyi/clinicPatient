@@ -60,7 +60,7 @@ export default {
     Header,
     SmallTitle,
     Loading
-  },
+  }
 }
 </script>
 

@@ -12,56 +12,183 @@
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">会员卡号：</span>
-            <span class="label-two">54151451451414</span>
+            <span class="label-two">{{memberInfo.cardNo}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">会员姓名：</span>
-            <span class="label-two">铁蛋</span>
+            <span class="label-two">{{memberInfo.name}}</span>
           </div>
           <div>
             <span class="label-three">当前金额：</span>
-            <span class="label-red">200元</span>
+            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)}}元</span>
           </div>
         </div>
       </div>
       <div class="white-back">
         <div class="content-title">
-          <div class="title-item title-item-active">充值记录</div>
-          <div class="title-item">消费记录</div>
+          <div :class="['title-item', {'title-item-active': listType == 1}]" @click="changeType(1)">充值记录</div>
+          <div :class="['title-item', {'title-item-active': listType == 2}]" @click="changeType(2)">消费记录</div>
         </div>
-        <section>
-          <div class="item-content">
+        <section v-show="listType === 1">
+          <div class="item-content" v-for="(item, index) in recharge.dataList" :key="item.id"
+               :style="{'border-bottom': index === (recharge.dataList.length - 1) ? 'none' : ''}">
             <div class="mb-8px item-line">
               <span class="flexOne font-bold">现金</span>
-              <span>{{new Date()|dateFormat('yyyy/MM/dd hh:mm')}}</span>
+              <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
             </div>
             <div class="item-line">
-              <span class="flexOne">本金金额：￥1000</span>
-              <span>赠送金额：￥200</span>
+              <span class="flexOne">本金金额：￥{{item.amount}}</span>
+              <span>赠送金额：￥{{item.present_amount}}</span>
             </div>
           </div>
+          <Load-more @click="getMoreRecharge"
+                     v-if="recharge.page < Math.ceil(recharge.totalNum/recharge.pageSize)"></Load-more>
         </section>
-        <section>
-          <div>
-
+        <section v-show="listType == 2">
+          <div class="item-content" v-for="(item, index) in consumer.dataList" :key="item.id"
+               :style="{'border-bottom': index === (consumer.dataList.length - 1) ? 'none' : ''}">
+            <div class="mb-8px item-line">
+              <span class="flexOne font-bold">现金</span>
+              <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
+            </div>
+            <div class="item-line">
+              <span class="flexOne">{{item.patient_name}}</span>
+              <span>缴费金额：￥{{item.total_amount}}</span>
+            </div>
           </div>
+          <Load-more @click="getMoreConsumer"
+                     v-if="consumer.page < Math.ceil(consumer.totalNum/consumer.pageSize)"></Load-more>
         </section>
       </div>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
-import {Header, SmallTitle, Loading} from '../../common'
+import {Header, SmallTitle, Loading, LoadMore} from '../../common'
+import {fetchMember, fetchMemberList, fetchPayStream} from '@/fetch/api'
+import {mapState} from 'vuex'
 
 export default {
   name: 'membershipCard',
   components: {
     Header,
     SmallTitle,
-    Loading
+    Loading,
+    LoadMore
+  },
+  data () {
+    return {
+      showLoad: true,
+      memberInfo: {
+        name: '',
+        cardNo: '',
+        presentAmount: 0,
+        amount: 0
+      },
+      recharge: {
+        page: 1,
+        pageSize: 10,
+        totalNum: 0,
+        dataList: []
+      },
+      consumer: {
+        page: 1,
+        pageSize: 10,
+        totalNum: 0,
+        dataList: []
+      },
+      listType: 1
+    }
+  },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
+  },
+  mounted () {
+    setTimeout(() => {
+      this.getMemberData()
+    }, 500)
   },
   methods: {
+    changeType (type) {
+      this.listType = type
+    },
+    getData () {
+      if (this.userInfoState.mobile) {
+        this.getMemberData()
+      } else {
+        this.showLoad = false
+        this.$Message.confirm('请先绑定手机号码！', () => {
+          this.$router.push({name: 'editPerson'})
+        })
+      }
+    },
+    getMemberData () {
+      fetchMember().then(res => {
+        this.showLoad = false
+        if (res.code === 1000) {
+          this.memberInfo.name = res.data.name
+          this.memberInfo.cardNo = res.data.card_no
+          this.memberInfo.amount = res.data.amount
+          this.memberInfo.presentAmount = res.data.present_amount
+          this.getRechargeList()
+          this.getConsumerList()
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        console.log(e)
+        this.showLoad = false
+        this.$Message.infor('网络出错！')
+      })
+    },
+    getMoreRecharge () {
+      this.recharge.page++
+      this.getRechargeList()
+    },
+    getRechargeList () {
+      fetchMemberList({
+        'page': this.recharge.page,
+        'page_size': this.recharge.pageSize
+      }).then(res => {
+        if (res.code === 1000) {
+          this.recharge.totalNum = res.total_num
+          res.data.forEach(item => {
+            this.recharge.dataList.push(item)
+          })
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    getMoreConsumer () {
+      this.consumer.page++
+      this.getConsumerList()
+    },
+    getConsumerList () {
+      fetchPayStream({
+        'page': this.consumer.page,
+        'page_size': this.consumer.pageSize
+      }).then(res => {
+        if (res.code === 1000) {
+          this.consumer.totalNum = res.total_num
+          res.data.forEach(item => {
+            this.consumer.dataList.push(item)
+          })
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        console.log(e)
+        this.$Message.infor('网络出错！')
+      })
+    },
     goRouter () {
       this.$router.push({name: 'paymentCode'})
     }

@@ -101,6 +101,12 @@ const savePhone = params => fetch('/user/mobile/update', params)
 const fetchGoodList = params => fetch('/goodsorder/list', params)
 // 更改收件地址
 const updateAds = params => fetch('/cuser/addrInfo/update', params)
+// 获取会员卡信息
+const fetchMember = () => fetch('/member/detail')
+// 获取会员卡充值记录
+const fetchMemberList = params => fetch('/member/depositStream/list', params)
+// 获取会员消费记录
+const fetchPayStream = params => fetch('/member/payStream/list', params)
 
 export {
   fetch,
@@ -140,5 +146,8 @@ export {
   fetchGoodList,
   deliverPrice,
   updateAds,
-  cancelAppoint
+  cancelAppoint,
+  fetchMember,
+  fetchMemberList,
+  fetchPayStream
 }

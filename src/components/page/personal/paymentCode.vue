@@ -12,15 +12,15 @@
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">会员卡号：</span>
-            <span class="label-two">54151451451414</span>
+            <span class="label-two">{{memberInfo.cardNo}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">会员姓名：</span>
-            <span class="label-two">铁蛋</span>
+            <span class="label-two">{{memberInfo.name}}</span>
           </div>
           <div>
             <span class="label-three">当前金额：</span>
-            <span class="label-red">200元</span>
+            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)}}元</span>
           </div>
         </div>
       </div>
@@ -34,11 +34,13 @@
         </div>
       </div>
     </div>
+    <Loading v-if="showLoad"></Loading>
   </div>
 </template>
 
 <script>
 import {Header, SmallTitle, Loading} from '../../common'
+import {fetchMember} from '@/fetch/api'
 
 export default {
   name: 'paymentCode',
@@ -46,6 +48,39 @@ export default {
     Header,
     SmallTitle,
     Loading
+  },
+  data () {
+    return {
+      showLoad: true,
+      memberInfo: {
+        name: '',
+        cardNo: '',
+        presentAmount: 0,
+        amount: 0
+      }
+    }
+  },
+  created () {
+    this.getMemberData()
+  },
+  methods: {
+    getMemberData () {
+      fetchMember().then(res => {
+        this.showLoad = false
+        if (res.code === 1000) {
+          this.memberInfo.name = res.data.name
+          this.memberInfo.cardNo = res.data.card_no
+          this.memberInfo.amount = res.data.amount
+          this.memberInfo.presentAmount = res.data.present_amount
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        console.log(e)
+        this.showLoad = false
+        this.$Message.infor('网络出错！')
+      })
+    },
   }
 }
 </script>
