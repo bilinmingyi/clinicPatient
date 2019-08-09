@@ -214,6 +214,30 @@ const payTypeFormat = (type) => {
   return codeToName(list, type)
 }
 
+const recipeType = (type, category) => {
+  var list = [
+    {code: 0, name: '未知'},
+    {code: 1, name: '中药饮片', category: 1},
+    {code: 1, name: '配方颗粒', category: 2},
+    {code: 2, name: '中成药西药'},
+    {code: 3, name: '产品处方'},
+    {code: 4, name: '诊疗项目'},
+    {code: 5, name: '附加项目'},
+    {code: 6, name: '材料处方'}
+  ]
+  for (var i = 0, len = list.length; i < len; i++) {
+    if (list[i].code === type) {
+      if (type === 1) {
+        if (category === list[i].category) {
+          return list[i].name
+        }
+      } else {
+        return list[i].name
+      }
+    }
+  }
+}
+
 export default {
   priceFormat,
   appointStatus,
@@ -224,5 +248,6 @@ export default {
   sexFormat,
   ageFormat,
   articleType,
-  payTypeFormat
+  payTypeFormat,
+  recipeType
 }

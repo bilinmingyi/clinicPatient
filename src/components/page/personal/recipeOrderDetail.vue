@@ -34,6 +34,35 @@
         </div>
       </div>
       <div class="content-back">
+        <Small-title :hasBlock="true">
+          <span class="ml-16px flexOne">处方信息</span>
+        </Small-title>
+        <div class="register-item">
+          <table class="d-table" data-type='1'>
+            <thead>
+            <tr>
+              <th>
+                <div>序号</div>
+              </th>
+              <th>
+                <div>处方类型</div>
+              </th>
+              <th>
+                <div>金额</div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in orderDetail.recipe_list" :key="item.recipe_id">
+              <td>{{index+1}}</td>
+              <td>{{item.recipe_type|recipeType(item.category)}}</td>
+              <td class="label-red" style="color: #eb6262">{{item.price|priceFormat}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="content-back">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">订单总价</label>
           <span class="label-red">￥{{orderDetail.amount_receivable}}</span>
