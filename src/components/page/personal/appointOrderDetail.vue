@@ -32,41 +32,43 @@
           <span class="ml-16px">就诊人信息</span>
         </SmallTitle>
         <div class="patient-infor">
-        <div class="line-item">
-          <label class="label-span mr-32px">手机号码</label>
-          <span class="label-span">{{orderInfo.patient_mobile}}</span>
+          <div class="line-item">
+            <label class="label-span mr-32px">手机号码</label>
+            <span class="label-span">{{orderInfo.patient_mobile}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">姓名</label>
+            <span class="label-span">{{orderInfo.patient_name}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">性别</label>
+            <span class="label-span">{{orderInfo.patient_sex|sexFormat}}</span>
+          </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-96px">年龄</label>
+            <span class="label-span">{{orderInfo.patient_age}}</span>
+          </div>
         </div>
-        <hr class="line-hr">
-        <div class="line-item">
-          <label class="label-span mr-96px">姓名</label>
-          <span class="label-span">{{orderInfo.patient_name}}</span>
-        </div>
-        <hr class="line-hr">
-        <div class="line-item">
-          <label class="label-span mr-96px">性别</label>
-          <span class="label-span">{{orderInfo.patient_sex|sexFormat}}</span>
-        </div>
-        <hr class="line-hr">
-        <div class="line-item">
-          <label class="label-span mr-96px">年龄</label>
-          <span class="label-span">{{orderInfo.patient_age}}</span>
-        </div>
-      </div>
       </div>
     </div>
-    <div class="add-block" v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.sys_source === 'GZH' && orderInfo.is_online === 1">
+    <div class="add-block"
+         v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.sys_source === 'GZH' && orderInfo.is_online === 1">
       <button class="sure-btn" @click.stop="nextDone">关闭</button>
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
     <div class="add-block" v-else>
-      <template v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
+      <template
+        v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
         <button class="sure-btn" @click.stop="nextDone">微信支付</button>
-        <button class="del-btn" @click.stop="nextDone">会员支付</button>
+        <button class="del-btn" @click.stop="memberPay">会员支付</button>
       </template>
       <template v-else>
         <button class="sure-btn" @click.stop="nextDone" style="width: 100%">关闭</button>
       </template>
-     </div>
+    </div>
     <Loading v-if="showLoad"></Loading>
   </div>
 </template>
@@ -149,6 +151,11 @@ export default {
         }
       } else {
         this.$router.go(-1)
+      }
+    },
+    memberPay () {
+      if (this.orderInfo.status === 'SZJK_PAYING' || (this.orderInfo.status === 'UNPAID' && this.orderInfo.amount_receipts === 0)) {
+        this.$router.push({name: 'membershipPay', query: {orderType: 1, orderSeqno: this.orderSeqno, price: this.orderInfo.price}})
       }
     },
     toPay () {

@@ -169,7 +169,8 @@ export default new Router({
         {
           path: 'membershipPay',
           name: 'membershipPay',
-          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/membershipPay.vue')
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/membershipPay.vue'),
+          props: (route) => route.query
         }
       ]
     }

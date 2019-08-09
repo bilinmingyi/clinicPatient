@@ -27,7 +27,7 @@
               class="label-two">{{orderDetail.doctor_name}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">医生备案：</span>
+            <span class="label-three">医生备注：</span>
             <span
               class="label-two">{{orderDetail.memo}}</span>
           </div>
@@ -45,8 +45,12 @@
         </div>
       </div>
     </div>
-    <div class="add-block">
-      <button class="add-btn" @click.stop="nextDone">{{orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0 ?'去支付':'关闭'}}</button>
+    <div class="add-block" v-if="orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0">
+      <button class="sure-btn" @click.stop="nextDone">微信支付</button>
+      <button class="del-btn" @click.stop="memberPay">会员卡支付</button>
+    </div>
+    <div class="add-block" v-else>
+      <button class="add-btn" @click.stop="nextDone">关闭</button>
     </div>
     <Loading v-if="showLoad"></Loading>
   </div>
@@ -125,6 +129,9 @@ export default {
       } else {
         this.$router.go(-1)
       }
+    },
+    memberPay () {
+      this.$router.push({name: 'membershipPay', query: {orderType: 2, orderSeqno: this.orderSeqno, price: this.orderDetail.amount_receivable}})
     }
   }
 }
@@ -195,5 +202,14 @@ export default {
 
   .add-btn {
     @include deepButton(80px, 100%)
+  }
+
+  .del-btn {
+    @include deepButton(80px, 48%);
+    margin-left: 4%;
+  }
+
+  .sure-btn {
+    @include simpleButton(80px, 48%);
   }
 </style>

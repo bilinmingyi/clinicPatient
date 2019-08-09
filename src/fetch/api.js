@@ -107,6 +107,8 @@ const fetchMember = () => fetch('/member/detail')
 const fetchMemberList = params => fetch('/member/depositStream/list', params)
 // 获取会员消费记录
 const fetchPayStream = params => fetch('/member/payStream/list', params)
+// 提交会员支付
+const submitMember = params => fetch('/deposit/pay', params)
 
 export {
   fetch,
@@ -149,5 +151,6 @@ export {
   cancelAppoint,
   fetchMember,
   fetchMemberList,
-  fetchPayStream
+  fetchPayStream,
+  submitMember
 }

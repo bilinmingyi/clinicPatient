@@ -39,11 +39,10 @@ const priceFormat = (price, currency, decimals) => {
 const appointStatus = (val) => {
   let statusList = [
     {code: 'UNKNOWN', name: '未知'},
-    {code: 'UNPAID', name: '待支付'},
     {code: 'SIGN_WAITING', name: '待登记'},
     {code: 'TREAT_WAITING', name: '待就诊'},
     {code: 'UNCONFIRM', name: '待确认'},
-    {code: 'UNPAID', name: '待支付'},
+    {code: 'UNPAID', name: '挂号待支付'},
     {code: 'DISPENSING', name: '配药中'},
     {code: 'DONE', name: '完成'},
     {code: 'SZJK_PAYING', name: '预约待支付'},

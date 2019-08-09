@@ -80,7 +80,7 @@ export default {
         this.showLoad = false
         this.$Message.infor('网络出错！')
       })
-    },
+    }
   }
 }
 </script>
