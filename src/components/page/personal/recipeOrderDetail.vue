@@ -67,7 +67,6 @@
           <label class="label-span mr-32px flexOne">订单总价</label>
           <span class="label-red">￥{{orderDetail.amount_receivable}}</span>
         </div>
-
         <hr class="line-hr">
         <div class="line-item">
           <label class="label-span mr-32px flexOne">支付方式</label>
