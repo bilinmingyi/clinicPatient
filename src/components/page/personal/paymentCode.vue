@@ -5,7 +5,7 @@
       <div class="white-back mb-20px">
         <SmallTitle :hasBlock="true">
           <span class="ml-16px flexOne">会员卡信息</span>
-          <div class="pay-code">
+          <div class="pay-code" @click.stop="getCode">
             刷新
           </div>
         </SmallTitle>
@@ -29,7 +29,7 @@
           <span class="ml-16px">付款二维码</span>
         </SmallTitle>
         <div class="code-block">
-          <img src="../../../assets/img/wzdcode.png">
+          <img :src="img_url">
           <p>会员支付时出示二维码</p>
         </div>
       </div>
@@ -40,7 +40,7 @@
 
 <script>
 import {Header, SmallTitle, Loading} from '../../common'
-import {fetchMember} from '@/fetch/api'
+import {fetchMember, fetchMemberCode} from '@/fetch/api'
 
 export default {
   name: 'paymentCode',
@@ -57,11 +57,16 @@ export default {
         cardNo: '',
         presentAmount: 0,
         amount: 0
-      }
+      },
+      img_url: ''
     }
   },
   created () {
+    this.getCode()
     this.getMemberData()
+    setInterval(() => {
+      this.getCode()
+    }, 50000)
   },
   methods: {
     getMemberData () {
@@ -79,6 +84,17 @@ export default {
         console.log(e)
         this.showLoad = false
         this.$Message.infor('网络出错！')
+      })
+    },
+    getCode () {
+      fetchMemberCode().then(res => {
+        if (res.code === 1000) {
+          this.img_url = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(e => {
+        this.$Message.infor('获取二维码失败！')
       })
     }
   }
@@ -140,7 +156,7 @@ export default {
       color: $depthTextColor;
       font-size: 28px;
       margin-top: 15px;
-      line-height:40px;
+      line-height: 40px;
     }
   }
 </style>

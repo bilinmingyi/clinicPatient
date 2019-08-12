@@ -109,6 +109,8 @@ const fetchMemberList = params => fetch('/member/depositStream/list', params)
 const fetchPayStream = params => fetch('/member/payStream/list', params)
 // 提交会员支付
 const submitMember = params => fetch('/deposit/pay', params)
+// 获取会员二维码
+const fetchMemberCode = () => fetch('/member/memberPayKey')
 
 export {
   fetch,
@@ -152,5 +154,6 @@ export {
   fetchMember,
   fetchMemberList,
   fetchPayStream,
-  submitMember
+  submitMember,
+  fetchMemberCode
 }
