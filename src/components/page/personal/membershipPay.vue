@@ -17,7 +17,7 @@
           </div>
           <div>
             <span class="label-three">当前金额：</span>
-            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)}}元</span>
+            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)|toFix2}}元</span>
           </div>
         </div>
       </div>
@@ -48,7 +48,9 @@
     </div>
     <div class="add-block">
       <button class="sure-btn" @click="goback">关闭</button>
-        <button class="del-btn" @click="weixinPay" v-if="Number(memberInfo.presentAmount) + Number(memberInfo.amount) < price">微信支付</button>
+      <button class="del-btn" @click="weixinPay"
+              v-if="Number(memberInfo.presentAmount) + Number(memberInfo.amount) < price">微信支付
+      </button>
       <button class="del-btn" v-else @click="submitPay">提交</button>
     </div>
     <Loading v-if="showLoad"></Loading>

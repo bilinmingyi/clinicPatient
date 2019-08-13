@@ -20,7 +20,7 @@
           </div>
           <div>
             <span class="label-three">当前金额：</span>
-            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)}}元</span>
+            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)|toFix2}}元</span>
           </div>
         </div>
       </div>
@@ -58,15 +58,20 @@ export default {
         presentAmount: 0,
         amount: 0
       },
-      img_url: ''
+      img_url: '',
+      timer: null
     }
   },
   created () {
     this.getCode()
     this.getMemberData()
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.getCode()
     }, 50000)
+  },
+  beforeRouteLeave (to, from, next) {
+    clearInterval(this.timer)
+    next()
   },
   methods: {
     getMemberData () {

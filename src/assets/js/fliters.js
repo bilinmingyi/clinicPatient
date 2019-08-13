@@ -238,6 +238,10 @@ const recipeType = (type, category) => {
   }
 }
 
+const toFix2 = (val) => {
+  return val.toFixed(2)
+}
+
 export default {
   priceFormat,
   appointStatus,
@@ -249,5 +253,6 @@ export default {
   ageFormat,
   articleType,
   payTypeFormat,
-  recipeType
+  recipeType,
+  toFix2
 }

@@ -20,7 +20,7 @@
           </div>
           <div>
             <span class="label-three">当前金额：</span>
-            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)}}元</span>
+            <span class="label-red">{{Number(memberInfo.presentAmount) + Number(memberInfo.amount)|toFix2}}元</span>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <div class="item-content" v-for="(item, index) in recharge.dataList" :key="item.id"
                :style="{'border-bottom': index === (recharge.dataList.length - 1) ? 'none' : ''}">
             <div class="mb-8px item-line">
-              <span class="flexOne font-bold">现金</span>
+              <span class="flexOne font-bold">{{item.pay_type|payTypeFormat}}</span>
               <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
             </div>
             <div class="item-line">
@@ -48,7 +48,7 @@
           <div class="item-content" v-for="(item, index) in consumer.dataList" :key="item.id"
                :style="{'border-bottom': index === (consumer.dataList.length - 1) ? 'none' : ''}">
             <div class="mb-8px item-line">
-              <span class="flexOne font-bold">现金</span>
+              <span class="flexOne font-bold">{{item.order_type == 1 ? '预约缴费' : '门诊缴费'}}</span>
               <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
             </div>
             <div class="item-line">
