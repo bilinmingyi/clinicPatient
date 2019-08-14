@@ -32,7 +32,7 @@
             <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
           </div>
           <div class="item-line">
-            <span class="flexOne">订单金额：￥{{item.price}}</span>
+            <span class="flexOne">订单金额：￥{{item.amount_receivable}}</span>
             <span class="font-bold color-red">去支付</span>
           </div>
         </div>
