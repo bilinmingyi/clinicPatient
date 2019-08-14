@@ -141,6 +141,10 @@ export default {
       })
     },
     getOrderData () {
+      let today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
       Promise.all([
         getAppointList({
           'page': 1,
@@ -149,18 +153,26 @@ export default {
         }),
         fetchRecipeList({
           'page': 1,
+          'start_time': Number(today.getTime()),
+          'end_time': Number(today.getTime()) + 86399999,
           'page_size': 2,
           'status': ['UNPAID']
         })
       ]).then(res => {
         if (res[0].code === 1000 && res[1].code === 1000) {
-          if (res[0].data.length !== 0 && res[1].data.length !== 0) {
-            this.orderList.push(res[0].data[0])
-            this.orderList.push(res[1].data[0])
-          } else if (res[0].data.length !== 0 && res[1].data.length === 0) {
-            this.orderList = res[0].data
-          } else if (res[0].data.length === 0 && res[1].data.length !== 0) {
-            this.orderList = res[1].data
+          var listOne = res[0].data.filter(item => {
+            return item.amount_receipts <= 0
+          })
+          var listTwo = res[1].data.filter(item => {
+            return item.amount_receipts <= 0
+          })
+          if (listOne.length !== 0 && listTwo.length !== 0) {
+            this.orderList.push(listOne[0])
+            this.orderList.push(listTwo[0])
+          } else if (listOne.length !== 0 && listTwo.length === 0) {
+            this.orderList = listOne.slice(0, 2)
+          } else if (listOne.length === 0 && listTwo.length !== 0) {
+            this.orderList = listTwo.slice(0, 2)
           }
         }
       })

@@ -113,7 +113,7 @@ export default {
         'order_seqno': this.orderSeqno
       }).then((res) => {
         this.showLoad = false
-        if (res === 1000) {
+        if (res.code === 1000) {
           this.$router.back()
         } else {
           this.$Message.infor(res.msg)

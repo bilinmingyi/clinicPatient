@@ -41,7 +41,7 @@
               <span>赠送金额：￥{{item.present_amount}}</span>
             </div>
           </div>
-          <Load-more @click="getMoreRecharge"
+          <Load-more @click.stop.native="getMoreRecharge"
                      v-if="recharge.page < Math.ceil(recharge.totalNum/recharge.pageSize)"></Load-more>
         </section>
         <section v-show="listType == 2">
@@ -56,7 +56,7 @@
               <span>缴费金额：￥{{item.total_amount}}</span>
             </div>
           </div>
-          <Load-more @click="getMoreConsumer"
+          <Load-more @click.stop.native="getMoreConsumer"
                      v-if="consumer.page < Math.ceil(consumer.totalNum/consumer.pageSize)"></Load-more>
         </section>
       </div>
@@ -109,7 +109,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.getMemberData()
+      this.getData()
     }, 500)
   },
   methods: {

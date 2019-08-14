@@ -98,17 +98,17 @@ export default {
     })
   },
   mounted () {
-    if (Number(this.shouldPay) === 1 && this.price > 0) {
-      if (this.clinic.szjkPayEnabled === 1) {
-        this.toPay()
-        this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})
-      } else {
-        this.$Message.infor('该诊所未开通线上支付功能！')
-        this.getDetail()
-      }
-    } else {
-      this.getDetail()
-    }
+    // if (Number(this.shouldPay) === 1 && this.price > 0) {
+    // if (this.clinic.szjkPayEnabled === 1) {
+    //   this.toPay()
+    //   this.$router.replace({name: 'appointOrderDetail', query: {orderSeqno: this.orderSeqno}})
+    // } else {
+    //   this.$Message.infor('该诊所未开通线上支付功能！')
+    //   this.getDetail()
+    //   // }
+    // } else {
+    this.getDetail()
+    // }
   },
   // filters: {
   //   dateFirst (val) {
@@ -155,7 +155,10 @@ export default {
     },
     memberPay () {
       if (this.orderInfo.status === 'SZJK_PAYING' || (this.orderInfo.status === 'UNPAID' && this.orderInfo.amount_receipts === 0)) {
-        this.$router.push({name: 'membershipPay', query: {orderType: 1, orderSeqno: this.orderSeqno, price: this.orderInfo.price}})
+        this.$router.push({
+          name: 'membershipPay',
+          query: {orderType: 1, orderSeqno: this.orderSeqno, price: this.orderInfo.price}
+        })
       }
     },
     toPay () {
