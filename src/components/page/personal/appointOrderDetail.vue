@@ -110,16 +110,6 @@ export default {
     this.getDetail()
     // }
   },
-  // filters: {
-  //   dateFirst (val) {
-  //     if (val) {
-  //       var newDate = new Date(val.substring(0, 4) + '-' + val.substring(4, 6) + '-' + val.substring(6))
-  //       return newDate.Format ? newDate.Format('yyyy-MM-dd   W   ') : ''
-  //     } else {
-  //       return ''
-  //     }
-  //   }
-  // },
   methods: {
     getDetail () {
       this.showLoad = true

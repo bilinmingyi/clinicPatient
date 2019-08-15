@@ -114,7 +114,9 @@ export default {
       }).then((res) => {
         this.showLoad = false
         if (res.code === 1000) {
-          this.$router.back()
+          this.$Message.confirm('支付成功！', () => {
+            this.$router.back()
+          }, true)
         } else {
           this.$Message.infor(res.msg)
         }

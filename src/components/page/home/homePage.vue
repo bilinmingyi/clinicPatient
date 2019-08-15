@@ -149,7 +149,7 @@ export default {
         getAppointList({
           'page': 1,
           'page_size': 2,
-          'status': ['UNPAID']
+          'status': ['UNPAID', 'SZJK_PAYING']
         }),
         fetchRecipeList({
           'page': 1,
