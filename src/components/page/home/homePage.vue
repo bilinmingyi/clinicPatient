@@ -79,10 +79,16 @@ export default {
   created () {
     this.getList()
     this.getUnread()
-    this.getOrderData()
     this.dataInterval = setInterval(() => {
       this.getUnread()
     }, 5000)
+  },
+  mounted () {
+    setTimeout(() => {
+      if (this.userInfoState.mobile) {
+        this.getOrderData()
+      }
+    }, 500)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -90,7 +96,8 @@ export default {
   },
   computed: {
     ...mapState({
-      'clinic': state => state.clinic
+      'clinic': state => state.clinic,
+      'userInfoState': state => state.userInfoState
     })
   },
   methods: {
