@@ -5,7 +5,7 @@
       <span>{{itemData.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
     </div>
     <div class="item-line">
-      <span class="flexOne">金额：￥{{itemData.price}}</span>
+      <span class="flexOne">金额：￥{{itemData.amount_receivable == undefined ? itemData.price : itemData.amount_receivable}}</span>
       <span v-if="isMall" :class="itemData.status == 'UNPAID4CLIENT'?'color-red':'order-status'">{{itemData.status|mallOrderStatus}}</span>
       <span v-else :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
     </div>

@@ -64,7 +64,7 @@ export default {
     return {
       page: 1,
       pageSize: 10,
-      status: ['UNPAID', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
+      status: ['UNPAID', 'SZJK_PAYING', 'SIGN_WAITING', 'TREAT_WAITING', 'DONE', 'CANCEL'],
       dataList: [],
       canShowAdd: false,
       showLoad: true,

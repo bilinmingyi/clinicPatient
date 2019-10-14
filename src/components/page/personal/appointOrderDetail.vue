@@ -23,7 +23,7 @@
           </div>
           <div>
             <span class="label-three">挂号费用：</span>
-            <span class="label-red">{{orderInfo.price}}元</span>
+            <span class="label-red">{{orderInfo.amount_receivable}}元</span>
           </div>
         </div>
       </div>
