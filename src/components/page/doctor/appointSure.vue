@@ -33,10 +33,16 @@
           <span class="ml-16px">就诊人信息</span>
         </Small-title>
         <div class="appoint-text">
+          <div class="line-items">
+            <label class="label-four mr-32px">手机号码</label>
+            <input type="text" class="input-item flexOne" placeholder="手机号码" disabled v-model="patient.mobile">
+            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
+          </div>
+          <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">患者姓名</label>
             <input type="text" class="input-item flexOne" placeholder="请输入患者姓名" v-model="patient.user_name"
-                   @input="filterPatient" @blur="hideSelect">
+                   @input="filterPatient">
             <ul class="select-ul" v-show="showSelect">
               <li v-for="item in selectList" :key="item.id" @click.stop="selectPatient(item)">
                 <p>{{item.name}}/{{item.sex|sexFormat}}/{{item.age}}岁</p>
@@ -51,12 +57,7 @@
             <!--</select>-->
           </div>
           <hr class="line-hr">
-          <div class="line-items">
-            <label class="label-four mr-32px">手机号码</label>
-            <input type="text" class="input-item flexOne" placeholder="手机号码" disabled v-model="patient.mobile">
-            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
-          </div>
-          <hr class="line-hr">
+
           <div class=" line-item">
             <span class="label-span mr-32px">性别</span>
             <radioGroup :data="sexList" :value="patient.user_sex" :name="'sex'" @input="changeSex"></radioGroup>
@@ -196,7 +197,10 @@ export default {
               query: {hasAppoint: 1, orderSeqno: res.order_seqno, price: this.price}
             })
           } else {
-            this.$router.replace({name: 'appointOrderDetail', query: {shouldPay: 1, orderSeqno: res.order_seqno, price: this.price}})
+            this.$router.replace({
+              name: 'appointOrderDetail',
+              query: {shouldPay: 1, orderSeqno: res.order_seqno, price: this.price}
+            })
           }
         } else {
           this.$Message.infor(res.msg)
@@ -337,9 +341,9 @@ export default {
   .select-ul {
     position: absolute;
     top: 90px;
-    left: 160px;
+    /*left: 160px;*/
     color: $lightTextColor;
-    width: calc(100vw - 240px);
+    width: calc(100vw - 60px);
     border-radius: 8px;
     box-shadow: 0 4px 16px 4px rgba(0, 0, 0, 0.20);
     background: $backColor;
@@ -351,7 +355,7 @@ export default {
       font-size: 32px;
 
       p {
-        padding: 10px 20px;
+        padding: 20px;
       }
     }
   }

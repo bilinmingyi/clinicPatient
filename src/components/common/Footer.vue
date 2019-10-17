@@ -2,19 +2,23 @@
 
   <div class="footer common-footer">
     <div :class="['footer-item',{'cur':navtiveIndex==1}] " @click.stop="goRoute(1)">
-      <span class="iconfont">{{navtiveIndex==1? '&#xe60b;':'&#xe60e; '}}</span>
-      <span class="footer-text">消息</span>
+      <img src="../../assets/img/sydj@2x.png" v-if="navtiveIndex==1">
+      <img src="../../assets/img/Page 1@2x.png" v-else>
+      <span class="footer-text">首页</span>
     </div>
     <div :class="['footer-item',{'cur':navtiveIndex==2}] " @click.stop="goRoute(2)">
-      <span class="iconfont">{{navtiveIndex==2? '&#xe615;':'&#xe616;'}}</span>
-      <span class="footer-text">医生</span>
+      <img src="../../assets/img/ssdj@2x.png" v-if="navtiveIndex==2">
+      <img src="../../assets/img/ss@2x.png" v-else>
+      <span class="footer-text">发现</span>
     </div>
     <div :class="['footer-item',{'cur':navtiveIndex==3}] " @click.stop="goRoute(3)">
-      <span class="iconfont">{{navtiveIndex==3? '&#xe60a;':'&#xe60c;'}}</span>
-      <span class="footer-text">商城</span>
+      <img src="../../assets/img/gwcdj@2x.png" v-if="navtiveIndex==3">
+      <img src="../../assets/img/gwc@2x.png" v-else>
+      <span class="footer-text">购物车</span>
     </div>
     <div :class="['footer-item',{'cur':navtiveIndex==4}] " @click.stop="goRoute(4)">
-      <span class="iconfont">{{navtiveIndex==4? '&#xe60d;':'&#xe609;'}}</span>
+      <img src="../../assets/img/grdj@2x.png" v-if="navtiveIndex==4">
+      <img src="../../assets/img/gr@2x.png" v-else>
       <span class="footer-text">个人</span>
     </div>
   </div>
@@ -39,16 +43,17 @@ export default {
       }
       switch (index) {
         case 1:
-          this.$router.push({path: 'home'})
+          this.$router.push({name: 'homePage'})
           break
         case 2:
-          this.$router.push({path: 'doctor'})
+          this.$router.push({name: 'doctorPage'})
           break
         case 3:
-          this.$router.push({path: 'mall'})
+          // this.$router.push({path: 'mall'})
+          this.$router.push({name: 'shopCar'})
           break
         case 4:
-          this.$router.push({path: 'personal'})
+          this.$router.push({name: 'personal'})
           break
       }
     }
@@ -87,16 +92,10 @@ export default {
     justify-content: center;
     width: 25vw;
     height: 100%;
-  }
-
-  .footer-item .yunicon {
-    font-size: 48px;
-    color: $lightTextColor;
-  }
-
-  .footer-item .iconfont {
-    font-size: 48px;
-    color: #7a7a7a;
+    img {
+      width: 48px;
+      height: 48px;
+    }
   }
 
   .footer-text {
@@ -108,11 +107,6 @@ export default {
   }
 
   .footer .cur .footer-text {
-    color: $greenColor;
-  }
-
-  .footer .cur .yunicon,
-  .footer .cur .iconfont {
     color: $greenColor;
   }
 </style>

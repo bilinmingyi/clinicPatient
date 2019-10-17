@@ -8,7 +8,7 @@
       </div>
       <div class="doctor-schedule">
         <Small-title :hasBlock="true">
-          <span class="ml-16px">医生排班</span>
+          <span class="ml-16px">排班信息</span>
         </Small-title>
         <div class="schedule-content">
           <table class="d-table" data-type='2'>

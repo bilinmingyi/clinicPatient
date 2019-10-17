@@ -25,18 +25,7 @@
           <span>咨询诊所</span>
         </div>
       </section>
-      <section class="white-back mb-20px" v-if="orderList.length!=0">
-        <div class="item-content" v-for="item in orderList" :key="item.order_seqno" @click="gotoDetail(item)">
-          <div class="mb-14px item-line">
-            <span class="flexOne font-bold">{{item.week_idx ? '预约代缴费' : '就诊代缴费'}}</span>
-            <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
-          </div>
-          <div class="item-line">
-            <span class="flexOne">订单金额：￥{{item.amount_receivable}}</span>
-            <span class="font-bold color-red">去支付</span>
-          </div>
-        </div>
-      </section>
+
       <section class="clinic-dynamic">
         <Small-title>平台动态</Small-title>
         <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"
@@ -50,7 +39,7 @@
 
 <script>
 import {Footer, Header, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
-import {getArticleList, unread, getAppointList, fetchRecipeList} from '@/fetch/api.js'
+import {getArticleList, unread} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 
@@ -82,13 +71,6 @@ export default {
     this.dataInterval = setInterval(() => {
       this.getUnread()
     }, 5000)
-  },
-  mounted () {
-    setTimeout(() => {
-      if (this.userInfoState.mobile) {
-        this.getOrderData()
-      }
-    }, 500)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -146,60 +128,12 @@ export default {
           this.$Message.infor(res.msg)
         }
       })
-    },
-    getOrderData () {
-      let today = new Date()
-      today.setHours(0)
-      today.setMinutes(0)
-      today.setSeconds(0)
-      Promise.all([
-        getAppointList({
-          'page': 1,
-          'page_size': 2,
-          'status': ['UNPAID', 'SZJK_PAYING']
-        }),
-        fetchRecipeList({
-          'page': 1,
-          'start_time': Number(today.getTime()),
-          'end_time': Number(today.getTime()) + 86399999,
-          'page_size': 2,
-          'status': ['UNPAID']
-        })
-      ]).then(res => {
-        if (res[0].code === 1000 && res[1].code === 1000) {
-          var listOne = res[0].data.filter(item => {
-            return item.amount_receipts <= 0
-          })
-          var listTwo = res[1].data.filter(item => {
-            return item.amount_receipts <= 0
-          })
-          if (listOne.length !== 0 && listTwo.length !== 0) {
-            this.orderList.push(listOne[0])
-            this.orderList.push(listTwo[0])
-          } else if (listOne.length !== 0 && listTwo.length === 0) {
-            this.orderList = listOne.slice(0, 2)
-          } else if (listOne.length === 0 && listTwo.length !== 0) {
-            this.orderList = listTwo.slice(0, 2)
-          }
-        }
-      })
-    },
-    gotoDetail (item) {
-      if (item.week_idx) {
-        this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: item.order_seqno}})
-      } else {
-        this.$router.push({name: 'recipeOrderDetail', query: {orderSeqno: item.order_seqno}})
-      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .white-back {
-    background: $backColor;
-  }
-
   .clinic-infor {
     @extend %displayFlex;
     background: $backColor;
@@ -289,23 +223,4 @@ export default {
     background: $backColor;
   }
 
-  .item-content {
-    padding: 20px 30px;
-    font-size: 30px;
-    color: $depthTextColor;
-    line-height: 42px;
-    border-bottom: 1px solid $lineColor;
-  }
-
-  .no-border-bottom {
-    border-bottom: none;
-  }
-
-  .item-line {
-    @extend %displayFlex;
-  }
-
-  .font-bold {
-    font-weight: bold;
-  }
 </style>

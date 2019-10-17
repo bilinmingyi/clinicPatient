@@ -1,60 +1,58 @@
 <template>
   <div>
-    <Header titleText="购物车" :canReturn="true"></Header>
-    <div class="mt-88px mb-131px">
-      <div class="clinic-content">
-        <Small-title @click.native="selectALL">
-          <div :class="['select-radio',{'border-yuan':!resource}]">
-            <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
-          </div>
-          <span class="ml-20px">诊所药房</span>
-        </Small-title>
-        <div v-for="(item, index) in shopCarList" :key="item.id">
-          <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-            <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
-                 @touchstart.capture="touchStart"
-                 @touchend.capture="touchEnd(item.id, $event)">
-              <div>
-                <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
-                  <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
-                </div>
+    <!--    <Header titleText="购物车" :canReturn="true"></Header>-->
+    <div class="clinic-content">
+      <Small-title @click.native="selectALL">
+        <div :class="['select-radio',{'border-yuan':!resource}]">
+          <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
+        </div>
+        <span class="ml-20px">诊所药房</span>
+      </Small-title>
+      <div v-for="(item, index) in shopCarList" :key="item.id">
+        <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
+          <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
+               @touchstart.capture="touchStart"
+               @touchend.capture="touchEnd(item.id, $event)">
+            <div>
+              <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
               </div>
-              <div class="goods-item-middle">
-                <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
+            </div>
+            <div class="goods-item-middle">
+              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
+            </div>
+            <div class="goods-item-right">
+              <div class="goods-info">
+                <span>{{item.goods_info.name}}</span>
+                <span>{{item.goods_info.vender}}</span>
+                <span>{{item.goods_info.spec}}</span>
               </div>
-              <div class="goods-item-right">
-                <div class="goods-info">
-                  <span>{{item.goods_info.name}}</span>
-                  <span>{{item.goods_info.vender}}</span>
-                  <span>{{item.goods_info.spec}}</span>
-                </div>
-                <div class="goods-num">
+              <div class="goods-num">
               <span class="flexOne">
                 ￥{{item.goods_info.price}}
               </span>
-                  <div class="num-change">
-                    <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                    <input class="num-word" v-model="item.num" @blur="scrollToTop">
-                    <div class="num-add" @click.stop="changeNum(2, index)"></div>
-                  </div>
+                <div class="num-change">
+                  <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                  <input class="num-word" v-model="item.num" @blur="scrollToTop">
+                  <div class="num-add" @click.stop="changeNum(2, index)"></div>
                 </div>
               </div>
             </div>
-            <div class="goods-delete" @click.stop="deleteShop(item.id)">
-              删除
-            </div>
           </div>
-          <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
+          <div class="goods-delete" @click.stop="deleteShop(item.id)">
+            删除
+          </div>
         </div>
+        <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
       </div>
-
     </div>
-    <Shop-footer btnText="去结算" :allPrice="allPrice" @click="toCount"></Shop-footer>
+    <Shop-footer btnText="去结算" :allPrice="allPrice" @click="toCount" bottom="1.306667rem"></Shop-footer>
+    <Footer navtiveIndex="3"></Footer>
   </div>
 </template>
 
 <script>
-import {Header, ShopFooter, SmallTitle} from '../../common'
+import {Footer, ShopFooter, SmallTitle} from '../../common'
 import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
 import noImg from '@/assets/img/nophoto.png'
 import inputBlur from '@/assets/js/inputBlur'
@@ -63,9 +61,9 @@ export default {
   name: 'ShopCar',
   mixins: [inputBlur],
   components: {
-    Header,
     ShopFooter,
-    SmallTitle
+    SmallTitle,
+    Footer
   },
   data () {
     return {
@@ -244,6 +242,7 @@ export default {
     background: $backColor;
     min-width: 100vw;
     overflow-x: hidden;
+    margin-bottom: 220px;
   }
 
   .select-radio {

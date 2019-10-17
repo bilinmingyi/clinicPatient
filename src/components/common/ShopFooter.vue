@@ -1,5 +1,5 @@
 <template>
-  <div class="shop-footer">
+  <div class="shop-footer" :style="{'bottom':bottom}">
     <div class="flexOne all-info">
       <div class="car-block" @click.stop="goRouter" v-if="hasCar">
         <img src="../../assets/img/gwcn@2x.png">
@@ -39,6 +39,10 @@ export default {
     isNoCan: {
       type: Boolean,
       default: false
+    },
+    bottom: {
+      type: String,
+      default: '0'
     }
   },
   data () {
@@ -68,6 +72,7 @@ export default {
       .car-block {
         margin-right: 24px;
         position: relative;
+
         .car-num {
           border: 4px solid #ffffff;
           border-radius: 50%;
@@ -93,7 +98,7 @@ export default {
         color: $depthTextColor;
         font-size: 32px;
         line-height: 52px;
-        font-weight: 400;
+        font-weight: bold;
       }
     }
 
@@ -105,6 +110,7 @@ export default {
       width: 248px;
       text-align: center;
     }
+
     .ccc-back {
       background: #cccccc;
     }
