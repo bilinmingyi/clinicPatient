@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="处方订单"></Header>
+    <Header :canReturn="true" titleText="处方订单" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="orderList">
         <order-item v-for="(item,index) in dataList" :itemData="item" :key="item.id"

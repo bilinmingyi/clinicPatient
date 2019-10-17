@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="add-block"
-         v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.sys_source === 'GZH' && orderInfo.is_online === 1">
+         v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.source === 'GZH' && orderInfo.is_online === 1">
       <button class="sure-btn" @click.stop="nextDone">关闭</button>
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
