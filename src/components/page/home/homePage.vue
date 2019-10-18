@@ -11,6 +11,9 @@
             <span>{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
           </div>
         </div>
+        <div class="flexV">
+          <button class="del-btn" @click.stop="goRoute(3)">更多机构</button>
+        </div>
       </section>
       <section class="clinic-contact mb-20px">
         <a class="contact-item right-line" :href="'tel:'+clinic.customerPhone">
@@ -67,10 +70,10 @@ export default {
   },
   created () {
     this.getList()
-    this.getUnread()
-    this.dataInterval = setInterval(() => {
-      this.getUnread()
-    }, 5000)
+    // this.getUnread()
+    // this.dataInterval = setInterval(() => {
+    //   this.getUnread()
+    // }, 5000)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -116,6 +119,8 @@ export default {
         case 2:
           this.$router.push({name: 'articleDetail', params: {id: params}})
           break
+        case 3:
+          this.$router.push({name: 'clinicSelect', query: {type: 1}})
       }
     },
     getUnread () {
@@ -221,6 +226,14 @@ export default {
 
   .clinic-dynamic {
     background: $backColor;
+  }
+
+  .flexV {
+    @extend %flexV;
+  }
+
+  .del-btn {
+    @include simpleButton(64px, 148px);
   }
 
 </style>

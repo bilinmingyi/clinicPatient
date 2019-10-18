@@ -11,7 +11,7 @@
         <button class="search_btn" @click.stop="searchInput()">{{btnText}}</button>
       </div>
     </div>
-    <hr class="full-screen-hr">
+    <hr class="full-screen-hr" v-if="hasLine">
   </div>
 
 </template>
@@ -32,6 +32,10 @@ export default {
       default: '查询'
     },
     hasBtn: {
+      type: Boolean,
+      default: true
+    },
+    hasLine: {
       type: Boolean,
       default: true
     }

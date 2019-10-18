@@ -10,6 +10,12 @@ export default new Router({
       redirect: '/home'
     },
     {
+      path: '/clinicSelect',
+      name: 'clinicSelect',
+      component: () => import(/* webpackChunkName */'@/components/page/home/clinicPage.vue'),
+      props: (route) => route.query
+    },
+    {
       path: '/home',
       component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/index.vue'),
       children: [

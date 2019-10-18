@@ -1,23 +1,21 @@
 <template>
   <div>
-<!--    <Header titleText="诊所医生"></Header>-->
-    <div class="pb-128px">
+    <Header titleText="机构成员" :canReturn="true"></Header>
+    <div class="mt-88px">
       <Search placeholder="请输医生名称" @on-search="query"></Search>
       <doctor-item v-for="item in doctorList" :key="item.id" :itemData="item"></doctor-item>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
-    <Footer navtiveIndex="2"></Footer>
   </div>
 </template>
 
 <script>
-import {Footer, Header, Search, doctorItem, LoadMore} from '@/components/common/index'
+import {Header, Search, doctorItem, LoadMore} from '@/components/common/index'
 import {getDoctorList} from '@/fetch/api.js'
 
 export default {
   name: 'doctorPage',
   components: {
-    Footer,
     Header,
     Search,
     doctorItem,
