@@ -19,7 +19,8 @@ const state = {
     countyCode: '',
     address: '',
     logo: '',
-    szjkPayEnabled: 0
+    szjkPayEnabled: 0,
+    banner: ''
   },
   userInfoState: {
     addr_info: '',

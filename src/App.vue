@@ -34,7 +34,8 @@ export default {
             countyCode: res.data.countyCode,
             address: res.data.address,
             logo: res.data.logo,
-            szjkPayEnabled: res.data.szjkPayEnabled
+            szjkPayEnabled: res.data.szjkPayEnabled,
+            banner: res.data.banner
           })
         } else {
           this.$Message.infor(res.msg)

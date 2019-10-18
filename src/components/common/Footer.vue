@@ -46,7 +46,7 @@ export default {
           this.$router.push({name: 'homePage'})
           break
         case 2:
-          this.$router.push({name: 'doctorPage'})
+          this.$router.push({name: 'discover'})
           break
         case 3:
           // this.$router.push({path: 'mall'})

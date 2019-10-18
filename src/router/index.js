@@ -12,8 +12,13 @@ export default new Router({
     {
       path: '/clinicSelect',
       name: 'clinicSelect',
-      component: () => import(/* webpackChunkName */'@/components/page/home/clinicPage.vue'),
+      component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/clinicPage.vue'),
       props: (route) => route.query
+    },
+    {
+      path: '/discover',
+      name: 'discover',
+      component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/discoverPage.vue')
     },
     {
       path: '/home',
@@ -35,6 +40,11 @@ export default new Router({
           name: 'articleDetail',
           component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/articleDetail.vue'),
           props: true
+        },
+        {
+          path: 'clinicDetail',
+          name: 'clinicDetail',
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/clinicDetail.vue')
         }
       ]
     },

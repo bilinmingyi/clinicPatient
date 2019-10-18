@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!--    <Header titleText="首页"></Header>-->
+
     <div class="pb-128px">
       <section class="clinic-infor">
         <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
-        <div class="clinic-NP" style="display: flex;flex-direction: column;justify-content: space-around;">
+        <div class="clinic-NP" @click="goRoute(2)" style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
           <p class="clinic-name">{{clinic.name}}</p>
           <div class="clinic-position">
             <img src="../../../assets/img/dingwei@2x.png">
@@ -16,7 +16,7 @@
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <a class="contact-item right-line" :href="'tel:'+clinic.customerPhone">
+        <a class="contact-item" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
@@ -27,13 +27,17 @@
           </div>
           <span>咨询诊所</span>
         </div>
+        <a class="contact-item">
+          <img src="../../../assets/img/xx@2x.png">
+          <!--          <img src="../../../assets/img/yxx@2x.png">-->
+          <span>设为默认机构</span>
+        </a>
       </section>
-
       <section class="clinic-dynamic">
-        <Small-title>平台动态</Small-title>
-        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"
-                 @click.native="goRoute(2, article.id)"></Dynamic>
-        <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
+        <SmallTitle>
+          <span class="flexOne">医生推荐</span>
+          <div class="next-icon" @click.stop="goRoute(4)"></div>
+        </SmallTitle>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -41,8 +45,8 @@
 </template>
 
 <script>
-import {Footer, Header, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
-import {getArticleList, unread} from '@/fetch/api.js'
+import {Footer, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
+import {unread} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 
@@ -50,7 +54,6 @@ export default {
   name: 'homePage',
   components: {
     Footer,
-    Header,
     SmallTitle,
     Dynamic,
     LoadMore,
@@ -58,18 +61,12 @@ export default {
   },
   data () {
     return {
-      page: 1,
-      pageSize: 5,
-      articleList: [],
-      canShowAdd: false,
       no_img: clinicImg,
       unReadCount: 0,
-      dataInterval: '',
-      orderList: []
+      dataInterval: ''
     }
   },
   created () {
-    this.getList()
     // this.getUnread()
     // this.dataInterval = setInterval(() => {
     //   this.getUnread()
@@ -86,41 +83,20 @@ export default {
     })
   },
   methods: {
-    async getList () {
-      try {
-        let res = await getArticleList({
-          page: this.page,
-          page_size: this.pageSize
-        })
-
-        if (res.code === 1000) {
-          this.articleList = this.articleList.concat(res.data)
-          if (res.data.length >= this.pageSize) {
-            this.canShowAdd = true
-          } else {
-            this.canShowAdd = false
-          }
-        } else {
-          this.$Message.infor(res.msg)
-        }
-      } catch (e) {
-        this.$Message.infor('网络出错！')
-      }
-    },
-    addMore () {
-      this.page++
-      this.getList()
-    },
     goRoute (type, params) {
       switch (type) {
         case 1:
           this.$router.push({name: 'chatRoom'})
           break
         case 2:
-          this.$router.push({name: 'articleDetail', params: {id: params}})
+          this.$router.push({name: 'clinicDetail'})
           break
         case 3:
           this.$router.push({name: 'clinicSelect', query: {type: 1}})
+          break
+        case 4:
+          this.$router.push({name: 'doctorPage'})
+          break
       }
     },
     getUnread () {
@@ -143,6 +119,7 @@ export default {
     @extend %displayFlex;
     background: $backColor;
     padding: 36px 40px;
+    border-bottom: 1px solid $lineColor;
 
     .clinic-img {
       width: 112px;
@@ -178,6 +155,10 @@ export default {
       line-height: 40px;
       font-weight: 400;
       color: $lightTextColor;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: calc(100vw - 435px);
     }
   }
 
@@ -187,22 +168,20 @@ export default {
     font-size: 32px;
     line-height: 45px;
 
-    .right-line {
-      border-right: 1px solid $lineColor;
-    }
-
     .contact-item {
       flex: 1;
-      height: 148px;
+      height: 160px;
       @extend %displayFlex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: $depthTextColor;
+      color: $lightTextColor;
+      font-size: 28px;
 
       img {
         width: 64px;
         height: 64px;
-        margin-right: 20px;
+        margin-bottom: 4px;
       }
     }
   }
@@ -233,7 +212,21 @@ export default {
   }
 
   .del-btn {
+    margin-left: 34px;
     @include simpleButton(64px, 148px);
+  }
+
+  .flexOne {
+    flex: 1;
+    font-weight: bold;
+    font-size: 36px;
+  }
+
+  .next-icon {
+    background: url('../../../assets/img/xiayibu@2x.png') no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40%;
   }
 
 </style>
