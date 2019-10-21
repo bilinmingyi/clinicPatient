@@ -42,6 +42,11 @@ export default new Router({
           props: true
         },
         {
+          path: 'dynamicPage',
+          name: 'dynamicPage',
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/dynamicPage.vue')
+        },
+        {
           path: 'clinicDetail',
           name: 'clinicDetail',
           component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/clinicDetail.vue')

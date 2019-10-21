@@ -4,7 +4,8 @@
     <div class="pb-128px">
       <section class="clinic-infor">
         <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
-        <div class="clinic-NP" @click="goRoute(2)" style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
+        <div class="clinic-NP" @click="goRoute(2)"
+             style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
           <p class="clinic-name">{{clinic.name}}</p>
           <div class="clinic-position">
             <img src="../../../assets/img/dingwei@2x.png">
@@ -12,7 +13,7 @@
           </div>
         </div>
         <div class="flexV">
-          <button class="del-btn" @click.stop="goRoute(3)">更多机构</button>
+          <button class="del-btn" @click.stop="goRoute(3)">切换机构</button>
         </div>
       </section>
       <section class="clinic-contact mb-20px">
@@ -27,17 +28,27 @@
           </div>
           <span>咨询诊所</span>
         </div>
-        <a class="contact-item">
-          <img src="../../../assets/img/xx@2x.png">
-          <!--          <img src="../../../assets/img/yxx@2x.png">-->
-          <span>设为默认机构</span>
-        </a>
+        <!--        <a class="contact-item">-->
+        <!--          <img src="../../../assets/img/xx@2x.png">-->
+        <!--          &lt;!&ndash;          <img src="../../../assets/img/yxx@2x.png">&ndash;&gt;-->
+        <!--          <span>设为默认机构</span>-->
+        <!--        </a>-->
       </section>
       <section class="clinic-dynamic">
         <SmallTitle>
+          <div>
+            <img class="xiaoxi-icon" src="../../../assets/img/xiaoxi@2x.png">
+          </div>
+          <div class="flexOne">
+            <div class="xiaoxi-title" v-if="articleList.length != 0">{{articleList[0].title}}</div>
+          </div>
+          <div class="next-icon" @click.stop="goRoute(5)"></div>
+        </SmallTitle>
+        <SmallTitle :hasLink="false">
           <span class="flexOne">医生推荐</span>
           <div class="next-icon" @click.stop="goRoute(4)"></div>
         </SmallTitle>
+        <div></div>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -46,7 +57,7 @@
 
 <script>
 import {Footer, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
-import {unread} from '@/fetch/api.js'
+import {unread, getArticleList} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 
@@ -63,10 +74,12 @@ export default {
     return {
       no_img: clinicImg,
       unReadCount: 0,
-      dataInterval: ''
+      dataInterval: '',
+      articleList: []
     }
   },
   created () {
+    this.getList()
     // this.getUnread()
     // this.dataInterval = setInterval(() => {
     //   this.getUnread()
@@ -97,6 +110,8 @@ export default {
         case 4:
           this.$router.push({name: 'doctorPage'})
           break
+        case 5:
+          this.$router.push({name: 'dynamicPage'})
       }
     },
     getUnread () {
@@ -109,7 +124,23 @@ export default {
           this.$Message.infor(res.msg)
         }
       })
-    }
+    },
+    async getList () {
+      try {
+        let res = await getArticleList({
+          page: 1,
+          page_size: 1
+        })
+
+        if (res.code === 1000) {
+          this.articleList = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      } catch (e) {
+        this.$Message.infor('网络出错！')
+      }
+    },
   }
 }
 </script>
@@ -227,6 +258,23 @@ export default {
     background-size: cover;
     width: 40px;
     height: 40%;
+  }
+
+  .xiaoxi-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .xiaoxi-title {
+    color: $depthTextColor;
+    font-size: 30px;
+    line-height: 42px;
+    padding-left: 24px;
+    text-overflow: ellipsis;
+    width: 75vw;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: normal;
   }
 
 </style>
