@@ -17,7 +17,7 @@
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <a class="contact-item" :href="'tel:'+clinic.customerPhone">
+        <a class="contact-item right-border" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
@@ -44,11 +44,18 @@
           </div>
           <div class="next-icon" @click.stop="goRoute(5)"></div>
         </SmallTitle>
-        <SmallTitle :hasLink="false">
+        <div class="doctor-title">
           <span class="flexOne">医生推荐</span>
           <div class="next-icon" @click.stop="goRoute(4)"></div>
-        </SmallTitle>
-        <div></div>
+        </div>
+        <div class="doctor-block" v-if="doctorList.length != 0">
+          <div v-for="doc in doctorList" :key="doc.id" class="doctor-item" @click.stop="goRoute(6, doc.id)">
+            <img :src="doc.avatar != '' ? doc.avatar: (doc.sex == 2 ? woman_img: man_img)">
+            <div>{{doc.name}}</div>
+          </div>
+          <div class="doctor-item" v-if="doctorList.length == 2 || doctorList.length == 1"></div>
+          <div class="doctor-item" v-if="doctorList.length == 1"></div>
+        </div>
       </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
@@ -57,9 +64,11 @@
 
 <script>
 import {Footer, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
-import {unread, getArticleList} from '@/fetch/api.js'
+import {unread, getArticleList, getDoctorList} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
+import man from '@/assets/img/nan@2x.png'
+import woman from '@/assets/img/nv@2x.png'
 
 export default {
   name: 'homePage',
@@ -75,11 +84,15 @@ export default {
       no_img: clinicImg,
       unReadCount: 0,
       dataInterval: '',
-      articleList: []
+      articleList: [],
+      doctorList: [],
+      man_img: man,
+      woman_img: woman,
     }
   },
   created () {
     this.getList()
+    this.getDoctorList()
     // this.getUnread()
     // this.dataInterval = setInterval(() => {
     //   this.getUnread()
@@ -112,6 +125,9 @@ export default {
           break
         case 5:
           this.$router.push({name: 'dynamicPage'})
+          break
+        case 6:
+          this.$router.push({path: `/doctor/detail/${params}`})
       }
     },
     getUnread () {
@@ -141,6 +157,18 @@ export default {
         this.$Message.infor('网络出错！')
       }
     },
+    getDoctorList () {
+      getDoctorList({
+        'status': 1,
+        'page': 1,
+        'page_size': 3
+      }).then(res => {
+        this.doctorList = res.data
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    }
   }
 }
 </script>
@@ -150,13 +178,16 @@ export default {
     @extend %displayFlex;
     background: $backColor;
     padding: 36px 40px;
-    border-bottom: 1px solid $lineColor;
 
     .clinic-img {
       width: 112px;
       height: 112px;
       border-radius: 50%;
     }
+  }
+
+  .right-border {
+    border-right: 1px solid $lineColor;
   }
 
   .clinic-NP {
@@ -275,6 +306,33 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     font-weight: normal;
+  }
+
+  .doctor-title {
+    @extend %flexV;
+    height: 112px;
+    padding: 0 30px;
+  }
+
+  .doctor-block {
+    background: #ffffff;
+    @extend %flexV;
+    justify-content: space-around;
+
+    .doctor-item {
+      text-align: center;
+      padding: 18px 0 48px;
+      color: $depthTextColor;
+      font-size: 30px;
+      line-height: 42px;
+
+      img {
+        width: 148px;
+        height: 148px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
+    }
   }
 
 </style>
