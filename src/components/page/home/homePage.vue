@@ -1,6 +1,5 @@
 <template>
-  <div>
-
+  <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
     <div class="pb-128px">
       <section class="clinic-infor">
         <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
@@ -34,7 +33,7 @@
         <!--          <span>设为默认机构</span>-->
         <!--        </a>-->
       </section>
-      <section class="clinic-dynamic">
+      <section class="clinic-dynamic mb-20px">
         <SmallTitle>
           <div>
             <img class="xiaoxi-icon" src="../../../assets/img/xiaoxi@2x.png">
@@ -57,18 +56,38 @@
           <div class="doctor-item" v-if="doctorList.length == 1"></div>
         </div>
       </section>
+      <section class="mall-block">
+        <div class="mall-title">机构商城</div>
+        <div class="good-list">
+          <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
+                    :class="{'mr-10px':index%2===0}" :scrollTop="scrollTop" :clientHeight="clientHeight"></GoodItem>
+        </div>
+      </section>
     </div>
     <Footer navtiveIndex="1"></Footer>
   </div>
 </template>
 
 <script>
-import {Footer, SmallTitle, orderItem, Dynamic, LoadMore} from '@/components/common/index'
-import {unread, getArticleList, getDoctorList} from '@/fetch/api.js'
+import {Footer, SmallTitle, orderItem, Dynamic, GoodItem} from '@/components/common/index'
+import {unread, getArticleList, getDoctorList, fetchGoodsList} from '@/fetch/api.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 import man from '@/assets/img/nan@2x.png'
 import woman from '@/assets/img/nv@2x.png'
+
+var canRun = true
+var throttle = (fn) => {
+  return () => {
+    if (canRun) {
+      canRun = false
+      setTimeout(() => {
+        fn.apply(this, arguments)
+        canRun = true
+      }, 500)
+    }
+  }
+}
 
 export default {
   name: 'homePage',
@@ -76,7 +95,7 @@ export default {
     Footer,
     SmallTitle,
     Dynamic,
-    LoadMore,
+    GoodItem,
     orderItem
   },
   data () {
@@ -88,15 +107,29 @@ export default {
       doctorList: [],
       man_img: man,
       woman_img: woman,
+      page: 1,
+      pageSize: 10,
+      totalNum: 0,
+      goodsList: [],
+      showLoad: false,
+      isFirst: true,
+      scrollTop: 0,
+      clientHeight: 0
     }
   },
   created () {
     this.getList()
     this.getDoctorList()
+    this.getGoodsList()
     // this.getUnread()
     // this.dataInterval = setInterval(() => {
     //   this.getUnread()
     // }, 5000)
+  },
+  mounted () {
+    let scrollItem = this.$refs.scrollContent
+    this.scrollTop = scrollItem.scrollTop
+    this.clientHeight = scrollItem.clientHeight
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -168,12 +201,52 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    getGoodsList () {
+      fetchGoodsList({
+        name: this.query,
+        page: this.page,
+        page_size: this.pageSize,
+        status: 1
+      }).then(res => {
+        this.showLoad = false
+        this.isFirst = false
+        if (res.code === 1000) {
+          this.goodsList = this.goodsList.concat(res.data)
+          this.totalNum = res.total_num
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错!')
+      })
+    },
+    scrollEvent () {
+      throttle(() => {
+        let scrollItem = this.$refs.scrollContent
+        this.scrollTop = scrollItem.scrollTop
+        this.clientHeight = scrollItem.clientHeight
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 120) {
+          if (this.page < Math.ceil(this.totalNum / this.pageSize)) {
+            this.page++
+            this.showLoad = true
+            this.getGoodsList()
+          }
+        }
+      })()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .scoll-block {
+    height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .clinic-infor {
     @extend %displayFlex;
     background: $backColor;
@@ -332,6 +405,26 @@ export default {
         border-radius: 50%;
         margin-bottom: 20px;
       }
+    }
+  }
+
+  .mall-block {
+    .mall-title {
+      background: url("../../../assets/img/mall-back.png");
+      background-size: cover;
+      font-size: 36px;
+      color: #FFFFFF;
+      @extend %flexVC;
+      font-weight: bold;
+      height: 96px;
+      margin: 0 24px 12px;
+      width: calc(100vw - 48px);
+      border-radius: 8px;
+    }
+
+    .good-list {
+      @extend %displayFlex;
+      flex-wrap: wrap;
     }
   }
 

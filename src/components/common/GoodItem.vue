@@ -1,7 +1,7 @@
 <template>
-  <div class="good-item" @click.stop="goRoute(1)">
+  <div class="good-item" @click.stop="goRoute(1)" ref="imgItem">
     <div class="item-top">
-      <img :src="goods.img==''?noImg:goods.img" @error="imgError($event)">
+      <img :src="currImg==''?noImg:currImg" @error="imgError($event)">
     </div>
     <div class="item-bottom">
       <div class="item-title">{{goods.name}}</div>
@@ -9,7 +9,7 @@
         <div class="flexOne">￥{{goods.price}}</div>
         <div class="item-car">
           <div :class="['add-success', {'change-top': addSuccess}]">+1</div>
-          <img @click.stop="goRoute(2)" src="../../assets/img/gwc@2x.png">
+          <img @click.stop="goRoute(2)" src="../../assets/img/gwc.png">
         </div>
       </div>
     </div>
@@ -23,6 +23,14 @@ import {addShopCar} from '@/fetch/api'
 export default {
   name: 'GoodItem',
   props: {
+    scrollTop: {
+      type: Number,
+      default: 0
+    },
+    clientHeight: {
+      type: Number,
+      default: 0
+    },
     goods: {
       type: Object,
       default () {
@@ -40,7 +48,24 @@ export default {
   data () {
     return {
       noImg: noImg,
-      addSuccess: false
+      addSuccess: false,
+      currImg: '',
+      offsetTop: 0
+    }
+  },
+  mounted () {
+    this.offsetTop = this.$refs.imgItem.offsetTop
+  },
+  watch: {
+    scrollTop: {
+      immediate: false,
+      handler: function (newVal, oldVal) {
+        if (this.currImg === '') {
+          if (this.clientHeight + newVal >= this.offsetTop - 60) {
+            this.currImg = this.goods.img
+          }
+        }
+      }
     }
   },
   methods: {
@@ -82,7 +107,7 @@ export default {
 <style lang="scss" scoped>
   .good-item {
     background: $backColor;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     width: calc(50vw - 5px);
 
     .item-top {
@@ -118,6 +143,7 @@ export default {
 
       .item-car {
         position: relative;
+
         img {
           height: 48px;
           width: 48px;
@@ -125,14 +151,16 @@ export default {
           top: -25px;
           right: 0;
         }
-        .add-success{
+
+        .add-success {
           position: absolute;
           top: -25px;
           right: 0;
           opacity: 1;
         }
-        .change-top  {
-          transition:all 1s;
+
+        .change-top {
+          transition: all 1s;
           top: -100px;
           opacity: 0;
         }

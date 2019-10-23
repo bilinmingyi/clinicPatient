@@ -1,6 +1,5 @@
 <template>
   <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
-<!--    <Header titleText="诊所商城"></Header>-->
     <div class="pb-128px">
       <Search placeholder="请输入药品/产品名称" :hasBtn="false" @on-search="searchByName"></Search>
       <div class="white-back">
