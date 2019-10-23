@@ -58,10 +58,20 @@ export default {
   },
   watch: {
     scrollTop: {
-      immediate: false,
       handler: function (newVal, oldVal) {
-        if (this.currImg === '') {
-          if (this.clientHeight + newVal >= this.offsetTop - 60) {
+        if (this.currImg === '' && this.goods.img !== '') {
+          if (this.clientHeight + newVal >= this.offsetTop - 200) {
+            console.log(this.offsetTop)
+            this.currImg = this.goods.img
+          }
+        }
+      }
+    },
+    offsetTop: {
+      handler: function (newVal) {
+        if (this.currImg === '' && this.goods.img !== '') {
+          if (this.clientHeight + this.scrollTop >= newVal - 200) {
+            console.log(this.offsetTop)
             this.currImg = this.goods.img
           }
         }

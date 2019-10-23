@@ -127,9 +127,11 @@ export default {
     // }, 5000)
   },
   mounted () {
-    let scrollItem = this.$refs.scrollContent
-    this.scrollTop = scrollItem.scrollTop
-    this.clientHeight = scrollItem.clientHeight
+    setTimeout(() => {
+      let scrollItem = this.$refs.scrollContent
+      this.scrollTop = scrollItem.scrollTop
+      this.clientHeight = scrollItem.clientHeight
+    }, 100)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
@@ -227,7 +229,7 @@ export default {
         let scrollItem = this.$refs.scrollContent
         this.scrollTop = scrollItem.scrollTop
         this.clientHeight = scrollItem.clientHeight
-        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 120) {
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 200) {
           if (this.page < Math.ceil(this.totalNum / this.pageSize)) {
             this.page++
             this.showLoad = true
