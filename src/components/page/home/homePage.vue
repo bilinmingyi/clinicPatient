@@ -121,10 +121,10 @@ export default {
     this.getList()
     this.getDoctorList()
     this.getGoodsList()
-    // this.getUnread()
-    // this.dataInterval = setInterval(() => {
-    //   this.getUnread()
-    // }, 5000)
+    this.getUnread()
+    this.dataInterval = setInterval(() => {
+      this.getUnread()
+    }, 5000)
   },
   mounted () {
     setTimeout(() => {
