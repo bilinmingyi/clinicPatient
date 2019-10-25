@@ -20,6 +20,9 @@ function fetch (url, params) {
 }
 
 // 首页
+// 获取诊所列表
+const getClinicList = params => fetch('/channel/clinicList', params)
+
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
 // 获取文章详情
@@ -114,6 +117,7 @@ const fetchMemberCode = () => fetch('/member/memberPayKey')
 
 export {
   fetch,
+  getClinicList,
   getAppointList,
   getArticleList,
   fetchArticleDetail,

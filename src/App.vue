@@ -49,6 +49,11 @@ export default {
       fetchUserInfo({}).then(res => {
         if (res.code === 1000) {
           this.set_user_info(res.data)
+          if (res.data.default_clinic_id <= 0) {
+            this.$router.push({name: 'homePage'})
+          } else {
+            this.$router.push({name: 'clinicSelect'})
+          }
         } else {
           this.$Message.infor(res.msg)
         }

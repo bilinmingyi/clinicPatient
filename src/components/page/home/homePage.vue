@@ -16,7 +16,7 @@
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <a class="contact-item right-border" :href="'tel:'+clinic.customerPhone">
+        <a class="contact-item" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
@@ -27,11 +27,11 @@
           </div>
           <span>咨询诊所</span>
         </div>
-        <!--        <a class="contact-item">-->
-        <!--          <img src="../../../assets/img/xx@2x.png">-->
-        <!--          &lt;!&ndash;          <img src="../../../assets/img/yxx@2x.png">&ndash;&gt;-->
-        <!--          <span>设为默认机构</span>-->
-        <!--        </a>-->
+        <a class="contact-item">
+          <img src="../../../assets/img/xx@2x.png">
+          <!--          <img src="../../../assets/img/yxx@2x.png">-->
+          <span>设为默认机构</span>
+        </a>
       </section>
       <section class="clinic-dynamic mb-20px">
         <SmallTitle>
@@ -253,6 +253,7 @@ export default {
     @extend %displayFlex;
     background: $backColor;
     padding: 36px 40px;
+    border-bottom: 1px solid $lineColor;
 
     .clinic-img {
       width: 112px;
