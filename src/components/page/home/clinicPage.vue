@@ -17,35 +17,39 @@
         </div>
       </div>
     </div>
+    <Loading v-if="loadShow"></Loading>
   </div>
 </template>
 
 <script>
 import {mapActions} from 'vuex'
-import {Header, Search} from '@/components/common/index'
+import {Header, Search, Loading} from '@/components/common/index'
 import menZhen from '@/assets/img/menzhen.png'
-import {getClinicList, changeClinic, getClinicData} from '@/fetch/api.js'
+import {getClinicList, changeClinic, getClinicData, setDefultClinic} from '@/fetch/api.js'
 
 export default {
   name: 'clinicPage',
   props: ['type'],
   components: {
     Header,
-    Search
+    Search,
+    Loading
   },
   data () {
     return {
       img_clinic: menZhen,
       dataList: [],
-      resultList: []
+      resultList: [],
+      queryName: '',
+      loadShow: false
     }
   },
   created () {
-    this.query()
+    this.getData()
   },
   methods: {
     ...mapActions(['set_clinic_info']),
-    query () {
+    getData () {
       getClinicList({}).then(res => {
         if (res.code === 1000) {
           this.dataList = res.data
@@ -60,15 +64,31 @@ export default {
     },
     change (id) {
       this.$Message.confirm('确定切换诊所？', () => {
+        this.loadShow = true
         changeClinic({
           'id': id
         }).then(res => {
           if (res.code === 1000) {
-            this.getClinic()
+            setDefultClinic({
+              'id': id
+            }).then(res => {
+              if (res.code === 1000) {
+                this.getClinic()
+              } else {
+                this.loadShow = false
+                this.$Message.infor(res.msg)
+              }
+            }).catch(error => {
+              this.loadShow = false
+              console.log(error)
+              this.$Message.infor('网络出错！')
+            })
           } else {
+            this.loadShow = false
             this.$Message.infor(res.msg)
           }
         }).catch(error => {
+          this.loadShow = false
           console.log(error)
           this.$Message.infor('网络出错！')
         })
@@ -76,6 +96,7 @@ export default {
     },
     getClinic () {
       getClinicData().then(res => {
+        this.loadShow = false
         if (res.code === 1000) {
           this.set_clinic_info({
             id: res.data.id,
@@ -101,6 +122,15 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    query (str) {
+      if (str === '') {
+        this.resultList = this.dataList
+      } else {
+        this.resultList = this.dataList.filter(item => {
+          return item.name.indexOf(str) >= 0
+        })
+      }
     }
   }
 }

@@ -24,6 +24,8 @@ function fetch (url, params) {
 const getClinicList = params => fetch('/channel/clinicList', params)
 // 获取切换诊所
 const changeClinic = params => fetch('/clinic/change', params)
+// 设置默认诊所
+const setDefultClinic = params => fetch('/clinic/default/set', params)
 
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
@@ -121,6 +123,7 @@ export {
   fetch,
   getClinicList,
   changeClinic,
+  setDefultClinic,
   getAppointList,
   getArticleList,
   fetchArticleDetail,
