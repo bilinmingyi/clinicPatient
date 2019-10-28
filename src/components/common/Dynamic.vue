@@ -4,7 +4,8 @@
     <div class="dynamic-item-right">
       <div class="title">{{dyItem.title}}</div>
       <div class="title-bottom">
-        <div class="title-type">资讯类别</div>
+        <div class="title-time" v-if="dyItem.type">{{dyItem.type}}</div>
+        <div class="title-type" v-else>资讯类别</div>
         <div class="title-time">{{dyItem.pubdate|dateFormat('yyyy-MM-dd')}}</div>
       </div>
     </div>
@@ -86,9 +87,7 @@ export default {
     }
 
     .title-time {
-      padding-top: 5px;
       height: 28px;
-      line-height: 32px;
     }
   }
 </style>

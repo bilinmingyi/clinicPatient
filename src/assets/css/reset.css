@@ -181,6 +181,10 @@ input {
   margin-right: 96px;
 }
 
+.mr-6px {
+  margin-right: 6px;
+}
+
 .mb-6px {
   margin-bottom: 6px;
 }

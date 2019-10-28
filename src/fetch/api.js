@@ -26,6 +26,12 @@ const getClinicList = params => fetch('/channel/clinicList', params)
 const changeClinic = params => fetch('/clinic/change', params)
 // 设置默认诊所
 const setDefultClinic = params => fetch('/clinic/default/set', params)
+// 平台文章分类
+const platformArticleType = params => fetch('/platform/article/type', params)
+// 平台文章详情
+const platformArticleDetail = params => fetch('/platform/article/detailPage?id=' + params.id)
+// 平台文章列表
+const platformArticleList = params => fetch('/platform/article/list', params)
 
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
@@ -165,5 +171,8 @@ export {
   fetchMemberList,
   fetchPayStream,
   submitMember,
-  fetchMemberCode
+  fetchMemberCode,
+  platformArticleType,
+  platformArticleDetail,
+  platformArticleList
 }
