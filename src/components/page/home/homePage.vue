@@ -1,22 +1,22 @@
 <template>
   <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
     <div class="pb-128px">
-      <section class="clinic-infor">
+      <section class="clinic-infor" :style="{'border-bottom': channelId > 0 ? '1px solid #d9d9d9' : 'none'}">
         <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
         <div class="clinic-NP" @click="goRoute(2)"
              style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
           <p class="clinic-name">{{clinic.name}}</p>
           <div class="clinic-position">
             <img src="../../../assets/img/dingwei@2x.png">
-            <span>{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
+            <span :class="channelId > 0 ? 'width-one' : 'width-two'">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
           </div>
         </div>
-        <div class="flexV">
+        <div class="flexV" v-if="channelId > 0">
           <button class="del-btn" @click.stop="goRoute(3)">切换机构</button>
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <a class="contact-item" :href="'tel:'+clinic.customerPhone">
+        <a :class="['contact-item', {'right-border': channelId <= 0}]" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
@@ -27,10 +27,10 @@
           </div>
           <span>咨询诊所</span>
         </div>
-        <a class="contact-item">
-          <img src="../../../assets/img/xx@2x.png">
-          <!--          <img src="../../../assets/img/yxx@2x.png">-->
-          <span>设为默认机构</span>
+        <a class="contact-item" v-if="channelId > 0">
+          <img src="../../../assets/img/yxx@2x.png" v-if="clinic.isGzhDefault === 1">
+          <img src="../../../assets/img/xx@2x.png" v-else>
+          <span>默认机构</span>
         </a>
       </section>
       <section class="clinic-dynamic mb-20px">
@@ -71,6 +71,7 @@
 <script>
 import {Footer, SmallTitle, orderItem, Dynamic, GoodItem} from '@/components/common/index'
 import {unread, getArticleList, getDoctorList, fetchGoodsList} from '@/fetch/api.js'
+import {channelId} from '@/assets/js/mapTypes.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
 import {mapState} from 'vuex'
 import man from '@/assets/img/nan@2x.png'
@@ -100,6 +101,7 @@ export default {
   },
   data () {
     return {
+      channelId: channelId,
       no_img: clinicImg,
       unReadCount: 0,
       dataInterval: '',
@@ -253,7 +255,6 @@ export default {
     @extend %displayFlex;
     background: $backColor;
     padding: 36px 40px;
-    border-bottom: 1px solid $lineColor;
 
     .clinic-img {
       width: 112px;
@@ -296,7 +297,14 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+    }
+
+    .width-one {
       width: calc(100vw - 435px);
+    }
+
+    .width-two {
+      width: calc(100vw - 235px);
     }
   }
 

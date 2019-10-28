@@ -3,7 +3,7 @@
     <Header titleText="机构查询" :canReturn="type === 1"></Header>
     <div class="mt-88px">
       <Search placeholder="机构名称" @on-search="query" :hasLine="false"></Search>
-      <div class="clinic-item" v-for="item in resultList" :key="item.id">
+      <div class="clinic-item" v-for="item in resultList" :key="item.id" @click="change(item.id)">
         <img :src="item.logo ? item.logo : img_clinic">
         <div class="clinic-content">
           <div class="clinic-name">{{item.name}}</div>
@@ -21,9 +21,10 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 import {Header, Search} from '@/components/common/index'
 import menZhen from '@/assets/img/menzhen.png'
-import {getClinicList} from '@/fetch/api.js'
+import {getClinicList, changeClinic, getClinicData} from '@/fetch/api.js'
 
 export default {
   name: 'clinicPage',
@@ -43,11 +44,56 @@ export default {
     this.query()
   },
   methods: {
+    ...mapActions(['set_clinic_info']),
     query () {
       getClinicList({}).then(res => {
         if (res.code === 1000) {
           this.dataList = res.data
           this.resultList = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    change (id) {
+      this.$Message.confirm('确定切换诊所？', () => {
+        changeClinic({
+          'id': id
+        }).then(res => {
+          if (res.code === 1000) {
+            this.getClinic()
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
+      })
+    },
+    getClinic () {
+      getClinicData().then(res => {
+        if (res.code === 1000) {
+          this.set_clinic_info({
+            id: res.data.id,
+            name: res.data.name,
+            customerPhone: res.data.customer_phone,
+            provinceName: res.data.province_name,
+            provinceCode: res.data.province_code,
+            cityName: res.data.city_name,
+            cityCode: res.data.city_code,
+            countyName: res.data.county_name,
+            countyCode: res.data.county_code,
+            address: res.data.address,
+            logo: res.data.logo,
+            szjkPayEnabled: res.data.szjk_pay_enabled,
+            banner: res.data.banner,
+            isGzhDefault: res.data.is_gzh_default
+          })
+          this.$router.back()
         } else {
           this.$Message.infor(res.msg)
         }

@@ -20,7 +20,8 @@ const state = {
     address: '',
     logo: '',
     szjkPayEnabled: 0,
-    banner: ''
+    banner: '',
+    isGzhDefault: 0
   },
   userInfoState: {
     addr_info: '',
