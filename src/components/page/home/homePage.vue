@@ -133,7 +133,7 @@ export default {
       let scrollItem = this.$refs.scrollContent
       this.scrollTop = scrollItem.scrollTop
       this.clientHeight = scrollItem.clientHeight
-    }, 100)
+    }, 200)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)

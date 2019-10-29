@@ -113,7 +113,8 @@ export default {
       this.getList()
     },
     goRoute (params) {
-      this.$router.push({name: 'articleDetail', params: {id: params}})
+      console.log(111)
+      this.$router.push({name: 'platformArticle', params: {id: params}})
     },
     changeType (str) {
       this.currType = str
@@ -139,7 +140,6 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
 
     .type-block {
       background: $backColor;
@@ -156,6 +156,7 @@ export default {
         position: relative;
 
         .type-item-text {
+          text-align: center;
           width: 120px;
           overflow: hidden;
           text-overflow: ellipsis;

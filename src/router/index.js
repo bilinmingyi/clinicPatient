@@ -42,6 +42,12 @@ export default new Router({
           props: true
         },
         {
+          path: 'platformArticle/:id',
+          name: 'platformArticle',
+          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/platformArticle.vue'),
+          props: true
+        },
+        {
           path: 'dynamicPage',
           name: 'dynamicPage',
           component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/dynamicPage.vue')

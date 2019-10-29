@@ -60,7 +60,7 @@ export default {
     scrollTop: {
       handler: function (newVal, oldVal) {
         if (this.currImg === '' && this.goods.img !== '') {
-          if (this.clientHeight + newVal >= this.offsetTop - 200) {
+          if (this.clientHeight + newVal >= this.offsetTop - 220) {
             this.currImg = this.goods.img
           }
         }
@@ -69,7 +69,7 @@ export default {
     offsetTop: {
       handler: function (newVal) {
         if (this.currImg === '' && this.goods.img !== '') {
-          if (this.clientHeight + this.scrollTop >= newVal - 200) {
+          if (this.clientHeight + this.scrollTop >= newVal - 220) {
             this.currImg = this.goods.img
           }
         }

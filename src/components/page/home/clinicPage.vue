@@ -114,7 +114,7 @@ export default {
             banner: res.data.banner,
             isGzhDefault: res.data.is_gzh_default
           })
-          this.$router.back()
+          this.$router.replace({name: 'homePage'})
         } else {
           this.$Message.infor(res.msg)
         }

@@ -55,12 +55,12 @@ export default {
           this.set_user_info(res.data)
           if (channelId > 0) {
             if (res.data.default_clinic_id > 0) {
-              this.$router.push({name: 'homePage'})
+              this.$router.replace({name: 'homePage'})
             } else {
-              this.$router.push({name: 'clinicSelect'})
+              this.$router.replace({name: 'clinicSelect'})
             }
           } else {
-            this.$router.push({name: 'homePage'})
+            this.$router.replace({name: 'homePage'})
           }
         } else {
           this.$Message.infor(res.msg)

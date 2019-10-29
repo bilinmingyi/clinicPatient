@@ -29,7 +29,7 @@ const setDefultClinic = params => fetch('/clinic/default/set', params)
 // 平台文章分类
 const platformArticleType = params => fetch('/platform/article/type', params)
 // 平台文章详情
-const platformArticleDetail = params => fetch('/platform/article/detailPage?id=' + params.id)
+const platformArticleDetail = params => fetch('/platform/article/detail?id=' + params.id)
 // 平台文章列表
 const platformArticleList = params => fetch('/platform/article/list', params)
 
