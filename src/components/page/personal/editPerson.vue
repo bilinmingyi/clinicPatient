@@ -21,11 +21,11 @@
       <div class="line-items">
         <label class="label-four mr-32px">手机</label>
         <input type="number" class="input-item flexOne" v-model="mobile" disabled>
-        <button class="phone-btn" @click.stop="goRoute">绑定号码</button>
+        <button class="phone-btn" @click.stop="saveChange(2)">绑定号码</button>
       </div>
     </div>
     <div class="add-block">
-      <button class="sure-btn" @click.stop="saveChange">确定</button>
+      <button class="sure-btn" @click.stop="saveChange(1)">确定</button>
     </div>
   </div>
 </template>
@@ -84,7 +84,7 @@ export default {
     changeSex (val) {
       this.sex = Number(val)
     },
-    saveChange () {
+    saveChange (type) {
       if (!this.name) {
         this.$Message.infor('请先填写就诊人姓名！')
         return
@@ -109,7 +109,11 @@ export default {
             name: this.name,
             birthday: birthday.getTime()
           })
-          this.$router.go(-1)
+          if (type === 1) {
+            this.$router.go(-1)
+          } else if (type === 2) {
+            this.$router.push({name: 'editPhone', query: {returnType: 1}})
+          }
         } else {
           this.$Message.infor(res.msg)
         }
@@ -117,9 +121,6 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
-    },
-    goRoute () {
-      this.$router.push({name: 'editPhone', query: {returnType: 1}})
     }
   }
 }

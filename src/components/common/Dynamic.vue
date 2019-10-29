@@ -6,7 +6,7 @@
       <div class="title-bottom">
         <div class="title-time" v-if="dyItem.type">{{dyItem.type}}</div>
         <div class="title-type" v-else>资讯类别</div>
-        <div class="title-time">{{dyItem.pubdate|dateFormat('yyyy-MM-dd')}}</div>
+        <div class="title-time">{{(dyItem.pubdate? dyItem.pubdate : dyItem.start_time)|dateFormat('yyyy-MM-dd')}}</div>
       </div>
     </div>
   </div>
