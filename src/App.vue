@@ -7,7 +7,7 @@
 <script>
 import {mapActions} from 'vuex'
 import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
-import {channelId} from '@/assets/js/mapTypes.js'
+import {channelId, clinicId} from '@/assets/js/mapTypes.js'
 
 export default {
   name: 'App',
@@ -15,7 +15,9 @@ export default {
     return {}
   },
   created () {
-    this.getClinic()
+    if (clinicId > 0) {
+      this.getClinic()
+    }
     this.getUserInfo()
   },
   methods: {

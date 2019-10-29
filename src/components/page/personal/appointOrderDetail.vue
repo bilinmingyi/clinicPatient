@@ -63,7 +63,7 @@
       <template
         v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
         <button class="weixin-pay-btn" @click.stop="nextDone">微信支付</button>
-        <button class="member-pay-btn" @click.stop="memberPay">会员支付</button>
+<!--        <button class="member-pay-btn" @click.stop="memberPay">会员支付</button>-->
       </template>
       <template v-else>
         <button class="sure-btn" @click.stop="nextDone" style="width: 100%">关闭</button>
@@ -242,7 +242,7 @@ export default {
   }
 
   .weixin-pay-btn {
-    width: 48%;
+    width: 100%;
     height: 80px;
     background: #4DBC89;
     border-radius: 8px;
