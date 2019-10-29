@@ -1,18 +1,21 @@
 <template>
   <div :class="['item-content',{'no-border-bottom':noLine}]">
     <div class="mb-8px item-line">
-      <span class="flexOne">医生：{{itemData.doctor_name}}</span>
+      <span class="flexOne">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}：{{itemData.doctor_name}}</span>
       <span>{{itemData.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
     </div>
     <div class="item-line">
       <span class="flexOne">金额：￥{{itemData.amount_receivable == undefined ? itemData.price : itemData.amount_receivable}}</span>
       <span v-if="isMall" :class="itemData.status == 'UNPAID4CLIENT'?'color-red':'order-status'">{{itemData.status|mallOrderStatus}}</span>
-      <span v-else :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
+      <span v-else
+            :class="itemData.status == 'UNPAID'?'color-red':'order-status'">{{itemData.status|treatOrderStatus}}</span>
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'orderItem',
   props: {
@@ -36,6 +39,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    })
   }
 }
 </script>
@@ -48,6 +56,7 @@ export default {
     line-height: 42px;
     border-bottom: 1px solid $lineColor;
   }
+
   .no-border-bottom {
     border-bottom: none;
   }

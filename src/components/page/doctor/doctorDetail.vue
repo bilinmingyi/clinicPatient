@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :titleText="doctor.name+'医生'" :canReturn="true"></Header>
+    <Header :titleText="doctor.name+(clinic.serviceType == 6 ? '营养师' : '医生')" :canReturn="true"></Header>
     <div class="mt-88px">
       <doctor-item :itemData="doctor" :canAppoint="false"></doctor-item>
       <div class="doctor-spec">
@@ -51,6 +51,7 @@
 <script>
 import { Header, doctorItem, SmallTitle, appointBlock } from '@/components/common'
 import { fetchDOctorDetail, fetchDoctorSchedule } from '@/fetch/api.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'doctorDetail',
@@ -76,6 +77,11 @@ export default {
       currBlock: null,
       treatDate: ''
     }
+  },
+  computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    })
   },
   created () {
     this.getDetail()

@@ -112,6 +112,7 @@ export default {
             logo: res.data.logo,
             szjkPayEnabled: res.data.szjk_pay_enabled,
             banner: res.data.banner,
+            serviceType: res.data.service_type,
             isGzhDefault: res.data.is_gzh_default
           })
           this.$router.replace({name: 'homePage'})

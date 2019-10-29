@@ -22,12 +22,12 @@
               class="label-two">{{orderDetail.chief_complaint}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">医生姓名：</span>
+            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}姓名：</span>
             <span
               class="label-two">{{orderDetail.doctor_name}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">医生备注：</span>
+            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}备注：</span>
             <span
               class="label-two">{{orderDetail.memo}}</span>
           </div>
@@ -75,8 +75,8 @@
       </div>
     </div>
     <div class="add-block" v-if="orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0">
-      <button class="sure-btn" @click.stop="nextDone">微信支付</button>
-      <button class="del-btn" @click.stop="memberPay">会员卡支付</button>
+      <button class="weixin-pay-btn" @click.stop="nextDone">微信支付</button>
+<!--      <button class="del-btn" @click.stop="memberPay">会员卡支付</button>-->
     </div>
     <div class="add-block" v-else>
       <button class="add-btn" @click.stop="nextDone">关闭</button>
@@ -240,5 +240,17 @@ export default {
 
   .sure-btn {
     @include simpleButton(80px, 48%);
+  }
+
+  .weixin-pay-btn {
+    width: 100%;
+    height: 80px;
+    background: #4DBC89;
+    border-radius: 8px;
+    color: #ffffff;
+    border: 1px solid #4DBC89;
+    font-size: 24px;
+    line-height: 24px;
+    text-align: center;
   }
 </style>

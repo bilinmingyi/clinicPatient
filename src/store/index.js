@@ -21,6 +21,7 @@ const state = {
     logo: '',
     szjkPayEnabled: 0,
     banner: '',
+    serviceType: 0,
     isGzhDefault: 0
   },
   userInfoState: {

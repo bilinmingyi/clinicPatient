@@ -44,7 +44,7 @@
           <div class="next-icon" @click.stop="goRoute(5)"></div>
         </SmallTitle>
         <div class="doctor-title">
-          <span class="flexOne">医生推荐</span>
+          <span class="flexOne">{{clinic.serviceType == 6 ? '营养师' : '医生'}}推荐</span>
           <div class="next-icon" @click.stop="goRoute(4)"></div>
         </div>
         <div class="doctor-block" v-if="doctorList.length != 0">

@@ -17,7 +17,7 @@
             <span class="label-two" v-if="orderInfo.appoint_date">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">预约医生：</span>
+            <span class="label-three">预约{{(clinic.serviceType == 6 ? '营养师' : '医生')}}：</span>
             <span
               class="label-two">{{orderInfo.doctor_name}}</span>
           </div>
