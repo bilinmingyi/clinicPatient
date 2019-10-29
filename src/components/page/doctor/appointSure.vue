@@ -34,15 +34,17 @@
         </Small-title>
         <div class="appoint-text">
           <div class="line-items">
-            <label class="label-four mr-32px">手机号码</label>
-            <input type="text" class="input-item flexOne" placeholder="手机号码" disabled v-model="patient.mobile">
-            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
+            <div class="label-four">手机号码</div>
+            <input type="text" class="input-item flexOne" placeholder="手机号码" readonly v-model="patient.mobile">
+            <div>
+              <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
+            </div>
           </div>
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">患者姓名</label>
             <input type="text" class="input-item flexOne" placeholder="请输入患者姓名" v-model="patient.user_name"
-                   @input="filterPatient">
+                   @input="filterPatient" @blur="hideSelect">
             <ul class="select-ul" v-show="showSelect">
               <li v-for="item in selectList" :key="item.id" @click.stop="selectPatient(item)">
                 <p>{{item.name}}/{{item.sex|sexFormat}}/{{item.age}}岁</p>

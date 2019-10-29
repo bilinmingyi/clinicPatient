@@ -129,11 +129,9 @@ export default {
     }, 5000)
   },
   mounted () {
-    setTimeout(() => {
-      let scrollItem = this.$refs.scrollContent
-      this.scrollTop = scrollItem.scrollTop
-      this.clientHeight = scrollItem.clientHeight
-    }, 200)
+    let scrollItem = this.$refs.scrollContent
+    this.scrollTop = scrollItem.scrollTop
+    this.clientHeight = scrollItem.clientHeight
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.dataInterval)
