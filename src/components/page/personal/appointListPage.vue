@@ -58,7 +58,7 @@ export default {
       userInfoState: state => state.userInfoState
     })
   },
-  data() {
+  data () {
     return {
       page: 1,
       pageSize: 10,
@@ -69,13 +69,13 @@ export default {
       isFirst: true
     }
   },
-  mounted() {
+  mounted () {
     setTimeout(() => {
       this.getData()
     }, 500)
   },
   methods: {
-    getData() {
+    getData () {
       if (this.userInfoState.mobile) {
         this.getList()
       } else {
@@ -85,7 +85,7 @@ export default {
         })
       }
     },
-    async getList() {
+    async getList () {
       try {
         let res = await getAppointList({
           'page': this.page,
@@ -108,11 +108,11 @@ export default {
         this.$Message.infor('网络出错！')
       }
     },
-    addMore() {
+    addMore () {
       this.page++
       this.getList()
     },
-    goRoute(orderSeqno) {
+    goRoute (orderSeqno) {
       this.$router.push({ name: 'appointOrderDetail', query: { orderSeqno: orderSeqno } })
     }
   }

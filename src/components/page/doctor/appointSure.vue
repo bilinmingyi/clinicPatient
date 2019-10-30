@@ -31,11 +31,12 @@
         </Small-title>
         <div class="appoint-text">
           <div class="line-items">
-            <div class="label-four mr-32px">手机号码</div>
-            <input type="text" class="input-item flexOne" placeholder="手机号码" readonly v-model="patient.mobile">
-            <div>
-              <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
-            </div>
+            <div class="label-span mr-32px">手机号码</div>
+            <input type="text" class="input-item " placeholder="手机号码" readonly v-model="patient.mobile">
+            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
+            <!-- <div>
+
+            </div> -->
           </div>
           <hr class="line-hr">
           <div class="line-item">
@@ -219,10 +220,12 @@ export default {
       }
     },
     hideSelect () {
-      this.scrollToTop()
       setTimeout(() => {
-        this.showSelect = false
-      }, 30)
+        this.scrollToTop()
+        setTimeout(() => {
+          this.showSelect = false
+        }, 30)
+      }, 100)
     },
     goRoute () {
       this.$router.push({ name: 'editPhone', query: { returnType: 2 } })
@@ -263,6 +266,8 @@ export default {
   color: $depthTextColor;
   line-height: 64px;
   font-size: 32px;
+  text-align: left;
+  width: 160px !important;
 }
 
 .label-red {
@@ -280,6 +285,8 @@ export default {
   padding: 16px 0px;
   position: relative;
   @extend %displayFlex;
+  align-items: center;
+  // justify-content: space-between;
 }
 
 .line-item {
@@ -296,6 +303,7 @@ export default {
   color: $depthTextColor;
   line-height: 45px;
   font-size: 32px;
+  white-space: nowrap;
 }
 
 .input-item {
@@ -305,7 +313,6 @@ export default {
   font-size: 32px;
   color: $depthTextColor;
   background: transparent;
-
   &::-webkit-input-placeholder {
     font-size: 32px;
     font-weight: 400;
