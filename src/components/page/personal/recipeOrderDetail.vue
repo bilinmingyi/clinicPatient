@@ -13,23 +13,21 @@
             <span class="label-two" v-if="orderDetail.create_time">{{orderDetail.create_time|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">患者信息：</span>
-            <span class="label-two" v-if="orderDetail.patient_name">{{orderDetail.patient_name}}/{{orderDetail.patient_sex|sexFormat}}/{{orderDetail.patient_age}}岁</span>
+            <span class="label-three">客户信息：</span>
+            <span class="label-two"
+              v-if="orderDetail.patient_name">{{orderDetail.patient_name}}/{{orderDetail.patient_sex|sexFormat}}/{{orderDetail.patient_age}}岁</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">患者主诉：</span>
-            <span
-              class="label-two">{{orderDetail.chief_complaint}}</span>
+            <span class="label-three">客户主诉：</span>
+            <span class="label-two">{{orderDetail.chief_complaint}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}姓名：</span>
-            <span
-              class="label-two">{{orderDetail.doctor_name}}</span>
+            <span class="label-two">{{orderDetail.doctor_name}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}备注：</span>
-            <span
-              class="label-two">{{orderDetail.memo}}</span>
+            <span class="label-two">{{orderDetail.memo}}</span>
           </div>
         </div>
       </div>
@@ -40,24 +38,24 @@
         <div class="register-item">
           <table class="d-table" data-type='1'>
             <thead>
-            <tr>
-              <th>
-                <div>序号</div>
-              </th>
-              <th>
-                <div>处方类型</div>
-              </th>
-              <th>
-                <div>金额</div>
-              </th>
-            </tr>
+              <tr>
+                <th>
+                  <div>序号</div>
+                </th>
+                <th>
+                  <div>处方类型</div>
+                </th>
+                <th>
+                  <div>金额</div>
+                </th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="(item, index) in orderDetail.recipe_list" :key="item.recipe_id">
-              <td>{{index+1}}</td>
-              <td>{{item.recipe_type|recipeType(item.category)}}</td>
-              <td class="label-red" style="color: #eb6262">{{item.price|priceFormat}}</td>
-            </tr>
+              <tr v-for="(item, index) in orderDetail.recipe_list" :key="item.recipe_id">
+                <td>{{index+1}}</td>
+                <td>{{item.recipe_type|recipeType(item.category)}}</td>
+                <td class="label-red" style="color: #eb6262">{{item.price|priceFormat}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -76,7 +74,7 @@
     </div>
     <div class="add-block" v-if="orderDetail.status === 'UNPAID'  && orderDetail.amount_receipts === 0">
       <button class="weixin-pay-btn" @click.stop="nextDone">微信支付</button>
-<!--      <button class="del-btn" @click.stop="memberPay">会员卡支付</button>-->
+      <!--      <button class="del-btn" @click.stop="memberPay">会员卡支付</button>-->
     </div>
     <div class="add-block" v-else>
       <button class="add-btn" @click.stop="nextDone">关闭</button>
@@ -86,9 +84,9 @@
 </template>
 
 <script>
-import {Header, SmallTitle, Loading} from '../../common'
-import {fecthRecipeDetail, gotoPay} from '@/fetch/api.js'
-import {mapState} from 'vuex'
+import { Header, SmallTitle, Loading } from '../../common'
+import { fecthRecipeDetail, gotoPay } from '@/fetch/api.js'
+import { mapState } from 'vuex'
 
 export default {
   name: 'recipeOrderDetail',
@@ -160,97 +158,97 @@ export default {
       }
     },
     memberPay () {
-      this.$router.push({name: 'membershipPay', query: {orderType: 2, orderSeqno: this.orderSeqno, price: this.orderDetail.amount_receivable}})
+      this.$router.push({ name: 'membershipPay', query: { orderType: 2, orderSeqno: this.orderSeqno, price: this.orderDetail.amount_receivable } })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .content-back {
-    background: $backColor;
-    margin-bottom: 20px;
-  }
+.content-back {
+  background: $backColor;
+  margin-bottom: 20px;
+}
 
-  .register-item {
-    padding: 20px 30px;
-  }
+.register-item {
+  padding: 20px 30px;
+}
 
-  .label-one {
-    font-size: 28px;
-    color: $lightTextColor;
-    line-height: 45px;
-  }
+.label-one {
+  font-size: 28px;
+  color: $lightTextColor;
+  line-height: 45px;
+}
 
-  .label-two {
-    font-size: 30px;
-    color: $depthTextColor;
-    line-height: 42px;
-  }
+.label-two {
+  font-size: 30px;
+  color: $depthTextColor;
+  line-height: 42px;
+}
 
-  .label-three {
-    font-size: 30px;
-    color: $lightTextColor;
-    line-height: 42px;
-  }
+.label-three {
+  font-size: 30px;
+  color: $lightTextColor;
+  line-height: 42px;
+}
 
-  .label-red {
-    color: #EB6262;
-    font-size: 30px;
-    line-height: 42px;
-    font-weight: bold;
-  }
+.label-red {
+  color: #eb6262;
+  font-size: 30px;
+  line-height: 42px;
+  font-weight: bold;
+}
 
-  .line-item {
-    padding: 26px 30px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 30px;
+  @extend %displayFlex;
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .label-span {
-    color: $depthTextColor;
-    line-height: 45px;
-    font-size: 32px;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .patient-infor {
-    padding: 0 30px;
-  }
+.patient-infor {
+  padding: 0 30px;
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
 
-  .add-btn {
-    @include deepButton(80px, 100%)
-  }
+.add-btn {
+  @include deepButton(80px, 100%);
+}
 
-  .del-btn {
-    @include deepButton(80px, 48%);
-    margin-left: 4%;
-  }
+.del-btn {
+  @include deepButton(80px, 48%);
+  margin-left: 4%;
+}
 
-  .sure-btn {
-    @include simpleButton(80px, 48%);
-  }
+.sure-btn {
+  @include simpleButton(80px, 48%);
+}
 
-  .weixin-pay-btn {
-    width: 100%;
-    height: 80px;
-    background: #4DBC89;
-    border-radius: 8px;
-    color: #ffffff;
-    border: 1px solid #4DBC89;
-    font-size: 24px;
-    line-height: 24px;
-    text-align: center;
-  }
+.weixin-pay-btn {
+  width: 100%;
+  height: 80px;
+  background: #4dbc89;
+  border-radius: 8px;
+  color: #ffffff;
+  border: 1px solid #4dbc89;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+}
 </style>

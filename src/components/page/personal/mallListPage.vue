@@ -3,7 +3,7 @@
     <Header titleText="商城订单" :canReturn="true" backUrl="/personal"></Header>
     <div class="mt-88px">
       <div class="orderList">
-        <order-item v-for="(item, index) in dataList" :itemData="item" :isMall="true" :noLine="index === dataList.length - 1" :key="item.id" @click.native="goRoute(item.order_seqno)"></order-item>
+        <order-item v-for="(item, index) in dataList" :itemData="item" :isMall="true" :noLine="index === dataList.length - 1" :key="item.id" @click.native="goRoute(item.order_seqno)" :isShowName="false"></order-item>
       </div>
       <div class="no-address-back" v-if="dataList.length === 0 && !isFirst">
         <div>

@@ -14,41 +14,29 @@
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px label-width">地址</label>
-        <select type="text" class="input-item select-width" @change="provinceChange" @blur="scrollToTop"
-                v-model="adrData.province_code">
+        <select type="text" class="input-item select-width" @change="provinceChange" @blur="scrollToTop" v-model="adrData.province_code">
           <option value="">请选择</option>
-          <option v-for="province in adsListData.provinceList" :value="province.province_code"
-                  v-text="province.province_name"
-                  :key="province.province_code"
-          ></option>
+          <option v-for="province in adsListData.provinceList" :value="province.province_code" v-text="province.province_name" :key="province.province_code">
+          </option>
         </select>
-        <select type="text" class="input-item select-width" @change.stop="cityChange" @blur="scrollToTop"
-                v-model="adrData.city_code">
+        <select type="text" class="input-item select-width" @change.stop="cityChange" @blur="scrollToTop" v-model="adrData.city_code">
           <option value="">请选择</option>
-          <option v-for="city in adsListData.cityList" :value="city.city_code"
-                  v-text="city.city_name"
-                  :key="city.city_code"
-          ></option>
+          <option v-for="city in adsListData.cityList" :value="city.city_code" v-text="city.city_name" :key="city.city_code"></option>
         </select>
-        <select type="text" class="input-item select-width" @change="countyChange" @blur="scrollToTop"
-                v-model="adrData.county_code">
+        <select type="text" class="input-item select-width" @change="countyChange" @blur="scrollToTop" v-model="adrData.county_code">
           <option value="">请选择</option>
-          <option v-for="county in adsListData.countyList" :value="county.county_code"
-                  v-text="county.county_name"
-                  :key="county.county_code"
-          ></option>
+          <option v-for="county in adsListData.countyList" :value="county.county_code" v-text="county.county_name" :key="county.county_code"></option>
         </select>
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">详细地址</label>
-        <input type="text" class="input-item" placeholder="请填写" v-model="adrData.address" @blur="scrollToTop">
+        <input type="text" class="input-item W70" placeholder="请填写" v-model="adrData.address" @blur="scrollToTop">
       </div>
       <hr class="line-hr">
       <div class="line-item">
         <label class="label-span mr-32px">默认地址</label>
-        <radioGroup :data="defaultList" :value="adrData.is_default" :name="'defaultAddress'"
-                    @input="changeDefault"></radioGroup>
+        <radioGroup :data="defaultList" :value="adrData.is_default" :name="'defaultAddress'" @input="changeDefault"></radioGroup>
       </div>
     </div>
     <div class="add-block" v-if="index !== undefined">
@@ -62,10 +50,10 @@
 </template>
 
 <script>
-import {Header, radioGroup} from '@/components/common/index'
-import {provinceDate} from '@/assets/js/addr_dict'
-import {mapState, mapActions} from 'vuex'
-import {updateAddress} from '@/fetch/api'
+import { Header, radioGroup } from '@/components/common/index'
+import { provinceDate } from '@/assets/js/addr_dict'
+import { mapState, mapActions } from 'vuex'
+import { updateAddress } from '@/fetch/api'
 import inputBlur from '@/assets/js/inputBlur'
 
 export default {
@@ -78,7 +66,7 @@ export default {
   props: ['index'],
   data () {
     return {
-      defaultList: [{id: 'yes', label: '是', value: 1}, {id: 'no', label: '否', value: 0}],
+      defaultList: [{ id: 'yes', label: '是', value: 1 }, { id: 'no', label: '否', value: 0 }],
       contact: '',
       mobile: '',
       adrData: {
@@ -270,67 +258,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list-content {
-    background: $backColor;
-  }
+.list-content {
+  background: $backColor;
+}
 
-  .line-item {
-    padding: 26px 30px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 30px;
+  @extend %displayFlex;
+}
+.W70 {
+  width: 70%;
+}
 
-  .input-item {
-    background: transparent;
-    border: none;
-    outline: none;
-    line-height: 45px;
-    font-size: 32px;
-    color: $depthTextColor;
+.input-item {
+  background: transparent;
+  border: none;
+  outline: none;
+  line-height: 45px;
+  font-size: 32px;
+  color: $depthTextColor;
 
-    &::-webkit-input-placeholder {
-      line-height: 45px;
-      font-size: 32px;
-    }
-  }
-
-  .select-width {
-    width: calc((100vw - 156px) / 3);
-  }
-
-  .line-hr {
-    @extend %lineHr;
-  }
-
-  .label-span {
-    color: $depthTextColor;
+  &::-webkit-input-placeholder {
     line-height: 45px;
     font-size: 32px;
   }
+}
 
-  .label-width {
-    width: 66px;
-    display: inline-block;
-  }
+.select-width {
+  width: calc((100vw - 156px) / 3);
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .sure-btn {
-    @include deepButton(80px, 48%);
-    margin-left: 4%;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .add-btn {
-    @include deepButton(80px, 100%);
-  }
+.label-width {
+  width: 66px;
+  display: inline-block;
+}
 
-  .del-btn {
-    @include simpleButton(80px, 48%);
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
+
+.sure-btn {
+  @include deepButton(80px, 48%);
+  margin-left: 4%;
+}
+
+.add-btn {
+  @include deepButton(80px, 100%);
+}
+
+.del-btn {
+  @include simpleButton(80px, 48%);
+}
 </style>

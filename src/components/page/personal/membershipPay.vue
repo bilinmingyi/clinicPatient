@@ -33,7 +33,7 @@
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">订单类型</label>
-            <span class="label-span">{{orderType == 1 ? '预约订单' : '就诊订单'}}</span>
+            <span class="label-span">{{orderType == 1 ? '预约订单' : '处方订单'}}</span>
           </div>
           <hr class="line-hr">
           <div class="line-item">
@@ -48,8 +48,7 @@
     </div>
     <div class="add-block">
       <button class="sure-btn" @click="goback">关闭</button>
-      <button class="del-btn" @click="weixinPay"
-              v-if="Number(memberInfo.presentAmount) + Number(memberInfo.amount) < price">微信支付
+      <button class="del-btn" @click="weixinPay" v-if="Number(memberInfo.presentAmount) + Number(memberInfo.amount) < price">微信支付
       </button>
       <button class="del-btn" v-else @click="submitPay">提交</button>
     </div>
@@ -58,9 +57,9 @@
 </template>
 
 <script>
-import {Header, SmallTitle, Loading} from '../../common'
-import {fetchMember, submitMember, gotoPay} from '@/fetch/api'
-import {mapState} from 'vuex'
+import { Header, SmallTitle, Loading } from '../../common'
+import { fetchMember, submitMember, gotoPay } from '@/fetch/api'
+import { mapState } from 'vuex'
 
 export default {
   name: 'membershipPay',
@@ -161,87 +160,87 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .white-back {
-    background: $backColor;
-    margin-bottom: 20px;
-  }
+.white-back {
+  background: $backColor;
+  margin-bottom: 20px;
+}
 
-  .pay-code {
-    @include simpleButton(64px, 128px);
-    font-size: $depthTextColor;
-    font-size: 24px;
-  }
+.pay-code {
+  @include simpleButton(64px, 128px);
+  font-size: $depthTextColor;
+  font-size: 24px;
+}
 
-  .register-item {
-    padding: 20px 30px;
-  }
+.register-item {
+  padding: 20px 30px;
+}
 
-  .label-one {
-    font-size: 28px;
-    color: $lightTextColor;
-    line-height: 45px;
-  }
+.label-one {
+  font-size: 28px;
+  color: $lightTextColor;
+  line-height: 45px;
+}
 
-  .label-two {
-    font-size: 30px;
-    color: $depthTextColor;
-    line-height: 42px;
-  }
+.label-two {
+  font-size: 30px;
+  color: $depthTextColor;
+  line-height: 42px;
+}
 
-  .label-three {
-    font-size: 30px;
-    color: $lightTextColor;
-    line-height: 42px;
-  }
+.label-three {
+  font-size: 30px;
+  color: $lightTextColor;
+  line-height: 42px;
+}
 
-  .label-red {
-    color: #EB6262;
-    font-size: 30px;
-    line-height: 42px;
-    font-weight: bold;
-  }
+.label-red {
+  color: #eb6262;
+  font-size: 30px;
+  line-height: 42px;
+  font-weight: bold;
+}
 
-  .line-item {
-    padding: 26px 0px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 0px;
+  @extend %displayFlex;
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .label-span {
-    color: $depthTextColor;
-    line-height: 45px;
-    font-size: 32px;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .patient-infor {
-    padding: 0 30px;
-  }
+.patient-infor {
+  padding: 0 30px;
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
 
-  .del-btn {
-    @include deepButton(80px, 48%);
-    margin-left: 4%;
-  }
+.del-btn {
+  @include deepButton(80px, 48%);
+  margin-left: 4%;
+}
 
-  .sure-btn {
-    @include simpleButton(80px, 48%);
-  }
+.sure-btn {
+  @include simpleButton(80px, 48%);
+}
 
-  .no-enough-money {
-    color: $redColor;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-  }
+.no-enough-money {
+  color: $redColor;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
 </style>

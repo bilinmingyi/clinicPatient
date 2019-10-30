@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" :titleText="isEdit?'编辑信息':'添加就诊人'"></Header>
+    <Header :canReturn="true" :titleText="isEdit?'编辑信息':'添加亲属'"></Header>
     <div class="mt-88px mb-131px list-content">
       <div class="line-item">
         <label class="label-span mr-32px">姓名</label>
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import {Header, radioGroup} from '@/components/common/index'
-import {changePatientInfo, deletePatient, addPatient} from '@/fetch/api.js'
+import { Header, radioGroup } from '@/components/common/index'
+import { changePatientInfo, deletePatient, addPatient } from '@/fetch/api.js'
 import inputBlur from '@/assets/js/inputBlur'
 
 export default {
@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      sexList: [{id: 'sex-man', label: '男', value: 1}, {id: 'sex-woman', label: '女', value: 2}],
+      sexList: [{ id: 'sex-man', label: '男', value: 1 }, { id: 'sex-woman', label: '女', value: 2 }],
       sex: 0,
       name: '',
       id: '',
@@ -64,13 +64,13 @@ export default {
     },
     saveChange () {
       if (!this.name) {
-        this.$Message.infor('请先填写就诊人姓名！')
+        this.$Message.infor('请先填写客户姓名！')
         return
       } else if (this.age <= 0) {
-        this.$Message.infor('请先正确填写就诊人年龄！')
+        this.$Message.infor('请先正确填写客户年龄！')
         return
       } else if (!this.sex) {
-        this.$Message.infor('请先填写就诊人性别！')
+        this.$Message.infor('请先填写客户性别！')
         return
       }
       changePatientInfo({
@@ -90,7 +90,7 @@ export default {
       })
     },
     deleteItem () {
-      this.$Message.confirm('确定删除该就诊人？', () => {
+      this.$Message.confirm('确定删除该客户？', () => {
         deletePatient({
           id: this.id
         }).then(res => {
@@ -107,13 +107,13 @@ export default {
     },
     addItem () {
       if (!this.name) {
-        this.$Message.infor('请先填写就诊人姓名！')
+        this.$Message.infor('请先填写客户姓名！')
         return
       } else if (this.age <= 0 || isNaN(this.age)) {
-        this.$Message.infor('请先正确填写就诊人年龄！')
+        this.$Message.infor('请先正确填写客户年龄！')
         return
       } else if (!this.sex) {
-        this.$Message.infor('请先填写就诊人性别！')
+        this.$Message.infor('请先填写客户性别！')
         return
       }
       addPatient({
@@ -136,57 +136,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list-content {
-    background: $backColor;
-  }
+.list-content {
+  background: $backColor;
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
 
-  .sure-btn {
-    @include deepButton(80px, 48%);
-    margin-left: 4%;
-  }
+.sure-btn {
+  @include deepButton(80px, 48%);
+  margin-left: 4%;
+}
 
-  .add-btn {
-    @include deepButton(80px, 100%)
-  }
+.add-btn {
+  @include deepButton(80px, 100%);
+}
 
-  .del-btn {
-      @include simpleButton(80px, 48%);
-    }
+.del-btn {
+  @include simpleButton(80px, 48%);
+}
 
-  .line-item {
-    padding: 26px 30px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 30px;
+  @extend %displayFlex;
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .label-span {
-    color: $depthTextColor;
-    line-height: 45px;
-    font-size: 32px;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .input-item {
-    border: none;
-    outline: none;
-    line-height: 45px;
-    font-size: 32px;
-    color: $depthTextColor;
-  }
+.input-item {
+  border: none;
+  outline: none;
+  line-height: 45px;
+  font-size: 32px;
+  color: $depthTextColor;
+}
 
-  .input-width {
-    width: 55px;
-    text-align: center;
-  }
+.input-width {
+  width: 55px;
+  text-align: center;
+}
 </style>

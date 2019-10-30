@@ -5,11 +5,15 @@
       <div class="doctor-infor">
         <div>
           <span class="infor-title">{{itemData.name}}</span>
-          <div :class="['doctor-job',color_list[itemData.title-1]]" v-if="itemData.title!=0">
+
+          <div :class="['doctor-job',color_list[itemData.title-1]]" v-if="itemData.title!=0&&clinic.serviceType != 6">
             {{itemData.title|doctorTypes}}
           </div>
         </div>
-        <div>
+        <div v-if="clinic.serviceType == 6">
+          营养师
+        </div>
+        <div v-else>
           {{itemData.hospital}}
           <span v-if="itemData.hospital!='' && itemData.department!=''">/</span>
           {{itemData.department}}
@@ -23,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import man from '@/assets/img/nan@2x.png'
 import woman from '@/assets/img/nv@2x.png'
 
@@ -56,80 +61,85 @@ export default {
       color_list: ['color-4DBC89', 'color-EDAB15', 'color-08BAC6', 'color-29BBFF']
     }
   },
+  computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    })
+  },
   methods: {
     goRoute (id) {
-      this.$router.push({path: `/doctor/detail/${id}`})
+      this.$router.push({ path: `/doctor/detail/${id}` })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .doctor-item {
+.doctor-item {
+  @extend %displayFlex;
+  padding: 24px 30px;
+  background: $backColor;
+  border-bottom: 1px solid $lineColor;
+
+  img {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+  }
+
+  .doctor-infor {
+    flex: 1;
+    margin-left: 24px;
     @extend %displayFlex;
-    padding: 24px 30px;
-    background: $backColor;
-    border-bottom: 1px solid $lineColor;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 28px;
+    padding: 9px 0;
+    color: #8c8c8c;
 
-    img {
-      width: 112px;
-      height: 112px;
-      border-radius: 50%;
-    }
-
-    .doctor-infor {
-      flex: 1;
-      margin-left: 24px;
-      @extend %displayFlex;
-      flex-direction: column;
-      justify-content: space-between;
-      font-size: 28px;
-      padding: 9px 0;
-      color: #8c8c8c;
-
-      .infor-title {
-        color: #3F3F3F;
-        font-weight: bold;
-        font-size: 32px;
-        margin-right: 16px;
-      }
-
-      .doctor-job {
-        display: inline-block;
-        color: #ffffff;
-        font-size: 20px;
-        border-radius: 8px;
-        padding: 6px 16px;
-      }
-    }
-
-    .appoint-btn {
-      @include newsButton(64px, 136px);
+    .infor-title {
+      color: #3f3f3f;
       font-weight: bold;
+      font-size: 32px;
+      margin-right: 16px;
+    }
+
+    .doctor-job {
+      display: inline-block;
+      color: #ffffff;
+      font-size: 20px;
+      border-radius: 8px;
+      padding: 6px 16px;
     }
   }
 
-  .item-bottom {
-    border-bottom: none;
+  .appoint-btn {
+    @include newsButton(64px, 136px);
+    font-weight: bold;
   }
+}
 
-  .color-29BBFF {
-    background: #29BBFF;
-  }
+.item-bottom {
+  border-bottom: none;
+}
 
-  .color-4DBC89 {
-    background: #4DBC89;
-  }
+.color-29BBFF {
+  background: #29bbff;
+}
 
-  .color-08BAC6 {
-    background: #08BAC6;
-  }
+.color-4DBC89 {
+  background: #4dbc89;
+}
 
-  .color-EDAB15 {
-    background: #EDAB15;
-  }
+.color-08BAC6 {
+  background: #08bac6;
+}
 
-  .flexVC {
-    @extend %flexVC;
-  }
+.color-EDAB15 {
+  background: #edab15;
+}
+
+.flexVC {
+  @extend %flexVC;
+}
 </style>

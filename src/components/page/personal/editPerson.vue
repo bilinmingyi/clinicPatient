@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import {Header, radioGroup} from '@/components/common/index'
-import {changeUser} from '@/fetch/api.js'
-import {mapState, mapActions} from 'vuex'
+import { Header, radioGroup } from '@/components/common/index'
+import { changeUser } from '@/fetch/api.js'
+import { mapState, mapActions } from 'vuex'
 import inputBlur from '@/assets/js/inputBlur'
 
 export default {
@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      sexList: [{id: 'sex-man', label: '男', value: 1}, {id: 'sex-woman', label: '女', value: 2}],
+      sexList: [{ id: 'sex-man', label: '男', value: 1 }, { id: 'sex-woman', label: '女', value: 2 }],
       sex: 0,
       name: '',
       id: '',
@@ -86,13 +86,13 @@ export default {
     },
     saveChange (type) {
       if (!this.name) {
-        this.$Message.infor('请先填写就诊人姓名！')
+        this.$Message.infor('请先填写客户姓名！')
         return
       } else if (this.age <= 0) {
-        this.$Message.infor('请先正确填写就诊人年龄！')
+        this.$Message.infor('请先正确填写客户年龄！')
         return
       } else if (!this.sex) {
-        this.$Message.infor('请先填写就诊人性别！')
+        this.$Message.infor('请先填写客户性别！')
         return
       }
       let birthday = new Date()
@@ -112,7 +112,7 @@ export default {
           if (type === 1) {
             this.$router.go(-1)
           } else if (type === 2) {
-            this.$router.push({name: 'editPhone', query: {returnType: 1}})
+            this.$router.push({ name: 'editPhone', query: { returnType: 1 } })
           }
         } else {
           this.$Message.infor(res.msg)
@@ -127,66 +127,66 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .list-content {
-    background: $backColor;
-  }
+.list-content {
+  background: $backColor;
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
 
-  .sure-btn {
-    @include deepButton(80px, 100%);
-  }
+.sure-btn {
+  @include deepButton(80px, 100%);
+}
 
-  .line-item {
-    padding: 26px 30px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 30px;
+  @extend %displayFlex;
+}
 
-  .line-items {
-    padding: 16px 30px;
-    @extend %displayFlex
-  }
+.line-items {
+  padding: 16px 30px;
+  @extend %displayFlex;
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .label-span {
-    color: $depthTextColor;
-    line-height: 45px;
-    font-size: 32px;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .label-four {
-    color: $depthTextColor;
-    line-height: 64px;
-    font-size: 32px;
-    width: 70px;
-    display: inline-block;
-  }
+.label-four {
+  color: $depthTextColor;
+  line-height: 64px;
+  font-size: 32px;
+  width: 70px;
+  display: inline-block;
+}
 
-  .input-item {
-    background: transparent;
-    border: none;
-    outline: none;
-    line-height: 45px;
-    font-size: 32px;
-    color: $depthTextColor;
-  }
+.input-item {
+  background: transparent;
+  border: none;
+  outline: none;
+  line-height: 45px;
+  font-size: 32px;
+  color: $depthTextColor;
+}
 
-  .phone-btn {
-    @include deepButton(64px, 148px)
-  }
+.phone-btn {
+  @include deepButton(64px, 148px);
+}
 
-  .input-width {
-    width: 18%;
-    text-align: center;
-  }
+.input-width {
+  width: 18%;
+  text-align: center;
+}
 </style>

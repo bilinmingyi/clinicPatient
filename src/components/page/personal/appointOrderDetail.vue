@@ -9,17 +9,16 @@
         <div class="register-item">
           <div class="mb-8px">
             <span class="label-three">预约地点：</span>
-            <span
-              class="label-two">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
+            <span class="label-two">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约时间：</span>
-            <span class="label-two" v-if="orderInfo.appoint_date">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
+            <span class="label-two"
+              v-if="orderInfo.appoint_date">{{orderInfo.appoint_date|dateFormat('yyyy-MM-dd   W   ')}}{{orderInfo.start_time}}-{{orderInfo.end_time}}</span>
           </div>
           <div class="mb-8px">
             <span class="label-three">预约{{(clinic.serviceType == 6 ? '营养师' : '医生')}}：</span>
-            <span
-              class="label-two">{{orderInfo.doctor_name}}</span>
+            <span class="label-two">{{orderInfo.doctor_name}}</span>
           </div>
           <div>
             <span class="label-three">挂号费用：</span>
@@ -29,7 +28,7 @@
       </div>
       <div class="white-back">
         <SmallTitle :hasBlock="true">
-          <span class="ml-16px">就诊人信息</span>
+          <span class="ml-16px">客户信息</span>
         </SmallTitle>
         <div class="patient-infor">
           <div class="line-item">
@@ -54,16 +53,14 @@
         </div>
       </div>
     </div>
-    <div class="add-block"
-         v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.source === 'GZH' && orderInfo.is_online === 1">
+    <div class="add-block" v-if="orderInfo.status === 'SIGN_WAITING' && orderInfo.source === 'GZH' && orderInfo.is_online === 1">
       <button class="sure-btn" @click.stop="nextDone">关闭</button>
       <button class="del-btn" @click.stop="deleteItem">取消订单</button>
     </div>
     <div class="add-block" v-else>
-      <template
-        v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
+      <template v-if="orderInfo.status === 'SZJK_PAYING' || (orderInfo.status === 'UNPAID' && orderInfo.amount_receipts === 0)">
         <button class="weixin-pay-btn" @click.stop="nextDone">微信支付</button>
-<!--        <button class="member-pay-btn" @click.stop="memberPay">会员支付</button>-->
+        <!--        <button class="member-pay-btn" @click.stop="memberPay">会员支付</button>-->
       </template>
       <template v-else>
         <button class="sure-btn" @click.stop="nextDone" style="width: 100%">关闭</button>
@@ -74,9 +71,9 @@
 </template>
 
 <script>
-import {Header, SmallTitle, Loading} from '../../common'
-import {mapState} from 'vuex'
-import {fetchAppointDetail, gotoPay, cancelAppoint} from '@/fetch/api.js'
+import { Header, SmallTitle, Loading } from '../../common'
+import { mapState } from 'vuex'
+import { fetchAppointDetail, gotoPay, cancelAppoint } from '@/fetch/api.js'
 
 export default {
   name: 'appointOrderDetail',
@@ -147,7 +144,7 @@ export default {
       if (this.orderInfo.status === 'SZJK_PAYING' || (this.orderInfo.status === 'UNPAID' && this.orderInfo.amount_receipts === 0)) {
         this.$router.push({
           name: 'membershipPay',
-          query: {orderType: 1, orderSeqno: this.orderSeqno, price: this.orderInfo.price}
+          query: { orderType: 1, orderSeqno: this.orderSeqno, price: this.orderInfo.price }
         })
       }
     },
@@ -192,103 +189,103 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .white-back {
-    background: $backColor;
-    margin-bottom: 20px;
-  }
+.white-back {
+  background: $backColor;
+  margin-bottom: 20px;
+}
 
-  .register-item {
-    padding: 20px 30px;
-  }
+.register-item {
+  padding: 20px 30px;
+}
 
-  .label-one {
-    font-size: 28px;
-    color: $lightTextColor;
-    line-height: 45px;
-  }
+.label-one {
+  font-size: 28px;
+  color: $lightTextColor;
+  line-height: 45px;
+}
 
-  .label-two {
-    font-size: 30px;
-    color: $depthTextColor;
-    line-height: 42px;
-  }
+.label-two {
+  font-size: 30px;
+  color: $depthTextColor;
+  line-height: 42px;
+}
 
-  .label-three {
-    font-size: 30px;
-    color: $lightTextColor;
-    line-height: 42px;
-  }
+.label-three {
+  font-size: 30px;
+  color: $lightTextColor;
+  line-height: 42px;
+}
 
-  .del-btn {
-    @include deepButton(80px, 48%);
-    margin-left: 4%;
-  }
+.del-btn {
+  @include deepButton(80px, 48%);
+  margin-left: 4%;
+}
 
-  .sure-btn {
-    @include simpleButton(80px, 48%);
-  }
+.sure-btn {
+  @include simpleButton(80px, 48%);
+}
 
-  .member-pay-btn {
-    width: 48%;
-    margin-left: 4%;
-    height: 80px;
-    background: #EDAB15;
-    color: #ffffff;
-    border-radius: 8px;
-    border: 1px solid #EDAB15;
-    font-size: 24px;
-    line-height: 24px;
-    text-align: center;
-  }
+.member-pay-btn {
+  width: 48%;
+  margin-left: 4%;
+  height: 80px;
+  background: #edab15;
+  color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #edab15;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+}
 
-  .weixin-pay-btn {
-    width: 100%;
-    height: 80px;
-    background: #4DBC89;
-    border-radius: 8px;
-    color: #ffffff;
-    border: 1px solid #4DBC89;
-    font-size: 24px;
-    line-height: 24px;
-    text-align: center;
-  }
+.weixin-pay-btn {
+  width: 100%;
+  height: 80px;
+  background: #4dbc89;
+  border-radius: 8px;
+  color: #ffffff;
+  border: 1px solid #4dbc89;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+}
 
-  .label-red {
-    color: #EB6262;
-    font-size: 30px;
-    line-height: 42px;
-    font-weight: bold;
-  }
+.label-red {
+  color: #eb6262;
+  font-size: 30px;
+  line-height: 42px;
+  font-weight: bold;
+}
 
-  .line-item {
-    padding: 26px 0px;
-    @extend %displayFlex
-  }
+.line-item {
+  padding: 26px 0px;
+  @extend %displayFlex;
+}
 
-  .line-hr {
-    @extend %lineHr;
-  }
+.line-hr {
+  @extend %lineHr;
+}
 
-  .label-span {
-    color: $depthTextColor;
-    line-height: 45px;
-    font-size: 32px;
-  }
+.label-span {
+  color: $depthTextColor;
+  line-height: 45px;
+  font-size: 32px;
+}
 
-  .patient-infor {
-    padding: 0 30px;
-  }
+.patient-infor {
+  padding: 0 30px;
+}
 
-  .add-block {
-    @include psFixed(bottom, 112px);
-    @extend %displayFlex;
-    background: $backColor;
-    padding: 16px 30px 15px;
-    width: 100%;
-    border-top: 1px solid $lineColor;
-  }
+.add-block {
+  @include psFixed(bottom, 112px);
+  @extend %displayFlex;
+  background: $backColor;
+  padding: 16px 30px 15px;
+  width: 100%;
+  border-top: 1px solid $lineColor;
+}
 
-  .add-btn {
-    @include deepButton(80px, 100%)
-  }
+.add-btn {
+  @include deepButton(80px, 100%);
+}
 </style>

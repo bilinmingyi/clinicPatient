@@ -6,13 +6,12 @@
         <div :class="['select-radio',{'border-yuan':!resource}]">
           <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
         </div>
-        <span class="ml-20px">诊所药房</span>
+        <span class="ml-20px">机构药房</span>
       </Small-title>
       <div v-for="(item, index) in shopCarList" :key="item.id">
         <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-          <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
-               @touchstart.capture="touchStart"
-               @touchend.capture="touchEnd(item.id, $event)">
+          <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]" @touchstart.capture="touchStart"
+            @touchend.capture="touchEnd(item.id, $event)">
             <div>
               <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
                 <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
@@ -28,9 +27,9 @@
                 <span>{{item.goods_info.spec}}</span>
               </div>
               <div class="goods-num">
-              <span class="flexOne">
-                ￥{{item.goods_info.price}}
-              </span>
+                <span class="flexOne">
+                  ￥{{item.goods_info.price}}
+                </span>
                 <div class="num-change">
                   <div class="num-cut" @click.stop="changeNum(1, index)"></div>
                   <input class="num-word" v-model="item.num" @blur="scrollToTop">
@@ -52,8 +51,8 @@
 </template>
 
 <script>
-import {Footer, ShopFooter, SmallTitle} from '../../common'
-import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
+import { Footer, ShopFooter, SmallTitle } from '../../common'
+import { fetchShopCar, changeShopNum, removeShop } from '@/fetch/api'
 import noImg from '@/assets/img/nophoto.png'
 import inputBlur from '@/assets/js/inputBlur'
 
@@ -121,7 +120,7 @@ export default {
         }).map(item => {
           return item.goods_id
         })
-        this.$router.push({path: '/mall/sureOrder', query: {ids: JSON.stringify(ids)}})
+        this.$router.push({ path: '/mall/sureOrder', query: { ids: JSON.stringify(ids) } })
       } else {
         this.$Message.infor('请先选择购买药品！')
       }
@@ -143,7 +142,7 @@ export default {
         if (res.code === 1000) {
           this.shopCarList = []
           res.data.forEach(item => {
-            let curItem = Object.assign(item, {is_check: 0})
+            let curItem = Object.assign(item, { is_check: 0 })
             this.shopCarList.push(curItem)
           })
         } else {
@@ -238,124 +237,124 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .clinic-content {
-    background: $backColor;
-    min-width: 100vw;
-    overflow-x: hidden;
-    margin-bottom: 220px;
-  }
+.clinic-content {
+  background: $backColor;
+  min-width: 100vw;
+  overflow-x: hidden;
+  margin-bottom: 220px;
+}
 
-  .select-radio {
+.select-radio {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+  }
+}
+
+.border-yuan {
+  border: 1px solid $lightTextColor;
+}
+
+.ban_back {
+  background: #f7f7f7;
+}
+
+.goods-item {
+  position: relative;
+
+  overflow: hidden;
+  @extend %flexV;
+  padding: 32px 30px;
+  min-width: 100vw;
+
+  .goods-item-middle {
+    margin-left: 20px;
+    margin-right: 24px;
+    padding: 7px;
+    border: 1px solid $lineColor;
+    border-radius: 8px;
 
     img {
-      width: 40px;
-      height: 40px;
+      width: 146px;
+      height: 146px;
     }
   }
 
-  .border-yuan {
-    border: 1px solid $lightTextColor;
-  }
+  .goods-item-right {
+    flex: 1;
 
-  .ban_back {
-    background: #f7f7f7;
-  }
-
-  .goods-item {
-    position: relative;
-
-    overflow: hidden;
-    @extend %flexV;
-    padding: 32px 30px;
-    min-width: 100vw;
-
-    .goods-item-middle {
-      margin-left: 20px;
-      margin-right: 24px;
-      padding: 7px;
-      border: 1px solid $lineColor;
-      border-radius: 8px;
-
-      img {
-        width: 146px;
-        height: 146px;
-      }
+    .goods-info {
+      font-size: 28px;
+      color: $depthTextColor;
+      line-height: 40px;
+      margin-bottom: 35px;
     }
 
-    .goods-item-right {
-      flex: 1;
+    .goods-num {
+      @extend %displayFlex;
 
-      .goods-info {
-        font-size: 28px;
-        color: $depthTextColor;
-        line-height: 40px;
-        margin-bottom: 35px;
+      span {
+        color: $redColor;
+        font-size: 32px;
+        line-height: 45px;
+        font-weight: 500;
       }
 
-      .goods-num {
-        @extend %displayFlex;
+      .num-change {
+        @extend %flexV;
 
-        span {
-          color: $redColor;
-          font-size: 32px;
+        .num-cut {
+          width: 44px;
+          height: 44px;
+          background-image: url("../../../assets/img/jianshao@2x.png");
+          background-size: 100% 100%;
+        }
+
+        .num-word {
+          border: none;
+          outline: none;
+          width: 80px;
+          color: $depthTextColor;
+          text-align: center;
           line-height: 45px;
-          font-weight: 500;
+          font-size: 32px;
+          background: transparent;
         }
 
-        .num-change {
-          @extend %flexV;
-
-          .num-cut {
-            width: 44px;
-            height: 44px;
-            background-image: url("../../../assets/img/jianshao@2x.png");
-            background-size: 100% 100%;
-          }
-
-          .num-word {
-            border: none;
-            outline: none;
-            width: 80px;
-            color: $depthTextColor;
-            text-align: center;
-            line-height: 45px;
-            font-size: 32px;
-            background: transparent;
-          }
-
-          .num-add {
-            width: 44px;
-            height: 44px;
-            background-image: url("../../../assets/img/zengjia@2x.png");
-            background-size: 100% 100%;
-          }
+        .num-add {
+          width: 44px;
+          height: 44px;
+          background-image: url("../../../assets/img/zengjia@2x.png");
+          background-size: 100% 100%;
         }
       }
     }
   }
+}
 
-  .good-item-delete {
-    -webkit-transform: translateX(-160px);
-    -moz-transform: translateX(-160px);
-    -ms-transform: translateX(-160px);
-    -o-transform: translateX(-160px);
-    transform: translateX(-160px);
+.good-item-delete {
+  -webkit-transform: translateX(-160px);
+  -moz-transform: translateX(-160px);
+  -ms-transform: translateX(-160px);
+  -o-transform: translateX(-160px);
+  transform: translateX(-160px);
+}
+
+.goods {
+  @extend %displayFlex;
+  transition: all 0.2s;
+
+  .goods-delete {
+    background: $redColor;
+    color: #ffffff;
+    min-width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-
-  .goods {
-    @extend %displayFlex;
-    transition: all 0.2s;
-
-    .goods-delete {
-      background: $redColor;
-      color: #ffffff;
-      min-width: 160px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+}
 </style>
