@@ -8,7 +8,7 @@
         </Small-title>
         <div class="patient-item" v-for="patient in patientList" :key="patient.id" @click.stop="goRoute(patient)">
           <img :src="patient.sex == 2 ? woman_img : man_img" class="avatar-img">
-          <div class="flexOne ml-24px">{{patient.name}}/{{patient.sex|sexFormat}}/{{patient.birthday|ageFormat}}</div>
+          <div class="flexOne ml-24px">{{patient.name}}/{{patient.sex|sexFormat}}/{{patient.age}}</div>
           <img class="return-icon" src="../../../assets/img/xiayibu@2x.png">
         </div>
       </div>
@@ -52,6 +52,7 @@ export default {
     ...mapState({
       userInfoState: state => state.userInfoState
     })
+
   },
   mounted () {
     setTimeout(() => {
@@ -60,8 +61,12 @@ export default {
   },
   methods: {
     getData () {
+      console.log(this.userInfoState)
       if (this.userInfoState.mobile) {
-        this.getList()
+        this.patientList = this.userInfoState.relative_info ? JSON.parse(this.userInfoState.relative_info) : []
+        this.showLoad = false
+        this.isFirst = false
+        // this.getList()
       } else {
         this.showLoad = false
         this.$Message.confirm('请先绑定手机号码！', () => {
@@ -86,7 +91,7 @@ export default {
     goRoute (item) {
       if (item) {
         console.log()
-        this.$router.push({ name: 'editPatient', query: { id: item.id, name: item.name, sex: item.sex, birthday: item.birthday } })
+        this.$router.push({ name: 'editPatient', query: { id: item.id, name: item.name, sex: item.sex, birthday: item.birthday, age: item.age } })
       } else {
         if (!this.userInfoState.mobile) {
           this.$Message.confirm('请先绑定手机号码！', () => {

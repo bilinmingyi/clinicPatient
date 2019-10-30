@@ -30,9 +30,9 @@
 
 <script>
 import { Header, radioGroup } from '@/components/common/index'
-import { changePatientInfo, deletePatient, addPatient } from '@/fetch/api.js'
+import { upPatientDetail, fetchUserInfo } from '@/fetch/api.js'
 import inputBlur from '@/assets/js/inputBlur'
-
+import { mapState, mapActions } from 'vuex'
 export default {
   mixins: [inputBlur],
   name: 'editPatient',
@@ -47,40 +47,79 @@ export default {
       name: '',
       id: '',
       age: '',
-      isEdit: true
+      isEdit: true,
+      copyName: ''
     }
+  },
+  computed: {
+    ...mapState({
+      userInfoState: state => state.userInfoState
+    })
   },
   created () {
     this.sex = Number(this.$route.query.sex)
     this.id = this.$route.query.id
     this.name = this.$route.query.name
-    let birthday = this.$route.query.birthday
-    this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
-    this.isEdit = Boolean(this.id)
+    this.copyName = this.$route.query.name
+    this.age = this.$route.query.age
+    // let birthday = this.$route.query.birthday
+    // this.age = new Date().getFullYear() - new Date(Number(birthday)).getFullYear()
+    this.isEdit = !!this.$route.query.name
   },
   methods: {
+    ...mapActions(['set_user_info']),
     changeSex (val) {
       this.sex = Number(val)
     },
     saveChange () {
       if (!this.name) {
-        this.$Message.infor('请先填写客户姓名！')
+        this.$Message.infor('请先填写亲属姓名！')
         return
       } else if (this.age <= 0) {
-        this.$Message.infor('请先正确填写客户年龄！')
+        this.$Message.infor('请先正确填写亲属年龄！')
         return
       } else if (!this.sex) {
-        this.$Message.infor('请先填写客户性别！')
+        this.$Message.infor('请先填写亲属性别！')
         return
       }
-      changePatientInfo({
-        id: this.id,
+      this.toggleData('add')
+    },
+    toggleData (type) {
+      let patientList = this.userInfoState.relative_info ? JSON.parse(this.userInfoState.relative_info) : []
+      let obj = {
         sex: Number(this.sex),
         name: this.name,
         age: Number(this.age)
+      }
+      if (type === 'save') {
+        for (let i = 0; i < patientList.length; i++) {
+          if (obj.name === patientList[i].name) {
+            this.$Message.infor('该亲属已经存在！')
+            return
+          }
+        }
+        patientList.push(obj)
+      } else if (type === 'delte') {
+        for (let i = 0; i < patientList.length; i++) {
+          if (this.copyName === patientList[i].name) {
+            patientList.splice(i, 1)
+            break
+          }
+        }
+      } else if (type === 'add') {
+        for (let i = 0; i < patientList.length; i++) {
+          if (this.copyName === patientList[i].name) {
+            patientList[i] = obj
+
+            break
+          }
+        }
+      }
+      upPatientDetail({
+        relative_info: JSON.stringify(patientList)
       }).then(res => {
         if (res.code === 1000) {
-          this.$router.go(-1)
+          this.getUserInfo()
         } else {
           this.$Message.infor(res.msg)
         }
@@ -90,38 +129,37 @@ export default {
       })
     },
     deleteItem () {
-      this.$Message.confirm('确定删除该客户？', () => {
-        deletePatient({
-          id: this.id
-        }).then(res => {
-          if (res.code === 1000) {
-            this.$router.go(-1)
-          } else {
-            this.$Message.infor(res.msg)
+      this.$Message.confirm('确定删除该亲属？', () => {
+        let patientList = this.userInfoState.relative_info ? JSON.parse(this.userInfoState.relative_info) : []
+        let obj = {
+          sex: Number(this.sex),
+          name: this.name,
+          age: Number(this.age)
+        }
+        for (let i = 0; i < patientList.length; i++) {
+          if (this.copyName === patientList[i].name) {
+            patientList[i] = obj
           }
-        }).catch(error => {
-          console.log(error)
-          this.$Message.infor('网络出错！')
-        })
+        }
+        this.toggleData('delte')
+        // deletePatient({
+        //   id: this.id
+        // }).then(res => {
+        //   if (res.code === 1000) {
+        //     this.$router.go(-1)
+        //   } else {
+        //     this.$Message.infor(res.msg)
+        //   }
+        // }).catch(error => {
+        //   console.log(error)
+        //   this.$Message.infor('网络出错！')
+        // })
       })
     },
-    addItem () {
-      if (!this.name) {
-        this.$Message.infor('请先填写客户姓名！')
-        return
-      } else if (this.age <= 0 || isNaN(this.age)) {
-        this.$Message.infor('请先正确填写客户年龄！')
-        return
-      } else if (!this.sex) {
-        this.$Message.infor('请先填写客户性别！')
-        return
-      }
-      addPatient({
-        name: this.name,
-        sex: Number(this.sex),
-        age: Number(this.age)
-      }).then(res => {
+    getUserInfo () {
+      fetchUserInfo({}).then(res => {
         if (res.code === 1000) {
+          this.set_user_info(res.data)
           this.$router.go(-1)
         } else {
           this.$Message.infor(res.msg)
@@ -130,6 +168,19 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    addItem () {
+      if (!this.name) {
+        this.$Message.infor('请先填写亲属姓名！')
+        return
+      } else if (this.age <= 0 || isNaN(this.age)) {
+        this.$Message.infor('请先正确填写亲属年龄！')
+        return
+      } else if (!this.sex) {
+        this.$Message.infor('请先填写亲属性别！')
+        return
+      }
+      this.toggleData('save')
     }
   }
 }

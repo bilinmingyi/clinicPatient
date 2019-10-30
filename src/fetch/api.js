@@ -8,14 +8,15 @@ try {
 
 function fetch (url, params) {
   return new Promise((resolve, reject) => {
-    axios.post(url, params).then(
-      respone => {
+    axios
+      .post(url, params)
+      .then(respone => {
         resolve(respone.data)
-      }
-    ).catch(error => {
-      console.log(error)
-      reject(error)
-    })
+      })
+      .catch(error => {
+        console.log(error)
+        reject(error)
+      })
   })
 }
 
@@ -26,10 +27,13 @@ const getClinicList = params => fetch('/channel/clinicList', params)
 const changeClinic = params => fetch('/clinic/change', params)
 // 设置默认诊所
 const setDefultClinic = params => fetch('/clinic/default/set', params)
+// 更新客户信息 - 我的亲属
+const upPatientDetail = params => fetch('/user/update', params)
 // 平台文章分类
 const platformArticleType = params => fetch('/platform/article/type', params)
 // 平台文章详情
-const platformArticleDetail = params => fetch('/platform/article/detail?id=' + params.id)
+const platformArticleDetail = params =>
+  fetch('/platform/article/detail?id=' + params.id)
 // 平台文章列表
 const platformArticleList = params => fetch('/platform/article/list', params)
 
@@ -174,5 +178,6 @@ export {
   fetchMemberCode,
   platformArticleType,
   platformArticleDetail,
-  platformArticleList
+  platformArticleList,
+  upPatientDetail
 }

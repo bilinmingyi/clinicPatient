@@ -103,7 +103,8 @@ export default {
       },
       patientList: [],
       selectList: [],
-      showSelect: false
+      showSelect: false,
+      inforList: ''
     }
   },
   computed: {
@@ -112,23 +113,29 @@ export default {
     })
   },
   props: ['treatDate', 'price', 'startTime', 'endTime', 'doctorName', 'treatTime', 'doctorId', 'resource'],
-  created () {
+  async created () {
+    await this.getPerson()
     this.getList()
-    this.getPerson()
   },
   methods: {
     getPerson () {
-      fetchUserInfo({}).then(
-        res => {
-          if (res.code === 1000) {
-            this.patient.mobile = res.data.mobile
-          } else {
-            this.$Message.infor(res.msg)
+      return new Promise((resolve, reject) => {
+        fetchUserInfo({}).then(
+          res => {
+            if (res.code === 1000) {
+              this.patient.mobile = res.data.mobile
+              console.log(res.data.relative_info)
+              this.inforList = res.data.relative_info ? JSON.parse(res.data.relative_info) : []
+            } else {
+              this.$Message.infor(res.msg)
+            }
+            resolve()
           }
-        }
-      ).catch(e => {
-        console.log(e)
-        this.$Message.infor('网络出错！')
+        ).catch(e => {
+          console.log(e)
+          this.$Message.infor('网络出错！')
+          resolve()
+        })
       })
     },
     getList () {
@@ -143,6 +150,7 @@ export default {
               age: Number(new Date().getFullYear()) - Number(new Date(item.birthday).getFullYear())
             })
           })
+          this.patientList = this.patientList.concat(this.inforList)
         } else {
           this.$Message.infor(res.msg)
         }
