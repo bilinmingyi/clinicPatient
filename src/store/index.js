@@ -38,7 +38,7 @@ const state = {
     sex: 0,
     wx_appid: '',
     wx_openid: '',
-    relative_info:''
+    relative_info: ''
   }, // 客户信息
   shopCarNum: 0,
   shopCarMoney: 0

@@ -93,7 +93,7 @@ export default {
       }
       if (type === 'save') {
         for (let i = 0; i < patientList.length; i++) {
-          if (obj.name === patientList[i].name) {
+          if (obj.name.trim() === patientList[i].name) {
             this.$Message.infor('该亲属已经存在！')
             return
           }
