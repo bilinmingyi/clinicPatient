@@ -32,11 +32,10 @@
         <div class="appoint-text">
           <div class="line-items">
             <div class="label-span mr-32px">手机号码</div>
-            <input type="text" class="input-item " placeholder="手机号码" readonly v-model="patient.mobile">
-            <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
-            <!-- <div>
-
-            </div> -->
+            <input type="text" class="input-item" style="width: 50vw" placeholder="手机号码" readonly v-model="patient.mobile">
+            <div>
+              <button class="phone-btn" @click.stop="goRoute">绑定手机</button>
+            </div>
           </div>
           <hr class="line-hr">
           <div class="line-item">
@@ -317,7 +316,6 @@ export default {
 .input-item {
   border: none;
   outline: none;
-  line-height: 45px;
   font-size: 32px;
   color: $depthTextColor;
   background: transparent;

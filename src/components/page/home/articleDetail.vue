@@ -5,7 +5,9 @@
       <div class="content-title">{{title}}</div>
       <div class="content-type">{{type|articleType}}</div>
       <div class="content-time">{{pubdate|dateFormat}}</div>
-      <div v-html="content"></div>
+      <div class="aritcle-content">
+        <div v-html="content"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +70,7 @@ export default {
       color: $lightTextColor;
       margin-top: 20px;
     }
+
     .content-time {
       font-size: 30px;
       color: $lightTextColor;
