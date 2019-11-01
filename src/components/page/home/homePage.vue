@@ -276,7 +276,7 @@ export default {
 }
 
 .clinic-position {
-  @extend %displayFlex;
+  @extend %flexV;
 
   img {
     width: 32px;
