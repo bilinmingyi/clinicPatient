@@ -83,7 +83,10 @@ li {
 img {
   display: block;
   border: none;
-  max-width: 100%;
+}
+
+.aritcle-content img {
+  width: 100%;
 }
 
 a {

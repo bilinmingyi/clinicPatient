@@ -5,8 +5,7 @@
       <div class="content-title">{{title}}</div>
       <div class="content-type">{{type|articleType}}</div>
       <div class="content-time">{{pubdate|dateFormat}}</div>
-      <div class="aritcle-content">
-        <div v-html="content"></div>
+      <div class="aritcle-content" v-html="content">
       </div>
     </div>
   </div>

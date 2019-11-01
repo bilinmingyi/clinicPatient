@@ -70,7 +70,8 @@ export default {
         department: '',
         hospital: '',
         title: -1,
-        avatar: ''
+        avatar: '',
+        sex: 0
       },
       scheduleList: [],
       appointBlockShow: false,
@@ -97,6 +98,7 @@ export default {
           this.doctor.hospital = res.data.hospital
           this.doctor.title = res.data.title
           this.doctor.avatar = res.data.avatar
+          this.doctor.sex = res.data.sex
         } else {
           this.$Message.infor(res.msg)
         }
