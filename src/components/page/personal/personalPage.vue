@@ -4,7 +4,8 @@
     <div class="pb-128px">
       <div class="patient-block">
         <div class="patient">
-          <img class="avatar" :src="userInfoState.avatar === '' ? (userInfoState.sex === 2 ? woman_img : man_img) : userInfoState.avatar">
+          <img class="avatar"
+               :src="userInfoState.avatar === '' ? (userInfoState.sex === 2 ? woman_img : man_img) : userInfoState.avatar">
           <div class="information">
             <p>{{userInfoState.name}}/{{userInfoState.sex|sexFormat}}/{{userInfoState.age}}</p>
             <p>帐号ID：{{userInfoState.id}}</p>
@@ -16,8 +17,9 @@
       </div>
       <section class="white-back" v-if="orderList.length!=0">
         <div class="white-content">
-          <div :class="['item-content', {'no-border-bottom': index == (orderList.length - 1)}]" v-for="(item, index) in orderList" :key="item.order_seqno"
-            @click="gotoDetail(item)">
+          <div :class="['item-content', {'no-border-bottom': index == (orderList.length - 1)}]"
+               v-for="(item, index) in orderList" :key="item.order_seqno"
+               @click="gotoDetail(item)">
             <div class="mb-14px item-line">
               <span class="flexOne font-bold">{{item.week_idx ? '预约代缴费' : '处方代缴费'}}</span>
               <span>{{item.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
@@ -54,6 +56,10 @@
           <img src="../../../assets/img/dd@2x.png">
           <span>商城订单</span>
         </li>
+        <li @click.stop="goRouter(8)">
+          <img src="../../../assets/img/bm@2x.png">
+          <span>我的报名</span>
+        </li>
       </ul>
 
     </div>
@@ -64,9 +70,9 @@
 <script>
 import man from '@/assets/img/mhz@2x.png'
 import woman from '@/assets/img/whz@2x.png'
-import { Footer, Header } from '@/components/common/index'
-import { mapState } from 'vuex'
-import { getAppointList, fetchRecipeList } from '@/fetch/api.js'
+import {Footer, Header} from '@/components/common/index'
+import {mapState} from 'vuex'
+import {getAppointList, fetchRecipeList} from '@/fetch/api.js'
 
 export default {
   name: 'personalPage',
@@ -97,28 +103,28 @@ export default {
     goRouter (type) {
       switch (type) {
         case 1:
-          this.$router.push({ name: 'patientListPage' })
+          this.$router.push({name: 'patientListPage'})
           break
         case 2:
-          this.$router.push({ name: 'appointListPage' })
+          this.$router.push({name: 'appointListPage'})
           break
         case 3:
-          this.$router.push({ name: 'recipeListPage' })
+          this.$router.push({name: 'recipeListPage'})
           break
         case 4:
-          this.$router.push({ name: 'mallListPage' })
+          this.$router.push({name: 'mallListPage'})
           break
         case 5:
-          this.$router.push({
-            name: 'editPerson'
-          })
+          this.$router.push({name: 'editPerson'})
           break
         case 6:
-          this.$router.push({ name: 'addressListPage' })
+          this.$router.push({name: 'addressListPage'})
           break
         case 7:
-          this.$router.push({ name: 'membershipCard' })
+          this.$router.push({name: 'membershipCard'})
           break
+        case 8:
+          this.$router.push({name: 'registrationListPage'})
       }
     },
     getOrderData () {
@@ -160,9 +166,9 @@ export default {
     },
     gotoDetail (item) {
       if (item.week_idx) {
-        this.$router.push({ name: 'appointOrderDetail', query: { orderSeqno: item.order_seqno } })
+        this.$router.push({name: 'appointOrderDetail', query: {orderSeqno: item.order_seqno}})
       } else {
-        this.$router.push({ name: 'recipeOrderDetail', query: { orderSeqno: item.order_seqno } })
+        this.$router.push({name: 'recipeOrderDetail', query: {orderSeqno: item.order_seqno}})
       }
     }
   }
@@ -170,107 +176,107 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.patient-block {
-  background: $backColor;
-  /*padding-bottom: 38px;*/
-}
-
-.patient {
-  padding: 44px 30px;
-  border-bottom: 1px solid $lineColor;
-  @extend %displayFlex;
-
-  .information {
-    flex: 1;
-    margin-left: 30px;
-    @extend %displayFlex;
-    color: $lightTextColor;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3px 0;
-    font-size: 32px;
-
-    p:nth-child(1) {
-      color: $depthTextColor;
-      font-weight: bold;
-    }
+  .patient-block {
+    background: $backColor;
+    /*padding-bottom: 38px;*/
   }
 
-  .avatar {
-    width: 112px;
-    height: 112px;
-    border-radius: 50%;
-  }
-
-  .return-block {
-    @extend %flexV;
-    padding-right: 26px;
-
-    img {
-      width: 40px;
-      height: 40px;
-    }
-  }
-}
-
-.person-function {
-  background: $backColor;
-
-  li {
-    @extend %flexV;
-    font-weight: 400;
-    font-size: 32px;
-    padding: 32px 30px;
+  .patient {
+    padding: 44px 30px;
     border-bottom: 1px solid $lineColor;
+    @extend %displayFlex;
 
-    &:last-child {
-      border-bottom: none;
+    .information {
+      flex: 1;
+      margin-left: 30px;
+      @extend %displayFlex;
+      color: $lightTextColor;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3px 0;
+      font-size: 32px;
+
+      p:nth-child(1) {
+        color: $depthTextColor;
+        font-weight: bold;
+      }
     }
 
-    img {
-      width: 40px;
-      height: 40px;
-      margin-right: 16px;
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+    }
+
+    .return-block {
+      @extend %flexV;
+      padding-right: 26px;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
-}
 
-.item-content {
-  padding: 20px 0;
-  font-size: 30px;
-  color: $depthTextColor;
-  line-height: 42px;
-  border-bottom: 1px solid $lineColor;
-}
+  .person-function {
+    background: $backColor;
 
-.no-border-bottom {
-  border-bottom: none;
-}
+    li {
+      @extend %flexV;
+      font-weight: 400;
+      font-size: 32px;
+      padding: 32px 30px;
+      border-bottom: 1px solid $lineColor;
 
-.item-line {
-  @extend %displayFlex;
-}
+      &:last-child {
+        border-bottom: none;
+      }
 
-.font-bold {
-  font-weight: bold;
-}
-
-.white-back {
-  background: $backColor;
-  padding: 38px 30px 40px;
-
-  .white-content {
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 4px 20px 0px rgba(221, 221, 221, 1);
-    border-radius: 16px;
-    padding: 20px 30px;
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 16px;
+      }
+    }
   }
 
-  .go-to-a {
-    color: #47ba6e;
+  .item-content {
+    padding: 20px 0;
     font-size: 30px;
-    font-weight: bold;
-    text-decoration: underline;
+    color: $depthTextColor;
+    line-height: 42px;
+    border-bottom: 1px solid $lineColor;
   }
-}
+
+  .no-border-bottom {
+    border-bottom: none;
+  }
+
+  .item-line {
+    @extend %displayFlex;
+  }
+
+  .font-bold {
+    font-weight: bold;
+  }
+
+  .white-back {
+    background: $backColor;
+    padding: 38px 30px 40px;
+
+    .white-content {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 4px 20px 0px rgba(221, 221, 221, 1);
+      border-radius: 16px;
+      padding: 20px 30px;
+    }
+
+    .go-to-a {
+      color: #47ba6e;
+      font-size: 30px;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
 </style>

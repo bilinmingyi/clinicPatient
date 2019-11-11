@@ -194,6 +194,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: 'membershipCard' */'@/components/page/personal/paymentCode.vue')
         },
         {
+          path: 'registrationListPage',
+          name: 'registrationListPage',
+          component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/registrationListPage.vue')
+        },
+        {
           path: 'membershipPay',
           name: 'membershipPay',
           component: () => import(/* webpackChunkName: 'personal' */'@/components/page/personal/membershipPay.vue'),
