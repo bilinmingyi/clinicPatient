@@ -2,8 +2,9 @@
   <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
     <div class="pb-128px">
       <section class="clinic-infor" :style="{'border-bottom': channelId > 0 ? '1px solid #d9d9d9' : 'none'}">
-        <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo" />
-        <div class="clinic-NP" @click="goRoute(2)" style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
+        <img class="clinic-img" :src="clinic.logo == ''?no_img:clinic.logo"/>
+        <div class="clinic-NP" @click="goRoute(2)"
+             style="display: flex;flex-direction: column;justify-content: space-around;flex: 1;">
           <p class="clinic-name">{{clinic.name}}</p>
           <div class="clinic-position">
             <img src="../../../assets/img/dingwei@2x.png">
@@ -38,7 +39,8 @@
             <img class="xiaoxi-icon" src="../../../assets/img/xiaoxi@2x.png">
           </div>
           <div class="flexOne">
-            <div class="xiaoxi-title" v-if="articleList.length != 0" @click.stop="goRoute(5)">{{articleList[0].title}}</div>
+            <div class="xiaoxi-title" v-if="articleList.length != 0" @click.stop="goRoute(5)">{{articleList[0].title}}
+            </div>
           </div>
           <div class="next-icon" @click.stop="goRoute(5)"></div>
         </SmallTitle>
@@ -56,10 +58,14 @@
         </div>
       </section>
       <section class="mall-block">
-        <div class="mall-title">机构商城</div>
+        <div class="mall-title">
+          <div class="flexOne"></div>
+          <button class="organ-btn" @click.stop="goRoute(7)">查看更多</button>
+        </div>
         <div class="good-list">
-          <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id" :class="{'mr-10px':index%2===0}" :scrollTop="scrollTop"
-            :clientHeight="clientHeight"></GoodItem>
+          <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id" :class="{'mr-10px':index%2===0}"
+                    :scrollTop="scrollTop"
+                    :clientHeight="clientHeight"></GoodItem>
         </div>
       </section>
     </div>
@@ -68,11 +74,11 @@
 </template>
 
 <script>
-import { Footer, SmallTitle, orderItem, Dynamic, GoodItem } from '@/components/common/index'
-import { unread, getArticleList, getDoctorList, fetchGoodsList } from '@/fetch/api.js'
-import { channelId } from '@/assets/js/mapTypes.js'
+import {Footer, SmallTitle, orderItem, Dynamic, GoodItem} from '@/components/common/index'
+import {unread, getArticleList, getDoctorList, fetchGoodsList} from '@/fetch/api.js'
+import {channelId} from '@/assets/js/mapTypes.js'
 import clinicImg from '../../../assets/img/menzhen@2x.png'
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 import man from '@/assets/img/nan@2x.png'
 import woman from '@/assets/img/nv@2x.png'
 
@@ -146,22 +152,25 @@ export default {
     goRoute (type, params) {
       switch (type) {
         case 1:
-          this.$router.push({ name: 'chatRoom' })
+          this.$router.push({name: 'chatRoom'})
           break
         case 2:
-          this.$router.push({ name: 'clinicDetail' })
+          this.$router.push({name: 'clinicDetail'})
           break
         case 3:
-          this.$router.push({ name: 'clinicSelect', query: { type: 1 } })
+          this.$router.push({name: 'clinicSelect', query: {type: 1}})
           break
         case 4:
-          this.$router.push({ name: 'doctorPage' })
+          this.$router.push({name: 'doctorPage'})
           break
         case 5:
-          this.$router.push({ name: 'dynamicPage' })
+          this.$router.push({name: 'dynamicPage'})
           break
         case 6:
-          this.$router.push({ path: `/doctor/detail/${params}` })
+          this.$router.push({path: `/doctor/detail/${params}`})
+          break
+        case 7:
+          this.$router.push({path: '/mall'})
       }
     },
     getUnread () {
@@ -242,197 +251,205 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scoll-block {
-  height: 100vh;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-
-.clinic-infor {
-  @extend %displayFlex;
-  background: $backColor;
-  padding: 36px 40px;
-
-  .clinic-img {
-    width: 112px;
-    height: 112px;
-    border-radius: 50%;
-  }
-}
-
-.right-border {
-  border-right: 1px solid $lineColor;
-}
-
-.clinic-NP {
-  margin-left: 20px;
-  height: 112px;
-}
-
-.clinic-name {
-  color: $depthTextColor;
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.clinic-position {
-  @extend %flexV;
-
-  img {
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    align-self: center;
-    margin-right: 8px;
+  .scoll-block {
+    height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 
-  span {
-    font-size: 28px;
-    line-height: 40px;
-    font-weight: 400;
-    color: $lightTextColor;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .width-one {
-    width: calc(100vw - 435px);
-  }
-
-  .width-two {
-    width: calc(100vw - 235px);
-  }
-}
-
-.clinic-contact {
-  @extend %displayFlex;
-  background: $backColor;
-  font-size: 32px;
-  line-height: 45px;
-
-  .contact-item {
-    flex: 1;
-    height: 160px;
+  .clinic-infor {
     @extend %displayFlex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: $lightTextColor;
-    font-size: 28px;
+    background: $backColor;
+    padding: 36px 40px;
 
-    img {
-      width: 64px;
-      height: 64px;
-      margin-bottom: 4px;
+    .clinic-img {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
     }
   }
-}
 
-.messageIcon {
-  position: relative;
-
-  .no-read {
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    background: $redColor;
-    color: #ffffff;
-    position: absolute;
-    top: -16px;
-    left: 32px;
-    border-radius: 50%;
+  .right-border {
+    border-right: 1px solid $lineColor;
   }
-}
 
-.clinic-dynamic {
-  background: $backColor;
-}
+  .clinic-NP {
+    margin-left: 20px;
+    height: 112px;
+  }
 
-.flexV {
-  @extend %flexV;
-}
+  .clinic-name {
+    color: $depthTextColor;
+    font-size: 32px;
+    font-weight: bold;
+  }
 
-.del-btn {
-  margin-left: 34px;
-  @include simpleButton(64px, 148px);
-}
+  .clinic-position {
+    @extend %flexV;
 
-.flexOne {
-  flex: 1;
-  font-weight: bold;
-  font-size: 36px;
-}
+    img {
+      width: 32px;
+      height: 32px;
+      display: inline-block;
+      align-self: center;
+      margin-right: 8px;
+    }
 
-.next-icon {
-  background: url("../../../assets/img/xiayibu@2x.png") no-repeat;
-  background-size: cover;
-  width: 40px;
-  height: 40%;
-}
+    span {
+      font-size: 28px;
+      line-height: 40px;
+      font-weight: 400;
+      color: $lightTextColor;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
 
-.xiaoxi-icon {
-  width: 56px;
-  height: 56px;
-}
+    .width-one {
+      width: calc(100vw - 435px);
+    }
 
-.xiaoxi-title {
-  color: $depthTextColor;
-  font-size: 30px;
-  line-height: 42px;
-  padding-left: 24px;
-  text-overflow: ellipsis;
-  width: 75vw;
-  white-space: nowrap;
-  overflow: hidden;
-  font-weight: normal;
-}
+    .width-two {
+      width: calc(100vw - 235px);
+    }
+  }
 
-.doctor-title {
-  @extend %flexV;
-  height: 112px;
-  padding: 0 30px;
-}
+  .clinic-contact {
+    @extend %displayFlex;
+    background: $backColor;
+    font-size: 32px;
+    line-height: 45px;
 
-.doctor-block {
-  background: #ffffff;
-  @extend %flexV;
-  justify-content: space-around;
+    .contact-item {
+      flex: 1;
+      height: 160px;
+      @extend %displayFlex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: $lightTextColor;
+      font-size: 28px;
 
-  .doctor-item {
-    text-align: center;
-    padding: 18px 0 48px;
+      img {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 4px;
+      }
+    }
+  }
+
+  .messageIcon {
+    position: relative;
+
+    .no-read {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      background: $redColor;
+      color: #ffffff;
+      position: absolute;
+      top: -16px;
+      left: 32px;
+      border-radius: 50%;
+    }
+  }
+
+  .clinic-dynamic {
+    background: $backColor;
+  }
+
+  .flexV {
+    @extend %flexV;
+  }
+
+  .del-btn {
+    margin-left: 34px;
+    @include simpleButton(64px, 148px);
+  }
+
+  .flexOne {
+    flex: 1;
+    font-weight: bold;
+    font-size: 36px;
+  }
+
+  .next-icon {
+    background: url("../../../assets/img/xiayibu@2x.png") no-repeat;
+    background-size: cover;
+    width: 40px;
+    height: 40%;
+  }
+
+  .xiaoxi-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .xiaoxi-title {
     color: $depthTextColor;
     font-size: 30px;
     line-height: 42px;
+    padding-left: 24px;
+    text-overflow: ellipsis;
+    width: 75vw;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: normal;
+  }
 
-    img {
-      width: 148px;
-      height: 148px;
-      border-radius: 50%;
-      margin-bottom: 20px;
+  .doctor-title {
+    @extend %flexV;
+    height: 112px;
+    padding: 0 30px;
+  }
+
+  .doctor-block {
+    background: #ffffff;
+    @extend %flexV;
+    justify-content: space-around;
+
+    .doctor-item {
+      text-align: center;
+      padding: 18px 0 48px;
+      color: $depthTextColor;
+      font-size: 30px;
+      line-height: 42px;
+
+      img {
+        width: 148px;
+        height: 148px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
     }
   }
-}
 
-.mall-block {
-  .mall-title {
-    background: url("../../../assets/img/mall-back.png");
-    background-size: cover;
-    font-size: 36px;
-    color: #ffffff;
-    @extend %flexVC;
-    font-weight: bold;
-    height: 96px;
-    margin: 0 24px 12px;
-    width: calc(100vw - 48px);
-    border-radius: 8px;
-  }
+  .mall-block {
+    .mall-title {
+      background: url("../../../assets/img/rsc@2x.png");
+      background-size: cover;
+      @extend %flexVC;
+      height: 96px;
+      margin: 0 24px 12px;
+      width: calc(100vw - 48px);
+      border-radius: 8px;
 
-  .good-list {
-    @extend %displayFlex;
-    flex-wrap: wrap;
+      .organ-btn {
+        color: #FFFFFF;
+        font-size: 24px;
+        width: 136px;
+        height: 56px;
+        background: linear-gradient(270deg, rgba(96, 230, 244, 1) 0%, rgba(54, 204, 223, 1) 100%);
+        border-radius: 28px;
+        border: none;
+        margin-right: 20px;
+      }
+    }
+
+    .good-list {
+      @extend %displayFlex;
+      flex-wrap: wrap;
+    }
   }
-}
 </style>

@@ -1,15 +1,8 @@
 <template>
   <div ref="scrollContent" @scroll="scrollEvent" class="scoll-block">
-    <div class="pb-128px">
+    <Header titleText="机构商品" :canReturn="true"></Header>
+    <div class="mt-88px">
       <Search placeholder="请输入药品/产品名称" :hasBtn="false" @on-search="searchByName"></Search>
-      <div class="white-back">
-        <SmallTitle>
-          <div class="flexOne recommend-title">
-            <img src="../../../assets/img/tj@2x.png">
-            <span class="recommend-title-text">诊所推荐</span>
-          </div>
-        </SmallTitle>
-      </div>
       <div class="good-list">
         <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
                   :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
@@ -22,12 +15,11 @@
       </div>
     </div>
     <Shop-car :num="Number(shopCar.length)"></Shop-car>
-    <Footer navtiveIndex="3"></Footer>
   </div>
 </template>
 
 <script>
-import {Footer, Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
+import {Header, Search, SmallTitle, GoodItem, AddLoad, ShopCar} from '@/components/common/index'
 import {fetchGoodsList, fetchShopCar} from '@/fetch/api'
 import {mapActions} from 'vuex'
 
@@ -47,7 +39,6 @@ var throttle = (fn) => {
 export default {
   name: 'mallPage',
   components: {
-    Footer,
     Header,
     Search,
     SmallTitle,
@@ -76,7 +67,7 @@ export default {
     scrollEvent () {
       throttle(() => {
         let scrollItem = this.$refs.scrollContent
-        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 120) {
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 300) {
           if (this.page < Math.ceil(this.totalNum / this.pageSize)) {
             this.page++
             this.showLoad = true
