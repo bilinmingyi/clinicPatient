@@ -63,6 +63,11 @@
           <button class="organ-btn" @click.stop="goRoute(7)">查看更多</button>
         </div>
         <div class="good-list">
+        </div>
+      </section>
+      <section class="mall-block">
+        <div class="mall-title-hot"></div>
+        <div class="good-list">
           <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id" :class="{'mr-10px':index%2===0}"
                     :scrollTop="scrollTop"
                     :clientHeight="clientHeight"></GoodItem>
@@ -431,7 +436,7 @@ export default {
       background-size: cover;
       @extend %flexVC;
       height: 96px;
-      margin: 0 24px 12px;
+      margin: 32px 24px 12px;
       width: calc(100vw - 48px);
       border-radius: 8px;
 
@@ -445,6 +450,16 @@ export default {
         border: none;
         margin-right: 20px;
       }
+    }
+
+    .mall-title-hot {
+      background: url("../../../assets/img/rm@2x.png");
+      background-size: cover;
+      @extend %flexVC;
+      height: 96px;
+      margin: 32px 24px 12px;
+      width: calc(100vw - 48px);
+      border-radius: 8px;
     }
 
     .good-list {
