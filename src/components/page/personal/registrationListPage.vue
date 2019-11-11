@@ -2,7 +2,7 @@
   <div>
     <Header titleText="我的报名" :canReturn="true"></Header>
     <div class="mt-88px">
-      <div class="dynamic-item">
+      <div class="dynamic-item" @click="goRouter">
         <img :src="noImg">
         <div class="dynamic-item-right">
           <div class="title">宝宝辅食全攻略</div>
@@ -39,6 +39,9 @@ export default {
   },
   methods: {
     addMore () {
+    },
+    goRouter () {
+      this.$router.push({name: 'registrationOrderDetail'})
     }
   }
 }
