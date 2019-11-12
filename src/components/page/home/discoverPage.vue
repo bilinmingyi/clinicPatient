@@ -113,7 +113,6 @@ export default {
       this.getList()
     },
     goRoute (params) {
-      console.log(111)
       this.$router.push({name: 'platformArticle', params: {id: params}})
     },
     changeType (str) {

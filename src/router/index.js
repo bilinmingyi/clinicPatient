@@ -38,13 +38,19 @@ export default new Router({
         {
           path: 'articleDetail/:id',
           name: 'articleDetail',
-          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/articleDetail.vue'),
+          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/articleDetail.vue'),
           props: true
         },
         {
           path: 'platformArticle/:id',
           name: 'platformArticle',
-          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/platformArticle.vue'),
+          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/platformArticle.vue'),
+          props: true
+        },
+        {
+          path: 'trainingRegistration/:id',
+          name: 'trainingRegistration',
+          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/trainingRegistration.vue'),
           props: true
         },
         {
