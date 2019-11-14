@@ -5,10 +5,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/clinicSelect'
-    // },
+    {
+      path: '/',
+      redirect: '/home'
+    },
     {
       path: '/clinicSelect',
       name: 'clinicSelect',

@@ -26,8 +26,9 @@
     </div>
     <div class="pb-128px mt-96px">
       <div class="clinic-dynamic">
-        <Dynamic v-for="article in articleList" :dyItem="article" :key="article.id"
-                 @click.native="goRoute(article.id)"></Dynamic>
+        <div v-for="article in articleList" :key="article.id">
+          <Dynamic :dyItem="article" @click.native="goRoute(article)"></Dynamic>
+        </div>
       </div>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>
@@ -113,7 +114,11 @@ export default {
       this.getList()
     },
     goRoute (params) {
-      this.$router.push({name: 'platformArticle', params: {id: params}})
+      if (params.category === 0) {
+        this.$router.push({name: 'platformArticle', params: {id: params.id}})
+      } else if (params.category === 1) {
+        this.$router.push({name: 'trainingRegistration', params: {id: params}})
+      }
     },
     changeType (str) {
       this.currType = str

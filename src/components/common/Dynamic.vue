@@ -1,12 +1,28 @@
 <template>
-  <div class="dynamic-item">
-    <img :src="noImg">
-    <div class="dynamic-item-right">
-      <div class="title">{{dyItem.title}}</div>
-      <div class="title-bottom">
-        <div class="title-time" v-if="dyItem.type">{{dyItem.type}}</div>
-        <div class="title-type" v-else>资讯类别</div>
-        <div class="title-time">{{(dyItem.pubdate? dyItem.pubdate : dyItem.start_time)|dateFormat('yyyy-MM-dd')}}</div>
+  <div>
+    <div class="dynamic-item" v-if="dyItem.category == 0 || dyItem.category == undefined">
+      <img :src="noImg">
+      <div class="dynamic-item-right">
+        <div class="title">{{dyItem.title}}</div>
+        <div class="title-bottom">
+          <div class="title-time" v-if="dyItem.type">{{dyItem.type}}</div>
+          <div class="title-type" v-else>资讯类别</div>
+          <div class="title-time">{{(dyItem.pubdate? dyItem.pubdate : dyItem.start_time)|dateFormat('yyyy-MM-dd')}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dynamic-item" v-if="dyItem.category == 1">
+      <img :src="noImg">
+      <div class="dynamic-item-right-two">
+        <div class="title">{{dyItem.title}}</div>
+        <div class="title-middle">时间：{{dyItem.start_time|dateFormat('yyyy-MM-dd hh:mm')}}</div>
+        <div class="title-bottom">
+          <div>讲师：{{dyItem.author}}</div>
+          <div>报名费：
+            <span class="color-red">{{dyItem.price ? '￥' + dyItem.price : '免费'}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -24,14 +40,7 @@ export default {
   },
   props: {
     dyItem: {
-      type: Object,
-      default () {
-        return {
-          title: '暂无标题',
-          pubdate: new Date().getTime(),
-          img_url: ''
-        }
-      }
+      type: Object
     }
   },
   mounted () {
@@ -51,9 +60,9 @@ export default {
     @extend %displayFlex;
 
     img {
-      width: 160px;
-      height: 128px;
-      border-radius: 8px;
+      width: 240px;
+      height: 164px;
+      border-radius: 4px;
     }
   }
 
@@ -88,6 +97,31 @@ export default {
 
     .title-time {
       height: 28px;
+    }
+  }
+
+  .dynamic-item-right-two {
+    margin-left: 24px;
+    font-size: 28px;
+    line-height: 40px;
+    color: $lightTextColor;
+    flex: 1;
+
+    .title {
+      color: $depthTextColor;
+      font-weight: bold;
+      font-size: 30px;
+      line-height: 42px;
+      margin-bottom: 10px;
+    }
+
+    .title-middle {
+      margin-bottom: 10px;
+    }
+
+    .title-bottom {
+      @extend %displayFlex;
+      justify-content: space-between;
     }
   }
 </style>
