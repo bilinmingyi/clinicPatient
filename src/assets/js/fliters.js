@@ -71,6 +71,7 @@ const appointStatus = (val) => {
  * S：毫秒
  */
 const dateFormat = function (date, fmt) {
+  if (!date) return
   if (!Date.prototype.Format) {
     Object.defineProperty(Date.prototype, 'Format', {
       enumerable: false,

@@ -36,11 +36,12 @@ const platformArticleDetail = params =>
   fetch('/platform/article/detail?id=' + params.id)
 // 平台文章列表
 const platformArticleList = params => fetch('/platform/article/list', params)
-
 // 获取文章列表
 const getArticleList = params => fetch('/article/list', params)
 // 获取文章详情
 const fetchArticleDetail = params => fetch('/article/detail?id=' + params.id)
+// 创建培训订单
+const createTrainOrder = params => fetch('/trainCourseOrder/create', params)
 // 获取诊所信息
 const getClinicData = params => fetch('/clinic/detail', params)
 // 获取聊天列表信息
@@ -128,6 +129,8 @@ const fetchPayStream = params => fetch('/member/payStream/list', params)
 const submitMember = params => fetch('/deposit/pay', params)
 // 获取会员二维码
 const fetchMemberCode = () => fetch('/member/memberPayKey')
+// 获取培训订单
+const fetchTrainOrderList = params => fetch('/trainCourseOrder/list', params)
 
 export {
   fetch,
@@ -137,6 +140,7 @@ export {
   getAppointList,
   getArticleList,
   fetchArticleDetail,
+  createTrainOrder,
   getClinicData,
   chatMsgList,
   msgSend,
@@ -179,5 +183,6 @@ export {
   platformArticleType,
   platformArticleDetail,
   platformArticleList,
-  upPatientDetail
+  upPatientDetail,
+  fetchTrainOrderList
 }

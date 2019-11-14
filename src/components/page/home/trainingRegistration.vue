@@ -3,7 +3,7 @@
     <Header :titleText="titleName" :canReturn="true"></Header>
     <div class="mt-88px">
       <div class="doctor-item">
-        <img :src="itemData.img_url != '' ? itemData.img_url: (itemData.sex == 2 ? woman_img: man_img)">
+        <img :src="itemData.img_url != '' ? itemData.img_url: man_img">
         <div class="doctor-infor">
           <div class="infor-title">{{itemData.author}}</div>
           <div>
@@ -14,14 +14,14 @@
       <div class="doctor-spec">
         <div class="spec-content">
           <div class="mb-8px">
-            <span>时间：</span><span class="text-block" v-if="itemData.start_time">{{itemData.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</span>
+            <span>时间：</span><span class="text-block">{{itemData.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div class="mb-8px">
             <span>地点：</span><span class="text-block">{{itemData.addr}}</span>
           </div>
         </div>
         <div class="register-btn">
-          <button>我要报名</button>
+          <button @click="goRoute">我要报名</button>
         </div>
       </div>
       <div class="doctor-intro">
@@ -37,7 +37,6 @@
 <script>
 import {Header, SmallTitle} from '../../common'
 import man from '@/assets/img/nan@2x.png'
-import woman from '@/assets/img/nv@2x.png'
 import {platformArticleDetail} from '@/fetch/api.js'
 
 export default {
@@ -51,7 +50,6 @@ export default {
     return {
       titleName: '',
       man_img: man,
-      woman_img: woman,
       itemData: {}
     }
   },
@@ -71,6 +69,9 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    goRoute () {
+      this.$router.push({name: 'registrationSure', params: {id: this.id}})
     }
   }
 }

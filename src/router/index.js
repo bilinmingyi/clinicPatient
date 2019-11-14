@@ -32,25 +32,31 @@ export default new Router({
         {
           path: 'chatRoom',
           name: 'chatRoom',
-          component: () => import(/* webpackChunName: 'chatRoom' */'@/components/page/home/chatRoom.vue'),
+          component: () => import(/* webpackChunkName: 'chatRoom' */'@/components/page/home/chatRoom.vue'),
           props: (route) => route.query
         },
         {
           path: 'articleDetail/:id',
           name: 'articleDetail',
-          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/articleDetail.vue'),
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/articleDetail.vue'),
           props: true
         },
         {
           path: 'platformArticle/:id',
           name: 'platformArticle',
-          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/platformArticle.vue'),
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/platformArticle.vue'),
           props: true
         },
         {
           path: 'trainingRegistration/:id',
           name: 'trainingRegistration',
-          component: () => import(/* webpackChunName: 'home' */'@/components/page/home/trainingRegistration.vue'),
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/trainingRegistration.vue'),
+          props: true
+        },
+        {
+          path: 'registrationSure/:id',
+          name: 'registrationSure',
+          component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/registrationSure.vue'),
           props: true
         },
         {
