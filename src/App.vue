@@ -8,6 +8,7 @@ import {mapActions} from 'vuex'
 import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
 import {channelId, clinicId} from '@/assets/js/mapTypes.js'
 
+
 export default {
   name: 'App',
   data () {
