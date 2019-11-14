@@ -3,7 +3,6 @@
     <router-view/>
   </div>
 </template>
-
 <script>
 import {mapActions} from 'vuex'
 import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
