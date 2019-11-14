@@ -14,16 +14,17 @@
       <div class="doctor-spec">
         <div class="spec-content">
           <div class="mb-8px">
-            <span>时间：</span><span class="text-block">{{itemData.pubdate}}</span>
+            <span>时间：</span><span class="text-block">{{itemData.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div class="mb-8px">
             <span>地点：</span><span class="text-block">{{itemData.addr}}</span>
           </div>
           <div class="mb-8px">
-            <span>报名时间：</span><span class="text-block">2019-05-11</span>
+            <span>报名时间：</span><span class="text-block">{{orderDetail.create_time|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div>
-            <span>报名人员：</span><span class="text-block">刘静/165656465454</span>
+            <span>报名人员：</span><span
+            class="text-block">{{orderDetail.register_name}}/{{orderDetail.register_mobile}}</span>
           </div>
         </div>
       </div>
@@ -34,15 +35,15 @@
         <div class="text-content" v-html="itemData.content"></div>
       </div>
     </div>
-    <div class="add-block">
-      <button class="weixin-pay-btn" @click.stop="nextDone">微信支付</button>
+    <div class="add-block" v-if="orderDetail.status==='UNPAID'">
+      <button class="weixin-pay-btn" @click.stop="toPay">微信支付</button>
     </div>
   </div>
 </template>
 
 <script>
 import {Header, SmallTitle} from '../../common'
-import {platformArticleDetail, fetchTrainOrderList} from '@/fetch/api.js'
+import {platformArticleDetail, fetchTrainOrderList, gotoPay} from '@/fetch/api.js'
 import man from '@/assets/img/nan@2x.png'
 
 export default {
@@ -59,8 +60,11 @@ export default {
       orderDetail: {}
     }
   },
-  props: ['order', 'article'],
+  props: ['order', 'article', 'shouldPay'],
   created () {
+    // if (Number(this.shouldPay) === 1) {
+    //
+    // }
     this.getArticleDetail()
     this.getOrderDetail()
   },
@@ -83,7 +87,27 @@ export default {
         'order_seqnos': [this.order]
       }).then(res => {
         if (res.code === 1000) {
-          this.orderDetail = res.data
+          this.orderDetail = res.data.length > 0 ? res.data[0] : {}
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
+    },
+    toPay () {
+      gotoPay({
+        'order_type': 10,
+        'order_seqno': this.order
+      }).then(res => {
+        if (res.code === 1000) {
+          try {
+            window.location.href = res.data
+          } catch (error) {
+            console.log(error)
+            this.$Message.infor('支付跳转失败')
+          }
         } else {
           this.$Message.infor(res.msg)
         }

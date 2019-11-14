@@ -97,6 +97,8 @@ export default {
       }).then(
         res => {
           if (res.code === 1000) {
+            this.$router.replace({name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
+            })
             console.log(res.data)
           } else {
             this.$Message.infor(res.msg)
