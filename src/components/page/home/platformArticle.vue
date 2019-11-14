@@ -4,7 +4,7 @@
     <div class="mt-88px content-block">
       <div class="content-title">{{title}}</div>
       <div class="content-type">{{type|articleType}}</div>
-      <div class="content-time">{{pubdate|dateFormat}}</div>
+      <div class="content-time">{{startTime|dateFormat}}</div>
       <div class="aritcle-content" v-html="content"></div>
     </div>
   </div>
@@ -21,7 +21,7 @@ export default {
       content: '',
       title: '',
       type: 0,
-      pubdate: 0
+      startTime: 0
     }
   },
   props: ['id'],
@@ -37,7 +37,7 @@ export default {
         if (res.code === 1000) {
           this.content = res.data.content
           this.title = res.data.title
-          this.pubdate = res.data.pubdate
+          this.startTime = res.data.start_time
           this.type = res.data.type
         } else {
           this.$Message.infor(res.msg)

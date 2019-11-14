@@ -117,7 +117,7 @@ export default {
       if (params.category === 0) {
         this.$router.push({name: 'platformArticle', params: {id: params.id}})
       } else if (params.category === 1) {
-        this.$router.push({name: 'trainingRegistration', params: {id: params}})
+        this.$router.push({name: 'trainingRegistration', params: {id: params.id}})
       }
     },
     changeType (str) {

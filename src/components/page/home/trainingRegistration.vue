@@ -3,21 +3,21 @@
     <Header :titleText="titleName" :canReturn="true"></Header>
     <div class="mt-88px">
       <div class="doctor-item">
-        <img :src="itemData.avatar != '' ? itemData.avatar: (itemData.sex == 2 ? woman_img: man_img)">
+        <img :src="itemData.img_url != '' ? itemData.img_url: (itemData.sex == 2 ? woman_img: man_img)">
         <div class="doctor-infor">
-          <div class="infor-title">王大明医生</div>
+          <div class="infor-title">{{itemData.author}}</div>
           <div>
-            <span>费用：</span><span class="color-red">￥100</span>
+            <span>费用：</span><span class="color-red">{{itemData.price > 0 ? '￥' + itemData.price : '免费'}}</span>
           </div>
         </div>
       </div>
       <div class="doctor-spec">
         <div class="spec-content">
           <div class="mb-8px">
-            <span>时间：</span><span class="text-block">深圳2019-05-12 下午2点-4点</span>
+            <span>时间：</span><span class="text-block" v-if="itemData.start_time">{{itemData.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
           <div class="mb-8px">
-            <span>地点：</span><span class="text-block">深圳市福田区福民路东方欣悦居楼2B</span>
+            <span>地点：</span><span class="text-block">{{itemData.addr}}</span>
           </div>
         </div>
         <div class="register-btn">
@@ -26,25 +26,9 @@
       </div>
       <div class="doctor-intro">
         <SmallTitle :hasBlock="true" :hasLink="false">
-          <span class="ml-16px">课程简介</span>
+          <span class="ml-16px">简介</span>
         </SmallTitle>
-        <div class="text-content">
-          各种耳鼻喉科急慢性疾病的诊断及中医、中西医结合
-          治疗，工作40多年，尤其对耳科疾病：如耳鸣、神经
-          性耳聋、鼻炎、小儿鼻窦炎、过敏性鼻炎、过敏性咽
-          炎等疾病有较深的研究。
-        </div>
-      </div>
-      <div class="doctor-intro">
-        <SmallTitle :hasBlock="true" :hasLink="false">
-          <span class="ml-16px">讲师简介</span>
-        </SmallTitle>
-        <div class="text-content">
-          各种耳鼻喉科急慢性疾病的诊断及中医、中西医结合
-          治疗，工作40多年，尤其对耳科疾病：如耳鸣、神经
-          性耳聋、鼻炎、小儿鼻窦炎、过敏性鼻炎、过敏性咽
-          炎等疾病有较深的研究。
-        </div>
+        <div class="text-content" v-html="itemData.content"></div>
       </div>
     </div>
   </div>
@@ -54,20 +38,39 @@
 import {Header, SmallTitle} from '../../common'
 import man from '@/assets/img/nan@2x.png'
 import woman from '@/assets/img/nv@2x.png'
+import {platformArticleDetail} from '@/fetch/api.js'
+
 export default {
   name: 'trainingRegistration',
+  props: ['id'],
   components: {
     Header,
     SmallTitle
   },
   data () {
     return {
-      titleName: '测试文章名称',
+      titleName: '',
       man_img: man,
       woman_img: woman,
-      itemData: {
-        avatar: ''
-      }
+      itemData: {}
+    }
+  },
+  created () {
+    this.getDetail()
+  },
+  methods: {
+    getDetail () {
+      platformArticleDetail({id: this.id}).then(res => {
+        if (res.code === 1000) {
+          this.itemData = res.data
+          this.titleName = res.data.title
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }
@@ -125,6 +128,7 @@ export default {
 
     .register-btn {
       padding: 28px 0 16px;
+
       button {
         background: $yellowColor;
         border-radius: 8px;
@@ -140,6 +144,7 @@ export default {
   .doctor-intro {
     background: $backColor;
     margin-bottom: 20px;
+
     .text-content {
       padding: 0 50px 35px;
       line-height: 40px;

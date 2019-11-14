@@ -16,7 +16,7 @@
       <img :src="noImg">
       <div class="dynamic-item-right-two">
         <div class="title">{{dyItem.title}}</div>
-        <div class="title-middle">时间：{{dyItem.start_time|dateFormat('yyyy-MM-dd hh:mm')}}</div>
+        <div class="title-middle">时间：{{dyItem.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</div>
         <div class="title-bottom">
           <div>讲师：{{dyItem.author}}</div>
           <div>报名费：
