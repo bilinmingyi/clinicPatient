@@ -60,9 +60,12 @@
       <section class="mall-block">
         <div class="mall-title">
           <div class="flexOne"></div>
-          <button class="organ-btn" @click.stop="goRoute(7)">查看更多</button>
+          <button class="organ-btn" @click.stop="goRoute(7)" v-if="clinicGood.totalNum > clinicGood.pageSize">查看更多</button>
         </div>
         <div class="good-list">
+          <GoodItem :goods="goods" v-for="(goods, index) in clinicGood.dataList" :key="goods.id"
+                    :class="{'mr-10px':index%2===0}"
+                    :scrollTop="scrollTop" :clientHeight="clientHeight"></GoodItem>
         </div>
       </section>
       <section class="mall-block">
@@ -126,12 +129,18 @@ export default {
       showLoad: false,
       isFirst: true,
       scrollTop: 0,
-      clientHeight: 0
+      clientHeight: 0,
+      clinicGood: {
+        dataList: [],
+        totalNum: 0,
+        pageSize: 2
+      }
     }
   },
   created () {
     this.getList()
     this.getDoctorList()
+    this.getClinicGoodList()
     this.getGoodsList()
     this.getUnread()
     this.dataInterval = setInterval(() => {
@@ -219,8 +228,8 @@ export default {
     },
     getGoodsList () {
       fetchGoodsList({
-        name: this.query,
         page: this.page,
+        is_channel: 1,
         page_size: this.pageSize,
         status: 1
       }).then(res => {
@@ -229,6 +238,25 @@ export default {
         if (res.code === 1000) {
           this.goodsList = this.goodsList.concat(res.data)
           this.totalNum = res.total_num
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错!')
+      })
+    },
+    getClinicGoodList () {
+      fetchGoodsList({
+        page: 1,
+        page_size: this.clinicGood.pageSize,
+        status: 1
+      }).then(res => {
+        this.showLoad = false
+        this.isFirst = false
+        if (res.code === 1000) {
+          this.clinicGood.dataList = res.data
+          this.clinicGood.totalNum = res.total_num
         } else {
           this.$Message.infor(res.msg)
         }
