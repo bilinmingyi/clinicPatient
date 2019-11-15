@@ -180,7 +180,8 @@ export default {
       if (this.shopCarList.some(item => {
         return item.is_check === 1
       })) {
-        if ((this.shopCarList.some(item => item.clinic_id === this.clinic.id)) && (this.shopCarList.some(item => item.clinic_id !== this.clinic.id))) {
+        if ((this.shopCarList.filter(item => item.is_check === 1).some(item => item.clinic_id === this.clinic.id)) &&
+          (this.shopCarList.filter(item => item.is_check === 1).some(item => item.clinic_id !== this.clinic.id))) {
           this.$Message.infor('机构商品和热门商品不能同时购买！')
         } else {
           let ids = this.shopCarList.filter(item => {

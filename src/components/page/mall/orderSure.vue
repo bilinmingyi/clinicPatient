@@ -200,7 +200,8 @@ export default {
         phone_num: this.addressee.phoneNum,
         address: this.addressee.address,
         memo: this.memo,
-        goods_order_items: resultList
+        goods_order_items: resultList,
+        clinic_id: this.shopCarList[0].clinic_id
       })
       if (res.code === 1000) {
         try {
