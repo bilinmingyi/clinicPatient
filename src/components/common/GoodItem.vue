@@ -46,6 +46,10 @@ export default {
           spec: ''
         }
       }
+    },
+    isChannel: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -83,7 +87,7 @@ export default {
     goRoute (type) {
       switch (type) {
         case 1:
-          this.$router.push({path: `/mall/goodsDetail/${this.goods.id}`})
+          this.$router.push({path: `/mall/goodsDetail/${this.goods.id}?isChannel=${this.isChannel}`})
           break
         case 2:
           this.addShopCar()

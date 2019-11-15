@@ -28,7 +28,7 @@
         <SmallTitle :hasBlock="true" :hasLink="false">
           <span class="ml-16px">简介</span>
         </SmallTitle>
-        <div class="text-content" v-html="itemData.content"></div>
+        <div class="text-content aritcle-content" v-html="itemData.content"></div>
       </div>
     </div>
   </div>

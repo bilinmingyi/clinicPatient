@@ -7,6 +7,7 @@
         <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
                   :class="{'mr-10px':index%2===0}"
                   @add-car="getShopCar"
+                  :isChannel="0"
                   :scrollTop="scrollTop"
                   :clientHeight="clientHeight"></GoodItem>
       </div>

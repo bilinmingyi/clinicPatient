@@ -20,7 +20,7 @@
       <Small-title :hasBlock="true">
         <span class="ml-16px">商品简介</span>
       </Small-title>
-      <div class="intro-content" v-html="GoodDetail.page_content"></div>
+      <div class="intro-content aritcle-content" v-html="GoodDetail.page_content"></div>
     </div>
     <Shop-footer btnText="加入购物车" :allPrice="shopCarMoney" :hasCar="true" :carNum='shopCarNum' @click="addCar"></Shop-footer>
   </div>
@@ -76,7 +76,8 @@ export default {
     },
     getGoodsDetail () {
       fetchGoodsDetail({
-        id: this.id
+        id: this.id,
+        is_channel: this.$route.query.isChannel ? Number(this.$route.query.isChannel) : 0
       }).then(res => {
         if (res.code === 1000) {
           this.GoodDetail = res.data

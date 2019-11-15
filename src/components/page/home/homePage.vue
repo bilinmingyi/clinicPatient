@@ -65,6 +65,7 @@
         <div class="good-list">
           <GoodItem :goods="goods" v-for="(goods, index) in clinicGood.dataList" :key="goods.id"
                     :class="{'mr-10px':index%2===0}"
+                    :isChannel="0"
                     :scrollTop="scrollTop" :clientHeight="clientHeight"></GoodItem>
         </div>
       </section>
@@ -73,6 +74,7 @@
         <div class="good-list">
           <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id" :class="{'mr-10px':index%2===0}"
                     :scrollTop="scrollTop"
+                    :isChannel="1"
                     :clientHeight="clientHeight"></GoodItem>
         </div>
       </section>
