@@ -25,12 +25,12 @@
         <div class="appoint-text">
           <div class="line-item">
             <label class="label-span mr-32px">报名人员</label>
-            <input type="text" class="input-item flexOne" placeholder="请输入报名人员" v-model="name">
+            <input type="text" class="input-item flexOne" placeholder="请输入报名人员" v-model="name" @blur="scrollToTop">
           </div>
           <hr class="line-hr">
           <div class="line-item">
             <label class="label-span mr-32px">联系电话</label>
-            <input type="number" class="input-item flexOne" placeholder="请输入联系电话" v-model="mobile">
+            <input type="number" class="input-item flexOne" placeholder="请输入联系电话" v-model="mobile" @blur="scrollToTop">
           </div>
           <hr class="line-hr">
           <div class="line-item">
@@ -97,9 +97,18 @@ export default {
       }).then(
         res => {
           if (res.code === 1000) {
-            this.$router.replace({name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
-            })
-            console.log(res.data)
+            if (this.itemData.price > 0) {
+              this.$router.replace({
+                name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
+              })
+            } else {
+              this.$Message.infor('报名成功！')
+              setTimeout(() => {
+                this.$router.replace({
+                  name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
+                })
+              }, 1500)
+            }
           } else {
             this.$Message.infor(res.msg)
           }

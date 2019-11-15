@@ -60,7 +60,8 @@ export default {
     ...mapActions(['set_shop_num', 'set_shop_money']),
     addCar () {
       addShopCar({
-        goods_id: this.id
+        goods_id: this.id,
+        clinic_id: this.GoodDetail.clinic_id
       }).then(res => {
         if (res.code === 1000) {
           this.$Message.infor('加入购物车成功')
