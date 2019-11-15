@@ -102,7 +102,6 @@ var throttle = (fn) => {
     }
   }
 }
-
 export default {
   name: 'homePage',
   components: {
