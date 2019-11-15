@@ -5,7 +5,10 @@
       <Search placeholder="请输入药品/产品名称" :hasBtn="false" @on-search="searchByName"></Search>
       <div class="good-list">
         <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id"
-                  :class="{'mr-10px':index%2===0}" @add-car="getShopCar"></GoodItem>
+                  :class="{'mr-10px':index%2===0}"
+                  @add-car="getShopCar"
+                  :scrollTop="scrollTop"
+                  :clientHeight="clientHeight"></GoodItem>
       </div>
       <Add-load v-if="showLoad"></Add-load>
       <div class="no-address-back" v-if="goodsList.length === 0 && !isFirst">
@@ -55,19 +58,28 @@ export default {
       totalNum: 0,
       goodsList: [],
       shopCar: [],
-      isFirst: true
+      isFirst: true,
+      scrollTop: 0,
+      clientHeight: 0
     }
   },
   created () {
     this.getShopCar()
     this.getGoodsList()
   },
+  mounted () {
+    let scrollItem = this.$refs.scrollContent
+    this.scrollTop = scrollItem.scrollTop
+    this.clientHeight = scrollItem.clientHeight
+  },
   methods: {
     ...mapActions(['set_shop_num', 'set_shop_money']),
     scrollEvent () {
       throttle(() => {
         let scrollItem = this.$refs.scrollContent
-        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 300) {
+        this.scrollTop = scrollItem.scrollTop
+        this.clientHeight = scrollItem.clientHeight
+        if (scrollItem.scrollTop + scrollItem.clientHeight >= scrollItem.scrollHeight - 200) {
           if (this.page < Math.ceil(this.totalNum / this.pageSize)) {
             this.page++
             this.showLoad = true

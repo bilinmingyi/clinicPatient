@@ -122,7 +122,6 @@ export default {
   },
   created () {
     this.getShopCar()
-    this.getDeliverPrice()
   },
   mounted () {
     // this.init()
@@ -170,6 +169,7 @@ export default {
               this.shopCarList.push(item)
             }
           })
+          this.getDeliverPrice()
           this.checkEnabled()
         } else {
           this.$Message.infor(res.msg)
@@ -248,7 +248,9 @@ export default {
       this.$router.replace({ name: 'addressListPage', query: { forSelect: 1, ids: this.ids } })
     },
     getDeliverPrice () {
-      deliverPrice().then(res => {
+      deliverPrice({
+        clinic_id: this.shopCarList[0].clinic_id
+      }).then(res => {
         if (res.code === 1000) {
           this.deliver = res.data
         } else {
