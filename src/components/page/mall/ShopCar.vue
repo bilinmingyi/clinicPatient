@@ -6,7 +6,7 @@
         <div :class="['select-radio',{'border-yuan':!resource}]">
           <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
         </div>
-        <span class="ml-20px">机构药房</span>
+        <span class="ml-20px">机构商城</span>
       </Small-title>
       <div v-for="(item, index) in shopCarList" :key="item.id">
         <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
@@ -355,6 +355,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 32px;
   }
 }
 </style>

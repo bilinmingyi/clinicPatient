@@ -57,7 +57,7 @@
           <div class="doctor-item" v-if="doctorList.length == 1"></div>
         </div>
       </section>
-      <section class="mall-block">
+      <section class="mall-block" v-if="clinicGood.dataList.length > 0">
         <div class="mall-title">
           <div class="flexOne"></div>
           <button class="organ-btn" @click.stop="goRoute(7)" v-if="clinicGood.totalNum > clinicGood.pageSize">查看更多</button>

@@ -21,7 +21,7 @@
 
 <script>
 import noImg from '../../assets/img/nophoto.png'
-import { addShopCar } from '@/fetch/api'
+import {addShopCar} from '@/fetch/api'
 
 export default {
   name: 'GoodItem',
@@ -83,7 +83,7 @@ export default {
     goRoute (type) {
       switch (type) {
         case 1:
-          this.$router.push({ path: `/mall/goodsDetail/${this.goods.id}` })
+          this.$router.push({path: `/mall/goodsDetail/${this.goods.id}`})
           break
         case 2:
           this.addShopCar()
@@ -92,7 +92,8 @@ export default {
     },
     addShopCar () {
       addShopCar({
-        goods_id: this.goods.id
+        goods_id: this.goods.id,
+        clinic_id: this.goods.clinic_id
       }).then(res => {
         if (res.code === 1000) {
           this.addSuccess = true
@@ -116,72 +117,75 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.good-item {
-  background: $backColor;
-  margin-bottom: 10px;
-  width: calc(50vw - 5px);
-  .item-top-all {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 21px;
-  }
-  .item-top {
-    @extend %flexVC;
-    justify-content: center;
-    width: 314px;
-    height: 314px;
-    img {
-      max-width: 314px;
-      max-height: 314px;
-    }
-  }
+  .good-item {
+    background: $backColor;
+    margin-bottom: 10px;
+    width: calc(50vw - 5px);
 
-  .item-bottom {
-    padding: 6px 30px 20px;
-
-    .item-title {
-      color: $middleTextColor;
-      font-size: 28px;
-      line-height: 40px;
-      height: 40px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .item-top-all {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 21px;
     }
 
-    .item-price {
-      color: $redColor;
-      line-height: 50px;
-      font-size: 36px;
-      margin-top: 12px;
-      @extend %flexV;
-    }
-
-    .item-car {
-      position: relative;
+    .item-top {
+      @extend %flexVC;
+      justify-content: center;
+      width: 314px;
+      height: 314px;
 
       img {
-        height: 48px;
-        width: 48px;
-        position: absolute;
-        top: -25px;
-        right: 0;
+        max-width: 314px;
+        max-height: 314px;
+      }
+    }
+
+    .item-bottom {
+      padding: 6px 30px 20px;
+
+      .item-title {
+        color: $middleTextColor;
+        font-size: 28px;
+        line-height: 40px;
+        height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
-      .add-success {
-        position: absolute;
-        top: -25px;
-        right: 0;
-        opacity: 1;
+      .item-price {
+        color: $redColor;
+        line-height: 50px;
+        font-size: 36px;
+        margin-top: 12px;
+        @extend %flexV;
       }
 
-      .change-top {
-        transition: all 1s;
-        top: -100px;
-        opacity: 0;
+      .item-car {
+        position: relative;
+
+        img {
+          height: 48px;
+          width: 48px;
+          position: absolute;
+          top: -25px;
+          right: 0;
+        }
+
+        .add-success {
+          position: absolute;
+          top: -25px;
+          right: 0;
+          opacity: 1;
+        }
+
+        .change-top {
+          transition: all 1s;
+          top: -100px;
+          opacity: 0;
+        }
       }
     }
   }
-}
 </style>
