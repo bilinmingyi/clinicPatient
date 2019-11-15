@@ -1,48 +1,99 @@
 <template>
   <div>
-    <!--    <Header titleText="购物车" :canReturn="true"></Header>-->
     <div class="clinic-content">
-      <Small-title @click.native="selectALL">
-        <div :class="['select-radio',{'border-yuan':!resource}]">
-          <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
-        </div>
-        <span class="ml-20px">机构商城</span>
-      </Small-title>
-      <div v-for="(item, index) in shopCarList" :key="item.id">
-        <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-          <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]" @touchstart.capture="touchStart"
-            @touchend.capture="touchEnd(item.id, $event)">
-            <div>
-              <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
-                <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
-              </div>
-            </div>
-            <div class="goods-item-middle">
-              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
-            </div>
-            <div class="goods-item-right">
-              <div class="goods-info">
-                <span>{{item.goods_info.name}}</span>
-                <span>{{item.goods_info.vender}}</span>
-                <span>{{item.goods_info.spec}}</span>
-              </div>
-              <div class="goods-num">
+      <div class="bottom-block">
+        <Small-title @click.native="selectALL(1)">
+          <div :class="['select-radio',{'border-yuan':!resourceOne}]">
+            <img v-show="resourceOne" src="../../../assets/img/xuanze@2x.png">
+          </div>
+          <span class="ml-20px">机构商城</span>
+        </Small-title>
+        <div v-for="(item, index) in shopCarList" :key="item.id">
+          <div v-if="item.clinic_id === clinic.id">
+            <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
+              <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
+                   @touchstart.capture="touchStart"
+                   @touchend.capture="touchEnd(item.id, $event)">
+                <div>
+                  <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                    <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
+                  </div>
+                </div>
+                <div class="goods-item-middle">
+                  <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
+                </div>
+                <div class="goods-item-right">
+                  <div class="goods-info">
+                    <span>{{item.goods_info.name}}</span>
+                    <span>{{item.goods_info.vender}}</span>
+                    <span>{{item.goods_info.spec}}</span>
+                  </div>
+                  <div class="goods-num">
                 <span class="flexOne">
                   ￥{{item.goods_info.price}}
                 </span>
-                <div class="num-change">
-                  <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                  <input class="num-word" v-model="item.num" @blur="scrollToTop">
-                  <div class="num-add" @click.stop="changeNum(2, index)"></div>
+                    <div class="num-change">
+                      <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                      <input class="num-word" v-model="item.num" @blur="scrollToTop">
+                      <div class="num-add" @click.stop="changeNum(2, index)"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <div class="goods-delete" @click.stop="deleteShop(item.id)">
+                删除
+              </div>
             </div>
-          </div>
-          <div class="goods-delete" @click.stop="deleteShop(item.id)">
-            删除
+            <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
           </div>
         </div>
-        <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
+      </div>
+      <div>
+        <Small-title @click.native="selectALL(2)">
+          <div :class="['select-radio',{'border-yuan':!resourcetwo}]">
+            <img v-show="resourcetwo" src="../../../assets/img/xuanze@2x.png">
+          </div>
+          <span class="ml-20px">热门商品</span>
+        </Small-title>
+        <div v-for="(item, index) in shopCarList" :key="item.id">
+          <div v-if="item.clinic_id !== clinic.id">
+            <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
+              <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
+                   @touchstart.capture="touchStart"
+                   @touchend.capture="touchEnd(item.id, $event)">
+                <div>
+                  <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                    <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
+                  </div>
+                </div>
+                <div class="goods-item-middle">
+                  <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
+                </div>
+                <div class="goods-item-right">
+                  <div class="goods-info">
+                    <span>{{item.goods_info.name}}</span>
+                    <span>{{item.goods_info.vender}}</span>
+                    <span>{{item.goods_info.spec}}</span>
+                  </div>
+                  <div class="goods-num">
+                <span class="flexOne">
+                  ￥{{item.goods_info.price}}
+                </span>
+                    <div class="num-change">
+                      <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                      <input class="num-word" v-model="item.num" @blur="scrollToTop">
+                      <div class="num-add" @click.stop="changeNum(2, index)"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="goods-delete" @click.stop="deleteShop(item.id)">
+                删除
+              </div>
+            </div>
+            <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
+          </div>
+        </div>
       </div>
     </div>
     <Shop-footer btnText="去结算" :allPrice="allPrice" @click="toCount" bottom="1.306667rem"></Shop-footer>
@@ -51,8 +102,9 @@
 </template>
 
 <script>
-import { Footer, ShopFooter, SmallTitle } from '../../common'
-import { fetchShopCar, changeShopNum, removeShop } from '@/fetch/api'
+import {Footer, ShopFooter, SmallTitle} from '../../common'
+import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
+import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 import inputBlur from '@/assets/js/inputBlur'
 
@@ -66,7 +118,8 @@ export default {
   },
   data () {
     return {
-      resource: false,
+      resourceOne: false,
+      resourcetwo: false,
       shopCarList: [],
       noImg: noImg,
       touchDel: {
@@ -80,6 +133,9 @@ export default {
     this.getShopCar()
   },
   computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    }),
     allPrice () {
       if (this.shopCarList.length === 0) {
         return 0
@@ -99,12 +155,23 @@ export default {
       deep: true,
       handler: function (newVal) {
         let isAll = 1
-        newVal.forEach(item => {
+        newVal.filter(item => {
+          return item.clinic_id === this.clinic.id
+        }).forEach(item => {
           if (item.is_check === 0) {
             isAll = 0
           }
         })
-        isAll === 1 ? this.resource = true : this.resource = false
+        isAll === 1 ? this.resourceOne = true : this.resourceOne = false
+        isAll = 1
+        newVal.filter(item => {
+          return item.clinic_id !== this.clinic.id
+        }).forEach(item => {
+          if (item.is_check === 0) {
+            isAll = 0
+          }
+        })
+        isAll === 1 ? this.resourcetwo = true : this.resourcetwo = false
       }
     }
   },
@@ -113,28 +180,53 @@ export default {
       if (this.shopCarList.some(item => {
         return item.is_check === 1
       })) {
-        let ids = this.shopCarList.filter(item => {
-          if (item.is_check) {
+        if ((this.shopCarList.some(item => item.clinic_id === this.clinic.id)) && (this.shopCarList.some(item => item.clinic_id !== this.clinic.id))) {
+          this.$Message.infor('机构商品和热门商品不能同时购买！')
+        } else {
+          let ids = this.shopCarList.filter(item => {
+            if (item.is_check) {
+              return item.goods_id
+            }
+          }).map(item => {
             return item.goods_id
-          }
-        }).map(item => {
-          return item.goods_id
-        })
-        this.$router.push({ path: '/mall/sureOrder', query: { ids: JSON.stringify(ids) } })
+          })
+          this.$router.push({path: '/mall/sureOrder', query: {ids: JSON.stringify(ids)}})
+        }
       } else {
         this.$Message.infor('请先选择购买药品！')
       }
     },
-    selectALL () {
-      this.resource = !this.resource
-      if (this.resource) {
-        this.shopCarList.forEach(item => {
-          item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
-        })
-      } else {
-        this.shopCarList.forEach(item => {
-          item.is_check = 0
-        })
+    selectALL (type) {
+      if (type === 1) {
+        this.resourceOne = !this.resourceOne
+        if (this.resourceOne) {
+          this.shopCarList.forEach(item => {
+            if (item.clinic_id === this.clinic.id) {
+              item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
+            }
+          })
+        } else {
+          this.shopCarList.forEach(item => {
+            if (item.clinic_id === this.clinic.id) {
+              item.is_check = 0
+            }
+          })
+        }
+      } else if (type === 2) {
+        this.resourcetwo = !this.resourcetwo
+        if (this.resourcetwo) {
+          this.shopCarList.forEach(item => {
+            if (item.clinic_id !== this.clinic.id) {
+              item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
+            }
+          })
+        } else {
+          this.shopCarList.forEach(item => {
+            if (item.clinic_id !== this.clinic.id) {
+              item.is_check = 0
+            }
+          })
+        }
       }
     },
     getShopCar () {
@@ -142,7 +234,7 @@ export default {
         if (res.code === 1000) {
           this.shopCarList = []
           res.data.forEach(item => {
-            let curItem = Object.assign(item, { is_check: 0 })
+            let curItem = Object.assign(item, {is_check: 0})
             this.shopCarList.push(curItem)
           })
         } else {
@@ -237,125 +329,129 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.clinic-content {
-  background: $backColor;
-  min-width: 100vw;
-  overflow-x: hidden;
-  margin-bottom: 220px;
-}
+  .clinic-content {
+    background: $backColor;
+    min-width: 100vw;
+    overflow-x: hidden;
+    margin-bottom: 220px;
+  }
 
-.select-radio {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-
-  img {
+  .select-radio {
     width: 40px;
     height: 40px;
-  }
-}
-
-.border-yuan {
-  border: 1px solid $lightTextColor;
-}
-
-.ban_back {
-  background: #f7f7f7;
-}
-
-.goods-item {
-  position: relative;
-
-  overflow: hidden;
-  @extend %flexV;
-  padding: 32px 30px;
-  min-width: 100vw;
-
-  .goods-item-middle {
-    margin-left: 20px;
-    margin-right: 24px;
-    padding: 7px;
-    border: 1px solid $lineColor;
-    border-radius: 8px;
+    border-radius: 50%;
 
     img {
-      width: 146px;
-      height: 146px;
+      width: 40px;
+      height: 40px;
     }
   }
 
-  .goods-item-right {
-    flex: 1;
+  .border-yuan {
+    border: 1px solid $lightTextColor;
+  }
 
-    .goods-info {
-      font-size: 28px;
-      color: $depthTextColor;
-      line-height: 40px;
-      margin-bottom: 35px;
+  .ban_back {
+    background: #f7f7f7;
+  }
+
+  .bottom-block {
+    border-bottom: 20px solid #f5f5f5
+  }
+
+  .goods-item {
+    position: relative;
+
+    overflow: hidden;
+    @extend %flexV;
+    padding: 32px 30px;
+    min-width: 100vw;
+
+    .goods-item-middle {
+      margin-left: 20px;
+      margin-right: 24px;
+      padding: 7px;
+      border: 1px solid $lineColor;
+      border-radius: 8px;
+
+      img {
+        width: 146px;
+        height: 146px;
+      }
     }
 
-    .goods-num {
-      @extend %displayFlex;
+    .goods-item-right {
+      flex: 1;
 
-      span {
-        color: $redColor;
-        font-size: 32px;
-        line-height: 45px;
-        font-weight: 500;
+      .goods-info {
+        font-size: 28px;
+        color: $depthTextColor;
+        line-height: 40px;
+        margin-bottom: 35px;
       }
 
-      .num-change {
-        @extend %flexV;
+      .goods-num {
+        @extend %displayFlex;
 
-        .num-cut {
-          width: 44px;
-          height: 44px;
-          background-image: url("../../../assets/img/jianshao@2x.png");
-          background-size: 100% 100%;
-        }
-
-        .num-word {
-          border: none;
-          outline: none;
-          width: 80px;
-          color: $depthTextColor;
-          text-align: center;
-          line-height: 45px;
+        span {
+          color: $redColor;
           font-size: 32px;
-          background: transparent;
+          line-height: 45px;
+          font-weight: 500;
         }
 
-        .num-add {
-          width: 44px;
-          height: 44px;
-          background-image: url("../../../assets/img/zengjia@2x.png");
-          background-size: 100% 100%;
+        .num-change {
+          @extend %flexV;
+
+          .num-cut {
+            width: 44px;
+            height: 44px;
+            background-image: url("../../../assets/img/jianshao@2x.png");
+            background-size: 100% 100%;
+          }
+
+          .num-word {
+            border: none;
+            outline: none;
+            width: 80px;
+            color: $depthTextColor;
+            text-align: center;
+            line-height: 45px;
+            font-size: 32px;
+            background: transparent;
+          }
+
+          .num-add {
+            width: 44px;
+            height: 44px;
+            background-image: url("../../../assets/img/zengjia@2x.png");
+            background-size: 100% 100%;
+          }
         }
       }
     }
   }
-}
 
-.good-item-delete {
-  -webkit-transform: translateX(-160px);
-  -moz-transform: translateX(-160px);
-  -ms-transform: translateX(-160px);
-  -o-transform: translateX(-160px);
-  transform: translateX(-160px);
-}
-
-.goods {
-  @extend %displayFlex;
-  transition: all 0.2s;
-
-  .goods-delete {
-    background: $redColor;
-    color: #ffffff;
-    min-width: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
+  .good-item-delete {
+    -webkit-transform: translateX(-160px);
+    -moz-transform: translateX(-160px);
+    -ms-transform: translateX(-160px);
+    -o-transform: translateX(-160px);
+    transform: translateX(-160px);
   }
-}
+
+  .goods {
+    @extend %displayFlex;
+    transition: all 0.2s;
+
+    .goods-delete {
+      background: $redColor;
+      color: #ffffff;
+      min-width: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+    }
+  }
 </style>

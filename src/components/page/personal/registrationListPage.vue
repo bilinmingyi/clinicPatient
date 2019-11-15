@@ -3,7 +3,9 @@
     <Header titleText="我的报名" :canReturn="true"></Header>
     <div class="mt-88px">
       <div class="dynamic-item" @click="goRouter(item)" v-for="item in dataList" :key="item.id">
-        <img :src="item.img_url ? item.img_url : noImg">
+        <div class="dynamic-item-left">
+          <img :src="item.img_url ? item.img_url : noImg">
+        </div>
         <div class="dynamic-item-right">
           <div class="title">{{item.title}}</div>
           <div class="title-middle">时间：{{item.train_time|dateFormat('yyyy-MM-dd hh:mm')}}</div>
@@ -84,10 +86,17 @@ export default {
     background: #ffffff;
     @extend %displayFlex;
 
-    img {
+    .dynamic-item-left {
       width: 240px;
       height: 164px;
       border-radius: 4px;
+      @extend %flexVC;
+
+      img {
+        max-width: 240px;
+        max-height: 164px;
+        border-radius: 4px;
+      }
     }
   }
 

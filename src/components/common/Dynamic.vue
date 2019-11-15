@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="dynamic-item" v-if="dyItem.category == 0 || dyItem.category == undefined">
-      <img :src="noImg">
+      <div class="dynamic-item-left">
+        <img :src="noImg">
+      </div>
       <div class="dynamic-item-right">
         <div class="title">{{dyItem.title}}</div>
         <div class="title-bottom">
@@ -13,7 +15,9 @@
       </div>
     </div>
     <div class="dynamic-item" v-if="dyItem.category == 1">
-      <img :src="noImg">
+      <div class="dynamic-item-left">
+        <img :src="noImg">
+      </div>
       <div class="dynamic-item-right-two">
         <div class="title">{{dyItem.title}}</div>
         <div class="title-middle">时间：{{dyItem.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</div>
@@ -59,10 +63,17 @@ export default {
     border-bottom: 1px solid $lineColor;
     @extend %displayFlex;
 
-    img {
+    .dynamic-item-left {
       width: 240px;
       height: 164px;
       border-radius: 4px;
+      @extend %flexVC;
+
+      img {
+        max-width: 240px;
+        max-height: 164px;
+        border-radius: 4px;
+      }
     }
   }
 

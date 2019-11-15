@@ -3,7 +3,7 @@
     <Header :titleText="titleName" :canReturn="true"></Header>
     <div class="mt-88px">
       <div class="doctor-item">
-        <img :src="itemData.img_url != '' ? itemData.img_url: man_img">
+        <img :src="man_img">
         <div class="doctor-infor">
           <div class="infor-title">{{itemData.author}}</div>
           <div>
