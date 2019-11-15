@@ -50,9 +50,11 @@
 <script>
 import {Header, SmallTitle} from '@/components/common'
 import {platformArticleDetail, createTrainOrder} from '@/fetch/api.js'
+import inputBlur from '@/assets/js/inputBlur'
 
 export default {
   name: 'registrationSure',
+  mixins: [inputBlur],
   props: ['id'],
   components: {
     Header,
@@ -102,12 +104,11 @@ export default {
                 name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
               })
             } else {
-              this.$Message.infor('报名成功！')
-              setTimeout(() => {
+              this.$Message.confirm('报名成功！', () => {
                 this.$router.replace({
                   name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
                 })
-              }, 1500)
+              }, true)
             }
           } else {
             this.$Message.infor(res.msg)
