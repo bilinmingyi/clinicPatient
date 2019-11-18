@@ -67,7 +67,7 @@
 
 <script>
 import {Header, SmallTitle, Loading, LoadMore} from '../../common'
-import {fetchMember, fetchMemberList, fetchPayStream} from '@/fetch/api'
+import {fetchMemberInfo, fetchMemberList, fetchPayStream} from '@/fetch/api'
 import {mapState} from 'vuex'
 
 export default {
@@ -127,13 +127,13 @@ export default {
       }
     },
     getMemberData () {
-      fetchMember().then(res => {
+      fetchMemberInfo().then(res => {
         this.showLoad = false
         if (res.code === 1000) {
           this.memberInfo.name = res.data.name
-          this.memberInfo.cardNo = res.data.card_no
+          this.memberInfo.cardNo = res.data.cardNo
           this.memberInfo.amount = res.data.amount
-          this.memberInfo.presentAmount = res.data.present_amount
+          this.memberInfo.presentAmount = res.data.presentAmount
           this.getRechargeList()
           this.getConsumerList()
         } else {

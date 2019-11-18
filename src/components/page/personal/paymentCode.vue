@@ -40,7 +40,7 @@
 
 <script>
 import {Header, SmallTitle, Loading} from '../../common'
-import {fetchMember, fetchMemberCode} from '@/fetch/api'
+import {fetchMemberInfo, fetchMemberCode} from '@/fetch/api'
 
 export default {
   name: 'paymentCode',
@@ -75,13 +75,13 @@ export default {
   },
   methods: {
     getMemberData () {
-      fetchMember().then(res => {
+      fetchMemberInfo().then(res => {
         this.showLoad = false
         if (res.code === 1000) {
           this.memberInfo.name = res.data.name
-          this.memberInfo.cardNo = res.data.card_no
+          this.memberInfo.cardNo = res.data.cardNo
           this.memberInfo.amount = res.data.amount
-          this.memberInfo.presentAmount = res.data.present_amount
+          this.memberInfo.presentAmount = res.data.presentAmount
         } else {
           this.$Message.infor(res.msg)
         }

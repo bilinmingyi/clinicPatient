@@ -40,7 +40,7 @@
                   </div>
                 </div>
               </div>
-              <div class="goods-delete" @click.stop="deleteShop(item.id)">
+              <div class="goods-delete" @click.stop="deleteShop(item.id, item.clinic_id)">
                 删除
               </div>
             </div>
