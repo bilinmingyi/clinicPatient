@@ -209,7 +209,8 @@ export default {
             return item.id
           })
           await removeShop({
-            ids: idsList
+            ids: idsList,
+            clinic_id: this.shopCarList[0].clinic_id
           })
           if (this.needCheck === 1) {
             // 需要提交审核

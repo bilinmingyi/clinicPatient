@@ -87,7 +87,7 @@
                   </div>
                 </div>
               </div>
-              <div class="goods-delete" @click.stop="deleteShop(item.id)">
+              <div class="goods-delete" @click.stop="deleteShop(item.id, item.clinic_id)">
                 删除
               </div>
             </div>
@@ -311,9 +311,10 @@ export default {
     restSlide: function () {
       this.touchDel.activeMed = -1
     },
-    deleteShop (id) {
+    deleteShop (id, clinicId) {
       removeShop({
-        ids: [id]
+        ids: [id],
+        clinic_id: clinicId
       }).then(res => {
         if (res.code === 1000) {
           this.getShopCar()

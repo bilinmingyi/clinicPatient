@@ -40,7 +40,7 @@
           <img src="../../../assets/img/qt@2x.png">
           <span>我的亲属</span>
         </li>
-        <li @click.stop="goRouter(7)">
+        <li @click.stop="goRouter(7)" v-if="hasMember">
           <img src="../../../assets/img/hy@2x.png">
           <span>我的会员卡</span>
         </li>
@@ -72,7 +72,7 @@ import man from '@/assets/img/mhz@2x.png'
 import woman from '@/assets/img/whz@2x.png'
 import {Footer, Header} from '@/components/common/index'
 import {mapState} from 'vuex'
-import {getAppointList, fetchRecipeList} from '@/fetch/api.js'
+import {getAppointList, fetchRecipeList, fetchMemberInfo} from '@/fetch/api.js'
 
 export default {
   name: 'personalPage',
@@ -84,7 +84,8 @@ export default {
     return {
       man_img: man,
       woman_img: woman,
-      orderList: []
+      orderList: [],
+      hasMember: false
     }
   },
   computed: {
@@ -93,6 +94,7 @@ export default {
     })
   },
   created () {
+    this.getMenberInfo()
     setTimeout(() => {
       if (this.userInfoState.mobile) {
         this.getOrderData()
@@ -170,6 +172,22 @@ export default {
       } else {
         this.$router.push({name: 'recipeOrderDetail', query: {orderSeqno: item.order_seqno}})
       }
+    },
+    getMenberInfo () {
+      fetchMemberInfo().then(res => {
+        if (res.code === 1000) {
+          if (res.data) {
+            this.hasMember = true
+          } else {
+            this.hasMember = false
+          }
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$Message.infor('网络出错！')
+      })
     }
   }
 }

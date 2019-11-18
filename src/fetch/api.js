@@ -119,6 +119,8 @@ const savePhone = params => fetch('/user/mobile/update', params)
 const fetchGoodList = params => fetch('/goodsorder/list', params)
 // 更改收件地址
 const updateAds = params => fetch('/cuser/addrInfo/update', params)
+// 是否开通会员卡
+const fetchMemberInfo = params => fetch('/member/info', params)
 // 获取会员卡信息
 const fetchMember = () => fetch('/member/detail')
 // 获取会员卡充值记录
@@ -187,5 +189,6 @@ export {
   platformArticleList,
   upPatientDetail,
   fetchTrainOrderList,
-  cancelTrainOrder
+  cancelTrainOrder,
+  fetchMemberInfo
 }
