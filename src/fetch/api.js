@@ -131,6 +131,8 @@ const submitMember = params => fetch('/deposit/pay', params)
 const fetchMemberCode = () => fetch('/member/memberPayKey')
 // 获取培训订单
 const fetchTrainOrderList = params => fetch('/trainCourseOrder/list', params)
+// 取消培训订单
+const cancelTrainOrder = params => fetch('/trainCourseOrder/cancel', params)
 
 export {
   fetch,
@@ -184,5 +186,6 @@ export {
   platformArticleDetail,
   platformArticleList,
   upPatientDetail,
-  fetchTrainOrderList
+  fetchTrainOrderList,
+  cancelTrainOrder
 }

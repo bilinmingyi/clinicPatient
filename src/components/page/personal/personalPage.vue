@@ -226,7 +226,7 @@ export default {
       @extend %flexV;
       font-weight: 400;
       font-size: 32px;
-      padding: 32px 30px;
+      padding: 24px 30px;
       border-bottom: 1px solid $lineColor;
 
       &:last-child {

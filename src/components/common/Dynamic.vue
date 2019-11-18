@@ -23,7 +23,7 @@
         <div class="title-middle">时间：{{dyItem.pubdate|dateFormat('yyyy-MM-dd hh:mm')}}</div>
         <div class="title-bottom">
           <div>讲师：{{dyItem.author}}</div>
-          <div>报名费：
+          <div>
             <span class="color-red">{{dyItem.price ? '￥' + dyItem.price : '免费'}}</span>
           </div>
         </div>
@@ -64,13 +64,13 @@ export default {
     @extend %displayFlex;
 
     .dynamic-item-left {
-      width: 240px;
+      width: 220px;
       height: 164px;
       border-radius: 4px;
       @extend %flexVC;
 
       img {
-        max-width: 240px;
+        max-width: 220px;
         max-height: 164px;
         border-radius: 4px;
       }

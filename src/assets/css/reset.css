@@ -370,3 +370,6 @@ input {
 .d-table.h36 td {
   height: 72px;
 }
+.font-bold {
+  font-weight: bold;
+}

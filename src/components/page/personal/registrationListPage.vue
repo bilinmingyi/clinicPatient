@@ -7,12 +7,15 @@
           <img :src="item.img_url ? item.img_url : noImg">
         </div>
         <div class="dynamic-item-right">
-          <div class="title">{{item.title}}</div>
+          <div class="title">
+            <div class="flexOne mr-10px">{{item.title}}</div>
+            <div>{{item.status|treatOrderStatus}}</div>
+          </div>
           <div class="title-middle">时间：{{item.train_time|dateFormat('yyyy-MM-dd hh:mm')}}</div>
           <div class="title-bottom">
             <div class="title-time">讲师：{{item.teacher}}</div>
             <div class="title-time">
-              报名费：<span class="color-red" v-if="item.price == 0">免费</span><span class="color-red" v-else>{{item.price|priceFormat}}</span>
+              <span class="color-red" v-if="item.price == 0">免费</span><span class="color-red" v-else>{{item.price|priceFormat}}</span>
             </div>
           </div>
         </div>
@@ -87,13 +90,13 @@ export default {
     @extend %displayFlex;
 
     .dynamic-item-left {
-      width: 240px;
+      width: 220px;
       height: 164px;
       border-radius: 4px;
       @extend %flexVC;
 
       img {
-        max-width: 240px;
+        max-width: 220px;
         max-height: 164px;
         border-radius: 4px;
       }
@@ -112,6 +115,7 @@ export default {
       font-weight: bold;
       font-size: 30px;
       line-height: 42px;
+      @extend %displayFlex;
       margin-bottom: 10px;
     }
 

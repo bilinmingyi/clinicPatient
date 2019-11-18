@@ -22,9 +22,13 @@
           <div class="mb-8px">
             <span>报名时间：</span><span class="text-block">{{orderDetail.create_time|dateFormat('yyyy-MM-dd hh:mm')}}</span>
           </div>
-          <div>
+          <div class="mb-8px">
             <span>报名人员：</span><span
             class="text-block">{{orderDetail.register_name}}/{{orderDetail.register_mobile}}</span>
+          </div>
+          <div>
+            <span>订单状态：</span>
+            <span class="text-block font-bold">{{orderDetail.status|treatOrderStatus}}</span>
           </div>
         </div>
       </div>
@@ -36,6 +40,7 @@
       </div>
     </div>
     <div class="add-block" v-if="orderDetail.status==='UNPAID'">
+      <button class="del-btn" @click.stop="cancelOrder">取消订单</button>
       <button class="weixin-pay-btn" @click.stop="toPay">微信支付</button>
     </div>
   </div>
@@ -43,7 +48,7 @@
 
 <script>
 import {Header, SmallTitle} from '../../common'
-import {platformArticleDetail, fetchTrainOrderList, gotoPay} from '@/fetch/api.js'
+import {platformArticleDetail, fetchTrainOrderList, gotoPay, cancelTrainOrder} from '@/fetch/api.js'
 import man from '@/assets/img/nan@2x.png'
 
 export default {
@@ -114,6 +119,22 @@ export default {
       }).catch(error => {
         console.log(error)
         this.$Message.infor('网络出错！')
+      })
+    },
+    cancelOrder () {
+      this.$Message.confirm('确定取消改订单！', () => {
+        cancelTrainOrder({
+          'order_seqno': this.order
+        }).then(res => {
+          if (res.code === 1000) {
+            this.$router.back()
+          } else {
+            this.$Message.infor(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+          this.$Message.infor('网络出错！')
+        })
       })
     }
   }
@@ -192,8 +213,12 @@ export default {
     border-top: 1px solid $lineColor;
   }
 
+  .del-btn {
+    @include deepButton(80px, 48%);
+  }
+
   .weixin-pay-btn {
-    width: 100%;
+    width: 48%;
     height: 80px;
     background: #4dbc89;
     border-radius: 8px;
@@ -202,5 +227,6 @@ export default {
     font-size: 24px;
     line-height: 24px;
     text-align: center;
+    margin-left: 4%;
   }
 </style>

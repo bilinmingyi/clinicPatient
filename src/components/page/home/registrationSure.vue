@@ -100,13 +100,15 @@ export default {
         res => {
           if (res.code === 1000) {
             if (this.itemData.price > 0) {
-              this.$router.replace({
-                name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
-              })
+              this.$Message.confirm('已报名，请前往支付！', () => {
+                this.$router.replace({
+                  name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
+                })
+              }, true)
             } else {
               this.$Message.confirm('报名成功！', () => {
                 this.$router.replace({
-                  name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
+                  name: 'registrationOrderDetail', query: {shouldPay: 0, order: res.data, article: this.id}
                 })
               }, true)
             }
