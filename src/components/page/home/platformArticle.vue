@@ -9,7 +9,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import {Header} from '@/components/common/index'
 import {platformArticleDetail} from '@/fetch/api.js'
