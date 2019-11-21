@@ -18,6 +18,11 @@ export default {
       this.getClinic()
     }
     this.getUserInfo()
+    const path = this.getQueryString('path')
+    if (path) {
+      this.$router.replace({path: path})
+    }
+    console.log(this.getQueryString('path'))
   },
   methods: {
     ...mapActions(['set_clinic_info', 'set_user_info']),
@@ -69,6 +74,12 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return decodeURIComponent(r[2])
+      return null
     }
   }
 }

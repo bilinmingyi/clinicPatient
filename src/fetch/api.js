@@ -135,6 +135,8 @@ const fetchMemberCode = () => fetch('/member/memberPayKey')
 const fetchTrainOrderList = params => fetch('/trainCourseOrder/list', params)
 // 取消培训订单
 const cancelTrainOrder = params => fetch('/trainCourseOrder/cancel', params)
+// 获取分享配置
+const fetchWxConfig = params => fetch('/wechat/config', params)
 
 export {
   fetch,
@@ -190,5 +192,6 @@ export {
   upPatientDetail,
   fetchTrainOrderList,
   cancelTrainOrder,
-  fetchMemberInfo
+  fetchMemberInfo,
+  fetchWxConfig
 }

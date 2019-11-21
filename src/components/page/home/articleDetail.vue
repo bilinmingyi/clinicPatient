@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :canReturn="true" titleText="动态详情"></Header>
+    <Header :canReturn="canReturn" titleText="动态详情"></Header>
     <div class="mt-88px content-block">
       <div class="content-title">{{title}}</div>
       <div class="content-type">{{type|articleType}}</div>
@@ -14,6 +14,8 @@
 <script>
 import {Header} from '@/components/common/index'
 import {fetchArticleDetail} from '@/fetch/api.js'
+import getWXSign from '@/assets/js/wx.js'
+import {mapState} from 'vuex'
 
 export default {
   name: 'articleDetail',
@@ -22,7 +24,8 @@ export default {
       content: '',
       title: '',
       type: 0,
-      pubdate: 0
+      pubdate: 0,
+      canReturn: true
     }
   },
   props: ['id'],
@@ -31,6 +34,14 @@ export default {
   },
   created () {
     this.getDetail()
+    if (this.getQueryString('path')) {
+      this.canReturn = false
+    }
+  },
+  computed: {
+    ...mapState({
+      'clinic': state => state.clinic
+    })
   },
   methods: {
     getDetail () {
@@ -40,6 +51,29 @@ export default {
           this.title = res.data.title
           this.pubdate = res.data.pubdate
           this.type = res.data.type
+          try {
+            getWXSign.apply(this).then(({wx, appId}) => {
+              wx.updateAppMessageShareData({
+                title: res.data.title, // 分享标题
+                desc: res.data.remark, // 分享描述
+                link: window.location.href.split('#')[0] + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                imgUrl: res.data.img_url, // 分享图标
+                success: function () {
+                  // 设置成功
+                }
+              })
+              wx.updateTimelineShareData({
+                title: res.data.title, // 分享标题
+                link: window.location.href.split('#')[0] + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                imgUrl: res.data.img_url, // 分享图标
+                success: function () {
+                  // 设置成功
+                }
+              })
+            })
+          } catch (e) {
+            console.log(e)
+          }
         } else {
           this.$Message.infor(res.msg)
         }
