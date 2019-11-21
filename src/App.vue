@@ -6,7 +6,7 @@
 <script>
 import {mapActions} from 'vuex'
 import {getClinicData, fetchUserInfo} from '@/fetch/api.js'
-import {channelId, clinicId} from '@/assets/js/mapTypes.js'
+import {clinicId} from '@/assets/js/mapTypes.js'
 
 export default {
   name: 'App',
@@ -14,15 +14,13 @@ export default {
     return {}
   },
   created () {
+    this.getUserInfo()
     if (clinicId > 0) {
       this.getClinic()
+      this.checkHref()
+    } else {
+      this.$router.replace({name: 'clinicSelect'})
     }
-    this.getUserInfo()
-    const path = this.getQueryString('path')
-    if (path) {
-      this.$router.replace({path: path})
-    }
-    console.log(this.getQueryString('path'))
   },
   methods: {
     ...mapActions(['set_clinic_info', 'set_user_info']),
@@ -58,17 +56,6 @@ export default {
       fetchUserInfo({}).then(res => {
         if (res.code === 1000) {
           this.set_user_info(res.data)
-          if (channelId > 0) {
-            if (res.data.default_clinic_id > 0) {
-              // this.$router.replace({name: 'homePage'})
-            } else {
-              this.$router.replace({name: 'clinicSelect'})
-            }
-          } else {
-            // this.$router.replace({name: 'homePage'})
-          }
-        } else {
-          this.$Message.infor(res.msg)
         }
       }).catch(error => {
         console.log(error)
@@ -80,6 +67,26 @@ export default {
       var r = window.location.search.substr(1).match(reg)
       if (r != null) return decodeURIComponent(r[2])
       return null
+    },
+    checkHref () {
+      // const from = this.getQueryString('from')
+      // const appinstall = this.getQueryString('appinstall')
+      // const sec = this.getQueryString('sec')
+      // const timekey = this.getQueryString('timekey')
+
+      // if (from || appinstall || sec || timekey) {
+      const path = this.getQueryString('path')
+      if (path) {
+        window.location.href =
+          window.location.origin + window.location.pathname + '#' + path
+      }
+      // } else {
+      //   const path = this.getQueryString('path')
+      //   if (path && path !== 'null') {
+      //     this.$router.replace({path: path})
+      //     // window.location.href = window.location.href.replace(/(path=).*?&/, '')
+      //   }
+      // }
     }
   }
 }

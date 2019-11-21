@@ -78,7 +78,7 @@ export default {
               wx.updateAppMessageShareData({
                 title: res.data.title, // 分享标题
                 desc: res.data.remark, // 分享描述
-                link: window.location.href.split('#')[0] + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                link: window.location.origin + window.location.pathname + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
                 imgUrl: res.data.img_url, // 分享图标
                 success: function () {
                   // 设置成功
@@ -86,7 +86,7 @@ export default {
               })
               wx.updateTimelineShareData({
                 title: res.data.title, // 分享标题
-                link: window.location.href.split('#')[0] + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                link: window.location.origin + window.location.pathname + '?path=' + window.location.href.split('#')[1] + '&clinicId=' + this.clinic.id + '&appid=' + appId,
                 imgUrl: res.data.img_url, // 分享图标
                 success: function () {
                   // 设置成功
@@ -106,6 +106,12 @@ export default {
     },
     goRoute () {
       this.$router.push({name: 'registrationSure', params: {id: this.id}})
+    },
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return decodeURIComponent(r[2])
+      return null
     }
   }
 }
