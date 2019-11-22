@@ -58,7 +58,7 @@ export default {
   },
   created () {
     this.getDetail()
-    if (this.getQueryString('noReturn')) {
+    if (this.$route.query.noReturn > 0) {
       this.canReturn = false
     }
   },
@@ -106,12 +106,6 @@ export default {
     },
     goRoute () {
       this.$router.push({name: 'registrationSure', params: {id: this.id}})
-    },
-    getQueryString (name) {
-      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
-      var r = window.location.search.substr(1).match(reg)
-      if (r != null) return decodeURIComponent(r[2])
-      return null
     }
   }
 }

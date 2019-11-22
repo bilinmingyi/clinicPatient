@@ -55,7 +55,7 @@ export default {
       this.getList()
     },
     goRoute (params) {
-      this.$router.push({name: 'articleDetail', params: {id: params}})
+      this.$router.push({name: 'articleDetail', params: {id: params}, query: {noReturn: 0}})
     }
   }
 }

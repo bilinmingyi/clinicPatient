@@ -115,9 +115,9 @@ export default {
     },
     goRoute (params) {
       if (params.category === 0) {
-        this.$router.push({name: 'platformArticle', params: {id: params.id}})
+        this.$router.push({name: 'platformArticle', params: {id: params.id}, query: {noReturn: 0}})
       } else if (params.category === 1) {
-        this.$router.push({name: 'trainingRegistration', params: {id: params.id}})
+        this.$router.push({name: 'trainingRegistration', params: {id: params.id}, query: {noReturn: 0}})
       }
     },
     changeType (str) {

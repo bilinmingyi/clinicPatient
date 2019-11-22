@@ -87,7 +87,7 @@ export default {
     goRoute (type) {
       switch (type) {
         case 1:
-          this.$router.push({path: `/mall/goodsDetail/${this.goods.id}?isChannel=${this.isChannel}`})
+          this.$router.push({path: `/mall/goodsDetail/${this.goods.id}?isChannel=${this.isChannel}&noReturn=0`})
           break
         case 2:
           this.addShopCar()

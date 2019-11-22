@@ -22,7 +22,8 @@
       </Small-title>
       <div class="intro-content aritcle-content" v-html="GoodDetail.page_content"></div>
     </div>
-    <Shop-footer btnText="加入购物车" :allPrice="shopCarMoney" :hasCar="true" :carNum='shopCarNum' @click="addCar"></Shop-footer>
+    <Shop-footer btnText="加入购物车" :allPrice="shopCarMoney" :hasCar="true" :carNum='shopCarNum'
+                 @click="addCar"></Shop-footer>
   </div>
 </template>
 
@@ -58,7 +59,7 @@ export default {
   created () {
     this.getGoodsDetail()
     this.getShopCar()
-    if (this.getQueryString('noReturn')) {
+    if (this.$route.query.noReturn > 0) {
       this.canReturn = false
     }
   },
