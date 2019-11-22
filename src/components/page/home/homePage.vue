@@ -25,7 +25,7 @@
             <img src="../../../assets/img/ly2.png">
             <div class="no-read" v-if="unReadCount !== 0">{{unReadCount}}</div>
           </div>
-          <span>咨询诊所</span>
+          <span>{{clinic.serviceType == 6 ? '健康咨询' : '咨询诊所'}}</span>
         </div>
         <a class="contact-item" v-if="channelId > 0">
           <img src="../../../assets/img/yxx@2x.png" v-if="clinic.isGzhDefault === 1">

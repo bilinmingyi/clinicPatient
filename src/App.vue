@@ -16,8 +16,8 @@ export default {
   created () {
     this.getUserInfo()
     if (clinicId > 0) {
-      this.getClinic()
       this.checkHref()
+      this.getClinic()
     } else {
       this.$router.replace({name: 'clinicSelect'})
     }
@@ -69,23 +69,14 @@ export default {
       return null
     },
     checkHref () {
-      // const from = this.getQueryString('from')
-      // const appinstall = this.getQueryString('appinstall')
-      // const sec = this.getQueryString('sec')
-      // const timekey = this.getQueryString('timekey')
-
-      // if (from || appinstall || sec || timekey) {
       const path = this.getQueryString('path')
       if (path) {
-        window.location.href = (path.indexOf('?') ? `${window.location.origin}${window.location.pathname}#${path}&noReturn=1` : `${window.location.origin}${window.location.pathname}#${path}?noReturn=1`)
+        if (path.indexOf('noReturn=1') >= 0) {
+          window.location.href = `${window.location.origin}${window.location.pathname}#${path}`
+        } else if (path.indexOf('noReturn=0') >= 0) {
+          window.location.href = `${window.location.origin}${window.location.pathname}#${path.replace(/noReturn=0/, 'noReturn=1')}`
+        }
       }
-      // } else {
-      //   const path = this.getQueryString('path')
-      //   if (path && path !== 'null') {
-      //     this.$router.replace({path: path})
-      //     // window.location.href = window.location.href.replace(/(path=).*?&/, '')
-      //   }
-      // }
     }
   }
 }
