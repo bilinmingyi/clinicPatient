@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import { Header, ShopFooter, SmallTitle } from '../../common'
-import { fetchShopCar, createOrder, removeShop, deliverPrice } from '@/fetch/api'
-import { mapState } from 'vuex'
+import {Header, ShopFooter, SmallTitle} from '../../common'
+import {fetchShopCar, createOrder, removeShop, deliverPrice} from '@/fetch/api'
+import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 import inputBlur from '@/assets/js/inputBlur'
 
@@ -189,6 +189,10 @@ export default {
       }
     },
     async submitOrder () {
+      if (!this.addressee.address) {
+        this.$Message.infor('请先添加地址！')
+        return
+      }
       let resultList = this.shopCarList.map(item => {
         return {
           goods_id: item.goods_id,
@@ -214,10 +218,10 @@ export default {
           })
           if (this.needCheck === 1) {
             // 需要提交审核
-            this.$router.replace({ name: 'mallOrderDetail', query: { orderSeqno: res.data } })
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data}})
           } else if (this.needCheck === 2) {
             // 不需要提交审核，直接去支付
-            this.$router.replace({ name: 'mallOrderDetail', query: { orderSeqno: res.data, shouldPay: 1 } })
+            this.$router.replace({name: 'mallOrderDetail', query: {orderSeqno: res.data, shouldPay: 1}})
             // if (this.clinic.szjkPayEnabled === 1) {
             //   let urlRes = await gotoPay({
             //     order_type: 8,
@@ -246,7 +250,7 @@ export default {
       }
     },
     editAddress () {
-      this.$router.replace({ name: 'addressListPage', query: { forSelect: 1, ids: this.ids } })
+      this.$router.replace({name: 'addressListPage', query: {forSelect: 1, ids: this.ids}})
     },
     getDeliverPrice () {
       deliverPrice({
@@ -266,102 +270,102 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.clinic-content {
-  background: $backColor;
-  margin-bottom: 20px;
-}
-
-.goods-item {
-  @extend %flexV;
-  padding: 32px 30px;
-
-  .goods-item-middle {
-    margin-right: 24px;
-    padding: 7px;
-    border: 1px solid $lineColor;
-    border-radius: 8px;
-
-    img {
-      width: 146px;
-      height: 146px;
-    }
+  .clinic-content {
+    background: $backColor;
+    margin-bottom: 20px;
   }
 
-  .goods-item-right {
-    flex: 1;
-
-    .goods-info {
-      font-size: 28px;
-      color: $depthTextColor;
-      line-height: 40px;
-      margin-bottom: 35px;
-    }
-
-    .goods-num {
-      @extend %displayFlex;
-
-      span {
-        color: $redColor;
-        font-size: 32px;
-        line-height: 45px;
-        font-weight: 500;
-      }
-
-      .num-change {
-        color: #494949;
-        font-size: 32px;
-        line-height: 45px;
-      }
-    }
-  }
-}
-
-.address {
-  padding: 24px 30px;
-
-  .displayFlex {
+  .goods-item {
     @extend %flexV;
-    font-size: 28px;
-    line-height: 40px;
-    color: $depthTextColor;
+    padding: 32px 30px;
 
-    .name {
-      line-height: 45px;
+    .goods-item-middle {
+      margin-right: 24px;
+      padding: 7px;
+      border: 1px solid $lineColor;
+      border-radius: 8px;
+
+      img {
+        width: 146px;
+        height: 146px;
+      }
+    }
+
+    .goods-item-right {
+      flex: 1;
+
+      .goods-info {
+        font-size: 28px;
+        color: $depthTextColor;
+        line-height: 40px;
+        margin-bottom: 35px;
+      }
+
+      .goods-num {
+        @extend %displayFlex;
+
+        span {
+          color: $redColor;
+          font-size: 32px;
+          line-height: 45px;
+          font-weight: 500;
+        }
+
+        .num-change {
+          color: #494949;
+          font-size: 32px;
+          line-height: 45px;
+        }
+      }
+    }
+  }
+
+  .address {
+    padding: 24px 30px;
+
+    .displayFlex {
+      @extend %flexV;
+      font-size: 28px;
+      line-height: 40px;
+      color: $depthTextColor;
+
+      .name {
+        line-height: 45px;
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .edit-btn {
+        @include simpleButton(64px, 128px);
+      }
+    }
+
+    .add-address {
+      text-align: center;
+      color: $depthTextColor;
       font-size: 32px;
-      font-weight: bold;
-    }
-
-    .edit-btn {
-      @include simpleButton(64px, 128px);
     }
   }
 
-  .add-address {
-    text-align: center;
-    color: $depthTextColor;
-    font-size: 32px;
-  }
-}
+  .remark {
+    padding: 24px 30px;
 
-.remark {
-  padding: 24px 30px;
-
-  label {
-    color: $lightTextColor;
-    font-size: 32px;
-  }
-
-  input {
-    padding-left: 24px;
-    border: none;
-    outline: none;
-    color: $depthTextColor;
-    font-size: 32px;
-
-    &::-webkit-input-placeholder {
+    label {
       color: $lightTextColor;
       font-size: 32px;
     }
+
+    input {
+      padding-left: 24px;
+      border: none;
+      outline: none;
+      color: $depthTextColor;
+      font-size: 32px;
+
+      &::-webkit-input-placeholder {
+        color: $lightTextColor;
+        font-size: 32px;
+      }
+    }
   }
-}
 </style>
