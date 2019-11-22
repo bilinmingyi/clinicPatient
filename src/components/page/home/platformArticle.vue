@@ -32,7 +32,7 @@ export default {
   },
   created () {
     this.getDetail()
-    if (this.getQueryString('path')) {
+    if (this.getQueryString('noReturn')) {
       this.canReturn = false
     }
   },

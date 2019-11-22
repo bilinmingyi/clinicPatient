@@ -77,8 +77,7 @@ export default {
       // if (from || appinstall || sec || timekey) {
       const path = this.getQueryString('path')
       if (path) {
-        window.location.href =
-          window.location.origin + window.location.pathname + '#' + path
+        window.location.href = `${window.location.origin}${window.location.pathname}?noReturn=1#${path}`
       }
       // } else {
       //   const path = this.getQueryString('path')
