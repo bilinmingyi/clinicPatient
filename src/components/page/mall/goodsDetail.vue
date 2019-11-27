@@ -21,6 +21,9 @@
         <span class="ml-16px">商品简介</span>
       </Small-title>
       <div class="intro-content aritcle-content" v-html="GoodDetail.page_content"></div>
+      <div class="qrcode-block" v-if="qrcodeImg!=''">
+        <img :src="qrcodeImg">
+      </div>
     </div>
     <Shop-footer btnText="加入购物车" :allPrice="shopCarMoney" :hasCar="true" :carNum='shopCarNum'
                  @click="addCar"></Shop-footer>
@@ -31,7 +34,7 @@
 import {Header, SmallTitle, ShopFooter} from '@/components/common/index'
 import noImg from '@/assets/img/nophoto.png'
 import menZhen from '@/assets/img/menzhen.png'
-import {fetchGoodsDetail, addShopCar, fetchShopCar} from '@/fetch/api'
+import {fetchGoodsDetail, addShopCar, fetchShopCar, fetchUserQrcode} from '@/fetch/api'
 import {mapState, mapActions} from 'vuex'
 import getWXSign from '@/assets/js/wx.js'
 
@@ -47,7 +50,8 @@ export default {
     return {
       noImg: noImg,
       GoodDetail: {},
-      canReturn: true
+      canReturn: true,
+      qrcodeImg: ''
     }
   },
   computed: {
@@ -58,6 +62,7 @@ export default {
     })
   },
   created () {
+    this.getShareQrcode()
     this.getGoodsDetail()
     this.getShopCar()
     if (this.$route.query.noReturn > 0) {
@@ -135,6 +140,18 @@ export default {
     },
     imgError (event) {
       event.target.src = this.noImg
+    },
+    getShareQrcode () {
+      fetchUserQrcode().then(res => {
+        if (res.code === 1000) {
+          this.qrcodeImg = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        // this.$Message.infor('获取二维码失败！')
+      })
     }
   }
 }
@@ -173,6 +190,16 @@ export default {
 
     .intro-content {
       padding: 24px 30px;
+    }
+
+    .qrcode-block {
+      @extend %flexVC;
+      padding: 50px 0;
+
+      img {
+        width: 300px;
+        height: 300px;
+      }
     }
   }
 </style>

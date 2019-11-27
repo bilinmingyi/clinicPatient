@@ -53,6 +53,8 @@ const msgWithdraw = params => fetch('/chat/msg/withdraw', params)
 const imgUpLoad = params => fetch('/chat/img/upload', params)
 // 未读消息
 const unread = params => fetch('/chat/msg/unread', params)
+// 获取分享页面二维码
+const fetchUserQrcode = params => fetch('/user/qrcode', params)
 
 // 医生列表
 // 获取医生列表
@@ -193,5 +195,6 @@ export {
   fetchTrainOrderList,
   cancelTrainOrder,
   fetchMemberInfo,
-  fetchWxConfig
+  fetchWxConfig,
+  fetchUserQrcode
 }

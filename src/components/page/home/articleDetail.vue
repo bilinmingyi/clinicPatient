@@ -5,7 +5,9 @@
       <div class="content-title">{{title}}</div>
       <div class="content-type">{{type|articleType}}</div>
       <div class="content-time">{{pubdate|dateFormat}}</div>
-      <div class="aritcle-content" v-html="content">
+      <div class="aritcle-content" v-html="content"></div>
+      <div class="qrcode-block" v-if="qrcodeImg!=''">
+        <img :src="qrcodeImg">
       </div>
     </div>
   </div>
@@ -13,7 +15,7 @@
 
 <script>
 import {Header} from '@/components/common/index'
-import {fetchArticleDetail} from '@/fetch/api.js'
+import {fetchArticleDetail, fetchUserQrcode} from '@/fetch/api.js'
 import getWXSign from '@/assets/js/wx.js'
 import {mapState} from 'vuex'
 import menZhen from '@/assets/img/menzhen.png'
@@ -26,7 +28,8 @@ export default {
       title: '',
       type: 0,
       pubdate: 0,
-      canReturn: true
+      canReturn: true,
+      qrcodeImg: ''
     }
   },
   props: ['id'],
@@ -35,6 +38,7 @@ export default {
   },
   created () {
     this.getDetail()
+    this.getShareQrcode()
     if (this.$route.query.noReturn > 0) {
       this.canReturn = false
     }
@@ -82,6 +86,18 @@ export default {
         console.log(error)
         this.$Message.infor('网络出错！')
       })
+    },
+    getShareQrcode () {
+      fetchUserQrcode().then(res => {
+        if (res.code === 1000) {
+          this.qrcodeImg = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        // this.$Message.infor('获取二维码失败！')
+      })
     }
   }
 }
@@ -109,6 +125,16 @@ export default {
       font-size: 30px;
       color: $lightTextColor;
       margin: 20px 0;
+    }
+
+    .qrcode-block {
+      @extend %flexVC;
+      padding: 50px 0;
+
+      img {
+        width: 300px;
+        height: 300px;
+      }
     }
   }
 </style>

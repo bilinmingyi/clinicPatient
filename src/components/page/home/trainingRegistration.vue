@@ -29,6 +29,9 @@
           <span class="ml-16px">简介</span>
         </SmallTitle>
         <div class="text-content aritcle-content" v-html="itemData.content"></div>
+        <div class="qrcode-block" v-if="qrcodeImg!=''">
+          <img :src="qrcodeImg">
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +40,7 @@
 <script>
 import {Header, SmallTitle} from '../../common'
 import man from '@/assets/img/nan@2x.png'
-import {platformArticleDetail} from '@/fetch/api.js'
+import {platformArticleDetail, fetchUserQrcode} from '@/fetch/api.js'
 import getWXSign from '@/assets/js/wx.js'
 import {mapState} from 'vuex'
 import menZhen from '@/assets/img/menzhen.png'
@@ -54,11 +57,13 @@ export default {
       titleName: '',
       man_img: man,
       itemData: {},
-      canReturn: true
+      canReturn: true,
+      qrcodeImg: ''
     }
   },
   created () {
     this.getDetail()
+    this.getShareQrcode()
     if (this.$route.query.noReturn > 0) {
       this.canReturn = false
     }
@@ -107,6 +112,18 @@ export default {
     },
     goRoute () {
       this.$router.push({name: 'registrationSure', params: {id: this.id}})
+    },
+    getShareQrcode () {
+      fetchUserQrcode().then(res => {
+        if (res.code === 1000) {
+          this.qrcodeImg = res.data
+        } else {
+          this.$Message.infor(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+        // this.$Message.infor('获取二维码失败！')
+      })
     }
   }
 }
@@ -186,6 +203,16 @@ export default {
       line-height: 40px;
       font-size: 28px;
       color: $depthTextColor;
+    }
+
+    .qrcode-block {
+      @extend %flexVC;
+      padding: 50px 0;
+
+      img {
+        width: 300px;
+        height: 300px;
+      }
     }
   }
 </style>
