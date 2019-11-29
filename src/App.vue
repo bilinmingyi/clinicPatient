@@ -70,11 +70,12 @@ export default {
     },
     checkHref () {
       const path = this.getQueryString('path')
+      const userId = this.getQueryString('userId')
       if (path) {
         if (path.indexOf('noReturn=1') >= 0) {
-          window.location.href = `${window.location.origin}${window.location.pathname}#${path}`
+          window.location.href = `${window.location.origin}${window.location.pathname}#${path}&userId=${userId}`
         } else if (path.indexOf('noReturn=0') >= 0) {
-          window.location.href = `${window.location.origin}${window.location.pathname}#${path.replace(/noReturn=0/, 'noReturn=1')}`
+          window.location.href = `${window.location.origin}${window.location.pathname}#${path.replace(/noReturn=0/, 'noReturn=1')}&userId=${userId}`
         }
       }
     }

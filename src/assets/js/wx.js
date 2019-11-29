@@ -4,9 +4,7 @@ import {fetchWxConfig} from '../../fetch/api'
 export default function getWXSign () {
   return new Promise((resolve, reject) => {
     fetchWxConfig({
-      'uri': window.location.pathname.replace(/\/yzsgzh/, ''),
-      'channel_id': 0
-      // 'wx_appid': 'wx343e9395567a7303'
+      'uri': window.location.pathname.replace(/\/yzsgzh/, '')
     }).then(res => {
       if (res.code === 1000) {
         wx.config({

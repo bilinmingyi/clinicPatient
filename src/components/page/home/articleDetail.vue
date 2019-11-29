@@ -38,14 +38,15 @@ export default {
   },
   created () {
     this.getDetail()
-    this.getShareQrcode()
     if (this.$route.query.noReturn > 0) {
+      this.getShareQrcode()
       this.canReturn = false
     }
   },
   computed: {
     ...mapState({
-      clinic: state => state.clinic
+      clinic: state => state.clinic,
+      userInfoState: state => state.userInfoState
     })
   },
   methods: {
@@ -61,7 +62,7 @@ export default {
               wx.updateAppMessageShareData({
                 title: res.data.title, // 分享标题
                 desc: res.data.remark, // 分享描述
-                link: window.location.origin + window.location.pathname + '?path=' + encodeURIComponent(window.location.href.split('#')[1]) + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                link: window.location.origin + window.location.pathname + '?path=' + encodeURIComponent(window.location.href.split('#')[1]) + '&clinicId=' + this.clinic.id + '&appid=' + appId + '&userId=' + this.userInfoState.id,
                 imgUrl: res.data.imgUrl ? res.data.imgUrl : (this.clinic.logo ? this.clinic.logo : menZhen), // 分享图标
                 success: function () {
                   // 设置成功
@@ -69,7 +70,7 @@ export default {
               })
               wx.updateTimelineShareData({
                 title: res.data.title, // 分享标题
-                link: window.location.origin + window.location.pathname + '?path=' + encodeURIComponent(window.location.href.split('#')[1]) + '&clinicId=' + this.clinic.id + '&appid=' + appId,
+                link: window.location.origin + window.location.pathname + '?path=' + encodeURIComponent(window.location.href.split('#')[1]) + '&clinicId=' + this.clinic.id + '&appid=' + appId + '&userId=' + this.userInfoState.id,
                 imgUrl: res.data.imgUrl ? res.data.imgUrl : (this.clinic.logo ? this.clinic.logo : menZhen), // 分享图标
                 success: function () {
                   // 设置成功
@@ -88,7 +89,9 @@ export default {
       })
     },
     getShareQrcode () {
-      fetchUserQrcode().then(res => {
+      fetchUserQrcode({
+        'user_id': this.$route.query.userId ? this.$route.query.userId : this.userInfoState.id
+      }).then(res => {
         if (res.code === 1000) {
           this.qrcodeImg = res.data
         } else {
