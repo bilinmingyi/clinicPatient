@@ -37,6 +37,12 @@
             <label class="label-span mr-32px">缴费金额</label>
             <span class="label-span" style="font-weight: bold;color: #eb6262;">{{itemData.price|priceFormat}}</span>
           </div>
+          <hr class="line-hr">
+          <div class="line-item">
+            <label class="label-span mr-32px">备注信息</label>
+            <textarea class="input-item flexOne" :placeholder="placeHolder" v-model="remark"
+                      @blur="scrollToTop" rows="4"></textarea>
+          </div>
         </div>
       </section>
     </div>
@@ -64,7 +70,9 @@ export default {
     return {
       itemData: {},
       name: '',
-      mobile: ''
+      mobile: '',
+      placeHolder: '',
+      remark: ''
     }
   },
   created () {
@@ -75,6 +83,8 @@ export default {
       platformArticleDetail({id: this.id}).then(res => {
         if (res.code === 1000) {
           this.itemData = res.data
+          this.placeHolder = res.data.remark
+          this.$forceUpdate()
         } else {
           this.$Message.infor(res.msg)
         }
@@ -95,12 +105,13 @@ export default {
       createTrainOrder({
         'article_id': this.id,
         'register_name': this.name,
-        'register_mobile': this.mobile
+        'register_mobile': this.mobile,
+        'remark': this.remark
       }).then(
         res => {
           if (res.code === 1000) {
             if (this.itemData.price > 0) {
-              this.$Message.confirm('已报名，请前往支付！', () => {
+              this.$Message.confirm('已提交报名，请前往支付！', () => {
                 this.$router.replace({
                   name: 'registrationOrderDetail', query: {shouldPay: 1, order: res.data, article: this.id}
                 })
@@ -210,6 +221,7 @@ export default {
     font-size: 32px;
     color: $depthTextColor;
     background: transparent;
+    resize: none;
 
     &::-webkit-input-placeholder {
       font-size: 32px;

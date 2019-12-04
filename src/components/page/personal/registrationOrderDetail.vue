@@ -26,6 +26,10 @@
             <span>报名人员：</span><span
             class="text-block">{{orderDetail.register_name}}/{{orderDetail.register_mobile}}</span>
           </div>
+          <div class="mb-8px">
+            <span>备注信息：</span><span
+            class="text-block">{{orderDetail.remark}}</span>
+          </div>
           <div>
             <span>订单状态：</span>
             <span class="text-block font-bold">{{orderDetail.status|treatOrderStatus}}</span>

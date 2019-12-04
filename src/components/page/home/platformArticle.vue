@@ -60,7 +60,7 @@ export default {
             getWXSign.apply(this).then(({wx, appId}) => {
               wx.updateAppMessageShareData({
                 title: res.data.title, // 分享标题
-                desc: res.data.remark, // 分享描述
+                desc: res.data.summary, // 分享描述
                 link: window.location.origin + window.location.pathname + '?path=' + encodeURIComponent(window.location.href.split('#')[1]) + '&clinicId=' + this.clinic.id + '&appid=' + appId + '&userId=' + this.userInfoState.id,
                 imgUrl: res.data.img_url ? res.data.img_url : (this.clinic.logo ? this.clinic.logo : menZhen), // 分享图标
                 success: function () {

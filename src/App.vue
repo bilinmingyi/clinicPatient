@@ -49,7 +49,7 @@ export default {
         }
       }).catch(error => {
         console.log(error)
-        this.$Message.infor('网络出错！')
+        // this.$Message.infor('网络出错！')
       })
     },
     getUserInfo () {
@@ -59,7 +59,7 @@ export default {
         }
       }).catch(error => {
         console.log(error)
-        this.$Message.infor('网络出错！')
+        // this.$Message.infor('网络出错！')
       })
     },
     getQueryString (name) {
