@@ -90,8 +90,7 @@ export default {
     },
     getGoodsDetail () {
       fetchGoodsDetail({
-        id: this.id,
-        is_channel: this.$route.query.isChannel ? Number(this.$route.query.isChannel) : 0
+        id: this.id
       }).then(res => {
         if (res.code === 1000) {
           this.GoodDetail = res.data

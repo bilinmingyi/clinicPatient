@@ -57,24 +57,23 @@
           <div class="doctor-item" v-if="doctorList.length == 1"></div>
         </div>
       </section>
-      <section class="mall-block" v-if="clinicGood.dataList.length > 0">
-        <div class="mall-title">
-          <div class="flexOne"></div>
-          <button class="organ-btn" @click.stop="goRoute(7)" v-if="clinicGood.totalNum > clinicGood.pageSize">查看更多</button>
-        </div>
-        <div class="good-list">
-          <GoodItem :goods="goods" v-for="(goods, index) in clinicGood.dataList" :key="goods.id"
-                    :class="{'mr-10px':index%2===0}"
-                    :isChannel="0"
-                    :scrollTop="scrollTop" :clientHeight="clientHeight"></GoodItem>
-        </div>
-      </section>
+<!--      <section class="mall-block" v-if="clinicGood.dataList.length > 0">-->
+<!--        <div class="mall-title">-->
+<!--          <div class="flexOne"></div>-->
+<!--          <button class="organ-btn" @click.stop="goRoute(7)" v-if="clinicGood.totalNum > clinicGood.pageSize">查看更多</button>-->
+<!--        </div>-->
+<!--        <div class="good-list">-->
+<!--          <GoodItem :goods="goods" v-for="(goods, index) in clinicGood.dataList" :key="goods.id"-->
+<!--                    :class="{'mr-10px':index%2===0}"-->
+<!--                    :isChannel="0"-->
+<!--                    :scrollTop="scrollTop" :clientHeight="clientHeight"></GoodItem>-->
+<!--        </div>-->
+<!--      </section>-->
       <section class="mall-block">
-        <div class="mall-title-hot"></div>
+        <div class="mall-title"></div>
         <div class="good-list">
           <GoodItem :goods="goods" v-for="(goods, index) in goodsList" :key="goods.id" :class="{'mr-10px':index%2===0}"
                     :scrollTop="scrollTop"
-                    :isChannel="1"
                     :clientHeight="clientHeight"></GoodItem>
         </div>
       </section>
@@ -141,7 +140,7 @@ export default {
   created () {
     this.getList()
     this.getDoctorList()
-    this.getClinicGoodList()
+    // this.getClinicGoodList()
     this.getGoodsList()
     this.getUnread()
     this.dataInterval = setInterval(() => {
@@ -230,7 +229,6 @@ export default {
     getGoodsList () {
       fetchGoodsList({
         page: this.page,
-        is_channel: 1,
         page_size: this.pageSize,
         status: 1
       }).then(res => {
@@ -247,25 +245,25 @@ export default {
         this.$Message.infor('网络出错!')
       })
     },
-    getClinicGoodList () {
-      fetchGoodsList({
-        page: 1,
-        page_size: this.clinicGood.pageSize,
-        status: 1
-      }).then(res => {
-        this.showLoad = false
-        this.isFirst = false
-        if (res.code === 1000) {
-          this.clinicGood.dataList = res.data
-          this.clinicGood.totalNum = res.total_num
-        } else {
-          this.$Message.infor(res.msg)
-        }
-      }).catch(error => {
-        console.log(error)
-        this.$Message.infor('网络出错!')
-      })
-    },
+    // getClinicGoodList () {
+    //   fetchGoodsList({
+    //     page: 1,
+    //     page_size: this.clinicGood.pageSize,
+    //     status: 1
+    //   }).then(res => {
+    //     this.showLoad = false
+    //     this.isFirst = false
+    //     if (res.code === 1000) {
+    //       this.clinicGood.dataList = res.data
+    //       this.clinicGood.totalNum = res.total_num
+    //     } else {
+    //       this.$Message.infor(res.msg)
+    //     }
+    //   }).catch(error => {
+    //     console.log(error)
+    //     this.$Message.infor('网络出错!')
+    //   })
+    // },
     scrollEvent () {
       throttle(() => {
         let scrollItem = this.$refs.scrollContent

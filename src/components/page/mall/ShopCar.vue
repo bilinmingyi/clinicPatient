@@ -1,99 +1,48 @@
 <template>
   <div>
     <div class="clinic-content">
-      <div class="bottom-block">
-        <Small-title @click.native="selectALL(1)">
-          <div :class="['select-radio',{'border-yuan':!resourceOne}]">
-            <img v-show="resourceOne" src="../../../assets/img/xuanze@2x.png">
-          </div>
-          <span class="ml-20px">机构商城</span>
-        </Small-title>
-        <div v-for="(item, index) in shopCarList" :key="item.id">
-          <div v-if="item.clinic_id === clinic.id">
-            <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-              <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
-                   @touchstart.capture="touchStart"
-                   @touchend.capture="touchEnd(item.id, $event)">
-                <div>
-                  <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
-                    <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
-                  </div>
-                </div>
-                <div class="goods-item-middle">
-                  <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
-                </div>
-                <div class="goods-item-right">
-                  <div class="goods-info">
-                    <span>{{item.goods_info.name}}</span>
-                    <span>{{item.goods_info.vender}}</span>
-                    <span>{{item.goods_info.spec}}</span>
-                  </div>
-                  <div class="goods-num">
+      <Small-title @click.native="selectALL">
+        <div :class="['select-radio',{'border-yuan':!resource}]">
+          <img v-show="resource" src="../../../assets/img/xuanze@2x.png">
+        </div>
+        <span class="ml-20px">机构商城</span>
+      </Small-title>
+      <div v-for="(item, index) in shopCarList" :key="item.id">
+        <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
+          <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
+               @touchstart.capture="touchStart"
+               @touchend.capture="touchEnd(item.id, $event)">
+            <div>
+              <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
+                <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
+              </div>
+            </div>
+            <div class="goods-item-middle">
+              <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
+            </div>
+            <div class="goods-item-right">
+              <div class="goods-info">
+                <span>{{item.goods_info.name}}</span>
+                <span>{{item.goods_info.vender}}</span>
+                <span>{{item.goods_info.spec}}</span>
+              </div>
+              <div class="goods-num">
                 <span class="flexOne">
                   ￥{{item.goods_info.price}}
                 </span>
-                    <div class="num-change">
-                      <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                      <input class="num-word" v-model="item.num" @blur="scrollToTop">
-                      <div class="num-add" @click.stop="changeNum(2, index)"></div>
-                    </div>
-                  </div>
+                <div class="num-change">
+                  <div class="num-cut" @click.stop="changeNum(1, index)"></div>
+                  <input class="num-word" v-model="item.num" @blur="scrollToTop">
+                  <div class="num-add" @click.stop="changeNum(2, index)"></div>
                 </div>
-              </div>
-              <div class="goods-delete" @click.stop="deleteShop(item.id, item.clinic_id)">
-                删除
               </div>
             </div>
-            <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
+          </div>
+          <div class="goods-delete" @click.stop="deleteShop(item.id, item.clinic_id)">
+            删除
           </div>
         </div>
-      </div>
-      <div>
-        <Small-title @click.native="selectALL(2)">
-          <div :class="['select-radio',{'border-yuan':!resourcetwo}]">
-            <img v-show="resourcetwo" src="../../../assets/img/xuanze@2x.png">
-          </div>
-          <span class="ml-20px">热门商品</span>
-        </Small-title>
-        <div v-for="(item, index) in shopCarList" :key="item.id">
-          <div v-if="item.clinic_id !== clinic.id">
-            <div :class="['goods',{'good-item-delete':touchDel.activeMed === item.id}]">
-              <div :class="['goods-item',{'ban_back':!item.goods_info.id || !item.goods_info.status}]"
-                   @touchstart.capture="touchStart"
-                   @touchend.capture="touchEnd(item.id, $event)">
-                <div>
-                  <div :class="['select-radio', {'border-yuan':item.is_check === 0}]" @click.stop="selectItem(index)">
-                    <img v-show="item.is_check === 1" src="../../../assets/img/xuanze@2x.png">
-                  </div>
-                </div>
-                <div class="goods-item-middle">
-                  <img :src="item.goods_info.img?item.goods_info.img:noImg" @error="imgError($event)">
-                </div>
-                <div class="goods-item-right">
-                  <div class="goods-info">
-                    <span>{{item.goods_info.name}}</span>
-                    <span>{{item.goods_info.vender}}</span>
-                    <span>{{item.goods_info.spec}}</span>
-                  </div>
-                  <div class="goods-num">
-                <span class="flexOne">
-                  ￥{{item.goods_info.price}}
-                </span>
-                    <div class="num-change">
-                      <div class="num-cut" @click.stop="changeNum(1, index)"></div>
-                      <input class="num-word" v-model="item.num" @blur="scrollToTop">
-                      <div class="num-add" @click.stop="changeNum(2, index)"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="goods-delete" @click.stop="deleteShop(item.id, item.clinic_id)">
-                删除
-              </div>
-            </div>
-            <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
-          </div>
-        </div>
+        <hr v-if="index !== shopCarList.length-1" class="full-screen-hr">
       </div>
     </div>
     <Shop-footer btnText="去结算" :allPrice="allPrice" @click="toCount" bottom="1.306667rem"></Shop-footer>
@@ -104,7 +53,6 @@
 <script>
 import {Footer, ShopFooter, SmallTitle} from '../../common'
 import {fetchShopCar, changeShopNum, removeShop} from '@/fetch/api'
-import {mapState} from 'vuex'
 import noImg from '@/assets/img/nophoto.png'
 import inputBlur from '@/assets/js/inputBlur'
 
@@ -118,8 +66,7 @@ export default {
   },
   data () {
     return {
-      resourceOne: false,
-      resourcetwo: false,
+      resource: false,
       shopCarList: [],
       noImg: noImg,
       touchDel: {
@@ -133,9 +80,6 @@ export default {
     this.getShopCar()
   },
   computed: {
-    ...mapState({
-      'clinic': state => state.clinic
-    }),
     allPrice () {
       if (this.shopCarList.length === 0) {
         return 0
@@ -155,23 +99,12 @@ export default {
       deep: true,
       handler: function (newVal) {
         let isAll = 1
-        newVal.filter(item => {
-          return item.clinic_id === this.clinic.id
-        }).forEach(item => {
+        newVal.forEach(item => {
           if (item.is_check === 0) {
             isAll = 0
           }
         })
-        isAll === 1 ? this.resourceOne = true : this.resourceOne = false
-        isAll = 1
-        newVal.filter(item => {
-          return item.clinic_id !== this.clinic.id
-        }).forEach(item => {
-          if (item.is_check === 0) {
-            isAll = 0
-          }
-        })
-        isAll === 1 ? this.resourcetwo = true : this.resourcetwo = false
+        isAll === 1 ? this.resource = true : this.resource = false
       }
     }
   },
@@ -180,54 +113,28 @@ export default {
       if (this.shopCarList.some(item => {
         return item.is_check === 1
       })) {
-        if ((this.shopCarList.filter(item => item.is_check === 1).some(item => item.clinic_id === this.clinic.id)) &&
-          (this.shopCarList.filter(item => item.is_check === 1).some(item => item.clinic_id !== this.clinic.id))) {
-          this.$Message.infor('机构商品和热门商品不能同时购买！')
-        } else {
-          let ids = this.shopCarList.filter(item => {
-            if (item.is_check) {
-              return item.goods_id
-            }
-          }).map(item => {
+        let ids = this.shopCarList.filter(item => {
+          if (item.is_check) {
             return item.goods_id
-          })
-          this.$router.push({path: '/mall/sureOrder', query: {ids: JSON.stringify(ids)}})
-        }
+          }
+        }).map(item => {
+          return item.goods_id
+        })
+        this.$router.push({path: '/mall/sureOrder', query: {ids: JSON.stringify(ids)}})
       } else {
         this.$Message.infor('请先选择购买药品！')
       }
     },
-    selectALL (type) {
-      if (type === 1) {
-        this.resourceOne = !this.resourceOne
-        if (this.resourceOne) {
-          this.shopCarList.forEach(item => {
-            if (item.clinic_id === this.clinic.id) {
-              item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
-            }
-          })
-        } else {
-          this.shopCarList.forEach(item => {
-            if (item.clinic_id === this.clinic.id) {
-              item.is_check = 0
-            }
-          })
-        }
-      } else if (type === 2) {
-        this.resourcetwo = !this.resourcetwo
-        if (this.resourcetwo) {
-          this.shopCarList.forEach(item => {
-            if (item.clinic_id !== this.clinic.id) {
-              item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
-            }
-          })
-        } else {
-          this.shopCarList.forEach(item => {
-            if (item.clinic_id !== this.clinic.id) {
-              item.is_check = 0
-            }
-          })
-        }
+    selectALL () {
+      this.resource = !this.resource
+      if (this.resource) {
+        this.shopCarList.forEach(item => {
+          item.goods_info.id && item.goods_info.status === 1 ? item.is_check = 1 : item.is_check = 0
+        })
+      } else {
+        this.shopCarList.forEach(item => {
+          item.is_check = 0
+        })
       }
     },
     getShopCar () {
@@ -355,10 +262,6 @@ export default {
 
   .ban_back {
     background: #f7f7f7;
-  }
-
-  .bottom-block {
-    border-bottom: 20px solid #f5f5f5
   }
 
   .goods-item {
