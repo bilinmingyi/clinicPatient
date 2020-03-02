@@ -16,22 +16,30 @@
         </div>
       </section>
       <section class="clinic-contact mb-20px">
-        <a :class="['contact-item', {'right-border': channelId <= 0}]" :href="'tel:'+clinic.customerPhone">
+<!--        {'right-border': channelId <= 0}-->
+        <a class="contact-item" :href="'tel:'+clinic.customerPhone">
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
+        <router-link class="contact-item" to="/test">
+          <img src="../../../assets/img/sysm.png">
+          <span>送药上门</span>
+        </router-link>
         <div class="contact-item" @click="goRoute(1)">
           <div class="messageIcon">
             <img src="../../../assets/img/zx.png">
-            <div class="no-read" v-if="unReadCount !== 0">{{unReadCount}}</div>
+            <div class="no-read" v-if="unReadCount !== 0">
+              <span v-if="unReadCount>99" class="more_msg">...</span>
+              <span v-else>{{unReadCount}}</span>
+            </div>
           </div>
           <span>{{clinic.serviceType == 6 ? '健康咨询' : '咨询机构'}}</span>
         </div>
-        <a class="contact-item" v-if="channelId > 0">
-          <img src="../../../assets/img/yxx@2x.png" v-if="clinic.isGzhDefault === 1">
-          <img src="../../../assets/img/xx@2x.png" v-else>
-          <span>默认机构</span>
-        </a>
+<!--        <a class="contact-item" v-if="channelId > 0">-->
+<!--          <img src="../../../assets/img/yxx@2x.png" v-if="clinic.isGzhDefault === 1">-->
+<!--          <img src="../../../assets/img/xx@2x.png" v-else>-->
+<!--          <span>默认机构</span>-->
+<!--        </a>-->
       </section>
       <section class="clinic-dynamic mb-20px">
         <SmallTitle>
@@ -193,6 +201,8 @@ export default {
       }).then(res => {
         if (res.code === 1000) {
           res.data ? this.unReadCount = res.data.unread_count : this.unReadCount = 0
+          // 测试专用
+          // this.unReadCount = 99
         } else {
           this.$Message.infor(res.msg)
         }
@@ -374,9 +384,10 @@ export default {
     position: relative;
 
     .no-read {
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 24px;
       text-align: center;
       background: $redColor;
       color: #ffffff;
@@ -384,6 +395,10 @@ export default {
       top: -16px;
       left: 32px;
       border-radius: 50%;
+      .more_msg {
+        position: relative;
+        top: -6px;
+      }
     }
   }
 
