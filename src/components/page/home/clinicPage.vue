@@ -11,7 +11,7 @@
             <div class="back-green" v-if="item.service_type === 1">综合诊所</div>
             <div class="back-yellow" v-if="item.service_type === 2">西医诊所</div>
             <div class="back-cyan" v-if="item.service_type === 3">中医诊所</div>
-            <div class="back-red" v-if="item.is_gzh_default === 1">默认诊所</div>
+            <div class="back-red" v-if="item.is_gzh_default === 1">默认机构</div>
           </div>
           <div class="clinic-adr">{{item.province_name}}省{{item.city_name}}市{{item.county_name}}区{{item.address}}</div>
         </div>
