@@ -36,6 +36,11 @@ export default new Router({
           props: (route) => route.query
         },
         {
+          path: 'drugDelivery',
+          name: 'drugDelivery',
+          component: () => import(/* webpackChunkName: 'chatRoom' */'@/components/page/home/drugDelivery.vue')
+        },
+        {
           path: 'articleDetail/:id',
           name: 'articleDetail',
           component: () => import(/* webpackChunkName: 'home' */'@/components/page/home/articleDetail.vue'),

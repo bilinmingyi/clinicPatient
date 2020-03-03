@@ -6,7 +6,7 @@
       <div class="chat-content">
         <img src="@/assets/img/nan@2x.png" alt @error="error(userInfoState.sex,$event)" class="iconImg">
         <div class="reply-content ml16" v-show="chatDetail.msgdata.msg_type=='text' ">
-          <span>{{chatDetail.msgdata.text}}</span>
+          <p class="reply-text">{{chatDetail.msgdata.text}}</p>
         </div>
         <div class="reply-content ml16" v-if="chatDetail.msgdata.msg_type=='link'" @click="goRouter()">
           <div class="recommond">
@@ -137,7 +137,11 @@ p {
     border-radius: 16px;
     z-index: 99;
     padding: 22px 30px;
-    @extend %normalTitle;
+    .reply-text{
+      @extend %normalTitle;
+      white-space: pre-wrap;
+      text-align: left;
+    }
   }
 
   a {

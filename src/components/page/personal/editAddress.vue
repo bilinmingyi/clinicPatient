@@ -87,8 +87,6 @@ export default {
     }
   },
   created () {
-    console.log(this.index)
-    console.log('测试')
     this.adsListData.provinceList = provinceDate
   },
   computed: {

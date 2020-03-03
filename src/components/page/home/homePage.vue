@@ -21,7 +21,7 @@
           <img src="../../../assets/img/lx.png">
           <span>客服电话</span>
         </a>
-        <router-link class="contact-item" to="/test">
+        <router-link class="contact-item" to="/home/drugDelivery">
           <img src="../../../assets/img/sysm.png">
           <span>送药上门</span>
         </router-link>

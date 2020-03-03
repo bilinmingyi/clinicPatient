@@ -118,6 +118,8 @@ p {
 
 .reply-text {
   @extend %normalTitle;
+  white-space: pre-wrap;
+  text-align: left;
 }
 
 .cancelButton {

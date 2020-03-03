@@ -6,24 +6,26 @@
         <div class="wrapper" ref="wrapper" @click="hideFuc">
           <p v-show="isShowLoad" class="loadData">正在加载数据...</p>
           <div class="content-detail" v-if="isShowChat">
-            <component v-for="(item) in allMsgList" v-if="allMsgList.length>0" :key="item.msgid" :is="RenderComponent(item.from)" :chatDetail="item"
-              :patientImg="queryData.avatar" @cancelMessage="cancelMessage" ref="chatBottoms"></component>
+            <component v-for="(item) in allMsgList" v-if="allMsgList.length>0" :key="item.msgid"
+                       :is="RenderComponent(item.from)" :chatDetail="item"
+                       :patientImg="queryData.avatar" @cancelMessage="cancelMessage" ref="chatBottoms"></component>
           </div>
         </div>
       </div>
       <div class="mb88"></div>
 
-      <chat-bottom :showFuc="isShowFuc" @addFunc="addFunc" @hideFunc="foucs" @sendMessage="sendTextMessage" @sendImg="sendImgMessage" @showReply="showReply"
-        @inputBlur="inputBlur"></chat-bottom>
+      <chat-bottom :showFuc="isShowFuc" @addFunc="addFunc" @hideFunc="foucs" @sendMessage="sendTextMessage"
+                   @sendImg="sendImgMessage" @showReply="showReply"
+                   @inputBlur="inputBlur"></chat-bottom>
     </div>
   </div>
 </template>
 
 <script>
-import { Header } from '@/components/common'
+import {Header} from '@/components/common'
 // import BScroll from 'better-scroll'
-import { chatMsgList, msgSend, msgWithdraw, gotoPay } from '@/fetch/api'
-import { mapState } from 'vuex'
+import {chatMsgList, msgSend, msgWithdraw, gotoPay} from '@/fetch/api'
+import {mapState} from 'vuex'
 import chatBottom from './clinicChatPart/chatBottom'
 import clinicMessage from './clinicChatPart/clinicMessage'
 import patientMessage from './clinicChatPart/patientMessage'
@@ -99,7 +101,7 @@ export default {
             from_username: this.userInfoState.name,
             from_userimg: this.userInfoState.avatar,
             session_type: 'CLINIC_PATIENT',
-            msgdata: { msg_type: 'text', text: val }
+            msgdata: {msg_type: 'text', text: val}
           }
           break
         case 2:
@@ -109,7 +111,7 @@ export default {
             from_username: this.userInfoState.name,
             from_userimg: this.userInfoState.avatar,
             session_type: 'CLINIC_PATIENT',
-            msgdata: { msg_type: 'image', img_url: val }
+            msgdata: {msg_type: 'image', img_url: val}
           }
           break
         case 3:
@@ -123,7 +125,7 @@ export default {
               msg_type: 'link',
               link_type: 'treatment_order_Submission',
               link_url: `/personal/appointListPage/appointOrderDetail?orderSeqno=${this.orderSeqno}`,
-              link_desc: JSON.stringify({ orderSeqno: this.orderSeqno })
+              link_desc: JSON.stringify({orderSeqno: this.orderSeqno})
             }
           }
           break
@@ -399,7 +401,19 @@ export default {
           this.$Message.infor('网络出错！')
         })
       }
-      this.$router.replace({ name: 'chatRoom' })
+      this.$router.replace({name: 'chatRoom'})
+    }
+    if (window.localStorage.getItem('clinicgzhDrugName')) {
+      let name = window.localStorage.getItem('clinicgzhDrugName')
+      let mobile = window.localStorage.getItem('clinicgzhDrugMobile')
+      let memo = window.localStorage.getItem('clinicgzhDrugMemo')
+      let imgUrl = window.localStorage.getItem('clinicgzhDrugImg')
+      this.sendMessage(1, '提交一个送药上门申请单\n患者：' + name + '\n' + '电话：' + mobile + '\n' + '备注：' + memo)
+      this.sendMessage(2, imgUrl)
+      window.localStorage.removeItem('clinicgzhDrugName')
+      window.localStorage.removeItem('clinicgzhDrugMobile')
+      window.localStorage.removeItem('clinicgzhDrugImg')
+      window.localStorage.removeItem('clinicgzhDrugMemo')
     }
   },
   created () {
@@ -408,41 +422,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.allWrapper {
-  position: fixed;
-  width: 100vw;
-  height: 100%;
-}
+  .allWrapper {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+  }
 
-.clinic-chat {
-  position: relative;
-  height: 100%;
-  width: 100%;
-
-  .chat-content {
+  .clinic-chat {
+    position: relative;
+    height: 100%;
     width: 100%;
-    margin-right: 20px;
-    overflow: hidden;
 
-    .content-detail {
+    .chat-content {
       width: 100%;
-      margin: 32px 24px;
+      margin-right: 20px;
+      overflow: hidden;
+
+      .content-detail {
+        width: 100%;
+        margin: 32px 24px;
+      }
     }
   }
-}
 
-.wrapper {
-  box-sizing: border-box;
-  overflow: hidden;
-  height: calc(100vh - 200px);
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
+  .wrapper {
+    box-sizing: border-box;
+    overflow: hidden;
+    height: calc(100vh - 200px);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 
-.loadData {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 24px;
-  color: $gray2;
-}
+  .loadData {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: $gray2;
+  }
 </style>
