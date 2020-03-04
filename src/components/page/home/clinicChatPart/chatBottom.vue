@@ -2,7 +2,8 @@
   <div class="chat-bottom">
     <div class="reply">
       <!-- <div @click="showReply"><span class="leftIcon iconfont">&#xe612;</span></div> -->
-      <input class="serach-input" type="textarea" @focus="hideFunc($event)" v-model="sendContent" @blur="inputBlur($event)" ref="inputText">
+      <textarea rows="1" class="serach-input" type="textarea" @focus="hideFunc($event)" v-model="sendContent"
+                @blur="inputBlur($event)" ref="inputText" @input="autoHeight($event)"></textarea>
       <div class="ml24 pr16">
         <img src="@/assets/img/tianjia@2x.png" alt @click="addFunc" :class="{'translateImg':showFuc}" v-show="showIcon">
         <div class="send " v-show="!showIcon" @click="sendMessage">发送</div>
@@ -14,7 +15,8 @@
         <div class="function-content mr64" @click.stop="fileClick('get')">
           <img src="@/assets/img/zhaopian@2x.png" alt>
           <p>照片</p>
-          <input accept="image/*" style="display: none;" name="img-get" type="file" id="img-get" @change="fileChange($event)" />
+          <input accept="image/*" style="display: none;" name="img-get" type="file" id="img-get"
+                 @change="fileChange($event)"/>
         </div>
         <!-- <div class="function-content mr64">
         <img src="@/assets/images/huifu@2x.png" alt>
@@ -23,7 +25,8 @@
         <div class="function-content mr64" @click.stop="fileClick('set')">
           <img src="@/assets/img/paizhao@2x.png" alt>
           <p>拍照</p>
-          <input accept="image/*" style="display: none;" name="img-set" capture="camera" type="file" id="img-set" @change="fileChange($event)" />
+          <input accept="image/*" style="display: none;" name="img-set" capture="camera" type="file" id="img-set"
+                 @change="fileChange($event)"/>
         </div>
         <!-- <div class="function-content">
         <img src="@/assets/images/tuijiang@2x.png" alt>
@@ -36,7 +39,7 @@
   </div>
 </template>
 <script>
-import { imgPreview, Loading } from '@/components/common'
+import {imgPreview, Loading} from '@/components/common'
 
 export default {
   props: ['showFuc'],
@@ -44,7 +47,11 @@ export default {
     return {
       sendContent: '',
       imgUrl: '',
-      showLoad: false
+      showLoad: false,
+      rows: 1,
+      borderWidth: 0,
+      height: 0,
+      lineHeight: 0
     }
   },
   components: {
@@ -55,6 +62,12 @@ export default {
     showIcon () {
       return this.sendContent === ''
     }
+  },
+  mounted () {
+    let el = this.$refs.inputText
+    this.borderWidth = Number((window.getComputedStyle(el).borderWidth.replace(/px/g, '') * 2).toFixed(0))
+    this.height = Math.ceil(window.getComputedStyle(el).height.replace(/px/g, '')) - this.borderWidth
+    this.lineHeight = Number(window.getComputedStyle(el).lineHeight.replace(/px/g, ''))
   },
   methods: {
     addFunc () {
@@ -84,6 +97,7 @@ export default {
     sendMessage () {
       this.$emit('sendMessage', this.sendContent)
       this.sendContent = ''
+      this.autoHeight({target: this.$refs.inputText})
     },
     sendImgMessage (url) {
       this.imgUrl = url
@@ -200,101 +214,126 @@ export default {
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n)
       }
-      return new File([u8arr], filename, { type: mime })
+      return new File([u8arr], filename, {type: mime})
+    },
+    autoHeight (el) {
+      setTimeout(() => {
+        el.target.style.height = 'auto'
+        el.target.scrollTo = 0
+        if (el.target.scrollHeight >= (this.height + this.lineHeight * 3)) {
+          el.target.style.height = (this.height + this.lineHeight * 3) + 'px'
+        } else {
+          el.target.style.height = el.target.scrollHeight + 'px'
+        }
+      }, 0)
+
+      // var disparity = scrollHeight - this.height
+      // if (disparity <= 0) {
+      //   this.rows = 1
+      // } else if (disparity > 0 && disparity <= this.lineHeight) {
+      //   this.rows = 2
+      // } else if (disparity > this.lineHeight) {
+      //   this.rows = 3
+      // }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-input {
-  -webkit-user-select: text !important;
-  -webkit-appearance: none; /*去除input默认样式*/
-}
-
-.chat-bottom {
-  width: 100%;
-  z-index: 99;
-  position: absolute;
-  min-height: 112px;
-  overflow: hidden;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $bgwhite2;
-
-  .reply {
-    padding: 16px 0 16px 16px;
-    @extend %flexV;
-
-    input {
-      // width: 540px;
-      padding: 20px;
-      outline: medium;
-      width: 584px;
-      margin-left: 20px;
-      height: 80px;
-      @extend %normalTitle;
-      background: rgba(249, 249, 249, 1);
-      border-radius: 16px;
-      border: 1px solid rgba(151, 151, 151, 1);
-    }
-
-    img {
-      width: 68px;
-      height: 68px;
-    }
-
-    .translateImg {
-      transform: rotate(45deg);
-    }
+  input {
+    -webkit-user-select: text !important;
+    -webkit-appearance: none; /*去除input默认样式*/
   }
 
-  .function {
+  .chat-bottom {
     width: 100%;
-    @include commonBorder(top);
-    height: 224px;
+    z-index: 99;
+    position: absolute;
+    min-height: 112px;
+    overflow: hidden;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: $bgwhite2;
-    @extend %flexV;
-    padding: 28px 56px;
 
-    &-content {
-      p {
-        padding-top: 16px;
-        text-align: center;
-        font-size: 28px;
-        color: $simpleGray;
+    .reply {
+      padding: 16px 0 16px 16px;
+      @extend %flexV;
+
+      .serach-input {
+        // width: 540px;
+        padding: 20px;
+        outline: medium;
+        width: 584px;
+        margin-left: 20px;
+        height: 78px;
+        @extend %normalTitle;
+        background: rgba(249, 249, 249, 1);
+        border-radius: 16px;
+        border: 1px solid rgba(151, 151, 151, 1);
+        resize: none;
+        line-height: 38px;
       }
 
       img {
-        @extend %mediumIcon;
+        width: 68px;
+        height: 68px;
+      }
+
+      .translateImg {
+        transform: rotate(45deg);
+      }
+    }
+
+    .function {
+      width: 100%;
+      @include commonBorder(top);
+      height: 224px;
+      background: $bgwhite2;
+      @extend %flexV;
+      padding: 28px 56px;
+
+      &-content {
+        p {
+          padding-top: 16px;
+          text-align: center;
+          font-size: 28px;
+          color: $simpleGray;
+        }
+
+        img {
+          @extend %mediumIcon;
+        }
       }
     }
   }
-}
 
-.send {
-  @include deepButton(68px, 88px);
-  border-radius: 16px;
-  font-size: 24px;
-}
+  .send {
+    @include deepButton(68px, 88px);
+    border-radius: 16px;
+    font-size: 24px;
+  }
 
-.leftIcon {
-  font-size: 64px;
-  color: $gray3;
-  padding-right: 20px;
-}
-.swtichBT-enter-active {
-  animation: swtichBT-in 0.1s;
-}
-.swtichBT-leave-active {
-  animation: swtichBT-in 0.1s reverse;
-}
-@keyframes swtichBT-in {
-  0% {
-    height: 0px;
+  .leftIcon {
+    font-size: 64px;
+    color: $gray3;
+    padding-right: 20px;
   }
-  100% {
-    height: 224px;
+
+  .swtichBT-enter-active {
+    animation: swtichBT-in 0.1s;
   }
-}
+
+  .swtichBT-leave-active {
+    animation: swtichBT-in 0.1s reverse;
+  }
+
+  @keyframes swtichBT-in {
+    0% {
+      height: 0px;
+    }
+    100% {
+      height: 224px;
+    }
+  }
 </style>
