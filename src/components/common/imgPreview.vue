@@ -5,7 +5,7 @@
       <div class="title-text">
       </div>
       <div class="send-block">
-        <button v-show="!waitCut" class="send-btn" @click.stop="sendImg">发送</button>
+        <button v-show="!waitCut" class="send-btn" @click.stop="sendImg">{{btnText}}</button>
       </div>
     </div>
     <div class="img-block">
@@ -42,7 +42,16 @@ import Loading from '@/components/common/Loading'
 
 export default {
   name: 'imgPreview',
-  props: ['imgUrl'],
+  props: {
+    imgUrl: {
+      type: String,
+      default: ''
+    },
+    btnText: {
+      type: String,
+      default: '发送'
+    }
+  },
   components: {
     Loading
   },
@@ -98,21 +107,23 @@ export default {
       this.startDrag(document.getElementById('zxxDragBg'), zxxCropBox, 'drag')
     },
     loadImg (e) {
-      let boxObj = document.getElementById('zxxCropBox')
       let resultData = this.dataURLtoFile(this.imgUrls, new Date().getTime().toString())
       this.curImgSize = resultData.size
-
       this.imgData.naturalWidth = e.target.naturalWidth
       this.imgData.naturalHeight = e.target.naturalHeight
-      this.imgData.width = e.target.width
-      this.imgData.height = e.target.height
-      this.result.cropW = e.target.width
-      this.result.cropH = e.target.height
-      this.imgData.scaleX = this.imgData.width / this.imgData.naturalWidth
-      this.imgData.scaleY = this.imgData.height / this.imgData.naturalHeight
-      boxObj.style.width = parseInt(this.imgData.width) + 'px'
-      boxObj.style.height = parseInt(this.imgData.height) + 'px'
-      this.init()
+      setTimeout(() => {
+        let img = document.getElementById('img-canvas')
+        let boxObj = document.getElementById('zxxCropBox')
+        this.imgData.width = Math.ceil(window.getComputedStyle(img).width.replace(/px/g, ''))
+        this.imgData.height = Math.ceil(window.getComputedStyle(img).height.replace(/px/g, ''))
+        this.result.cropW = this.imgData.width
+        this.result.cropH = this.imgData.height
+        this.imgData.scaleX = this.imgData.width / this.imgData.naturalWidth
+        this.imgData.scaleY = this.imgData.height / this.imgData.naturalHeight
+        boxObj.style.width = parseInt(this.imgData.width) + 'px'
+        boxObj.style.height = parseInt(this.imgData.height) + 'px'
+        this.init()
+      }, 0)
     },
     sendImg () {
       this.showLoad = true
@@ -242,97 +253,95 @@ export default {
         let e = event
         self.params.currentX = e.changedTouches[0].clientX
         self.params.currentY = e.changedTouches[0].clientY
-
-        document.ontouchmove = function (event) {
-          event.stopPropagation()
-          let e = event || window.event
-          if (self.params.flag) {
-            let nowX = e.changedTouches[0].clientX
-            let nowY = e.changedTouches[0].clientY
-            let disX = nowX - self.params.currentX
-            let disY = nowY - self.params.currentY
-            switch (self.params.kind) {
-              case 'n':
-                // 上拉伸
-                target.style.top = parseInt(self.params.top) + disY + 'px'
-                target.style.height = parseInt(self.params.height) - disY + 'px'
-                console.log(self.params.height)
-                break
-              case 'w':
-                // 左拉伸
-                target.style.left = parseInt(self.params.left) + disX + 'px'
-                target.style.width = parseInt(self.params.width) - disX + 'px'
-                break
-              case 'e':
-                // 右拉伸
-                target.style.width = parseInt(self.params.width) + disX + 'px'
-                break
-              case 's':
-                // 下拉伸
-                target.style.height = parseInt(self.params.height) + disY + 'px'
-                break
-              case 'nw':
-                // 左上拉伸
-                target.style.left = parseInt(self.params.left) + disX + 'px'
-                target.style.width = parseInt(self.params.width) - disX + 'px'
-                target.style.top = parseInt(self.params.top) + disY + 'px'
-                target.style.height = parseInt(self.params.height) - disY + 'px'
-                break
-              case 'ne':
-                // 右上拉伸
-                target.style.top = parseInt(self.params.top) + disY + 'px'
-                target.style.height = parseInt(self.params.height) - disY + 'px'
-                target.style.width = parseInt(self.params.width) + disX + 'px'
-                break
-              case 'sw':
-                // 左下拉伸
-                target.style.left = parseInt(self.params.left) + disX + 'px'
-                target.style.width = parseInt(self.params.width) - disX + 'px'
-                target.style.height = parseInt(self.params.height) + disY + 'px'
-                break
-              case 'se':
-                // 右下拉伸
-                target.style.width = parseInt(self.params.width) + disX + 'px'
-                target.style.height = parseInt(self.params.height) + disY + 'px'
-                break
-              case 'drag':
-                // 移动
-                target.style.left = parseInt(self.params.left) + disX + 'px'
-                target.style.top = parseInt(self.params.top) + disY + 'px'
-                break
-            }
+      }
+      point.ontouchmove = function (event) {
+        event.stopPropagation()
+        let e = event || window.event
+        if (self.params.flag) {
+          let nowX = e.changedTouches[0].clientX
+          let nowY = e.changedTouches[0].clientY
+          let disX = nowX - self.params.currentX
+          let disY = nowY - self.params.currentY
+          switch (self.params.kind) {
+            case 'n':
+              // 上拉伸
+              target.style.top = parseInt(self.params.top) + disY + 'px'
+              target.style.height = parseInt(self.params.height) - disY + 'px'
+              break
+            case 'w':
+              // 左拉伸
+              target.style.left = parseInt(self.params.left) + disX + 'px'
+              target.style.width = parseInt(self.params.width) - disX + 'px'
+              break
+            case 'e':
+              // 右拉伸
+              target.style.width = parseInt(self.params.width) + disX + 'px'
+              break
+            case 's':
+              // 下拉伸
+              target.style.height = parseInt(self.params.height) + disY + 'px'
+              break
+            case 'nw':
+              // 左上拉伸
+              target.style.left = parseInt(self.params.left) + disX + 'px'
+              target.style.width = parseInt(self.params.width) - disX + 'px'
+              target.style.top = parseInt(self.params.top) + disY + 'px'
+              target.style.height = parseInt(self.params.height) - disY + 'px'
+              break
+            case 'ne':
+              // 右上拉伸
+              target.style.top = parseInt(self.params.top) + disY + 'px'
+              target.style.height = parseInt(self.params.height) - disY + 'px'
+              target.style.width = parseInt(self.params.width) + disX + 'px'
+              break
+            case 'sw':
+              // 左下拉伸
+              target.style.left = parseInt(self.params.left) + disX + 'px'
+              target.style.width = parseInt(self.params.width) - disX + 'px'
+              target.style.height = parseInt(self.params.height) + disY + 'px'
+              break
+            case 'se':
+              // 右下拉伸
+              target.style.width = parseInt(self.params.width) + disX + 'px'
+              target.style.height = parseInt(self.params.height) + disY + 'px'
+              break
+            case 'drag':
+              // 移动
+              target.style.left = parseInt(self.params.left) + disX + 'px'
+              target.style.top = parseInt(self.params.top) + disY + 'px'
+              break
           }
         }
-        document.ontouchend = (event) => {
-          event.stopPropagation()
-          let imgCurWidth = self.imgData.width
-          let imgCurHeight = self.imgData.height
-          self.params.flag = false
-          if (self.getCss(target, 'left') !== 'auto') {
-            self.params.left = self.getCss(target, 'left')
-          }
-          if (self.getCss(target, 'top') !== 'auto') {
-            self.params.top = self.getCss(target, 'top')
-          }
-          self.params.width = self.getCss(target, 'width')
-          self.params.height = self.getCss(target, 'height')
-          self.result.posX = parseInt(target.style.left) > 0 ? parseInt(target.style.left) : 0
-          self.result.posY = parseInt(target.style.top) > 0 ? parseInt(target.style.top) : 0
-          if (parseInt(target.style.left) + parseInt(target.style.width) > imgCurWidth) {
-            self.result.cropW = imgCurWidth - parseInt(target.style.left)
-          } else {
-            self.result.cropW = parseInt(target.style.width)
-          }
-
-          if (parseInt(target.style.top) + parseInt(target.style.height) > imgCurHeight) {
-            self.result.cropH = imgCurHeight - parseInt(target.style.top)
-          } else {
-            self.result.cropH = parseInt(target.style.height)
-          }
-
-          document.ontouchmove = null
-          document.ontouchend = null
+      }
+      point.ontouchend = (event) => {
+        event.stopPropagation()
+        let imgCurWidth = self.imgData.width
+        let imgCurHeight = self.imgData.height
+        self.params.flag = false
+        if (self.getCss(target, 'left') !== 'auto') {
+          self.params.left = self.getCss(target, 'left')
         }
+        if (self.getCss(target, 'top') !== 'auto') {
+          self.params.top = self.getCss(target, 'top')
+        }
+        self.params.width = self.getCss(target, 'width')
+        self.params.height = self.getCss(target, 'height')
+        self.result.posX = parseInt(target.style.left) > 0 ? parseInt(target.style.left) : 0
+        self.result.posY = parseInt(target.style.top) > 0 ? parseInt(target.style.top) : 0
+        if (parseInt(target.style.left) + parseInt(target.style.width) > imgCurWidth) {
+          self.result.cropW = imgCurWidth - parseInt(target.style.left)
+        } else {
+          self.result.cropW = parseInt(target.style.width)
+        }
+
+        if (parseInt(target.style.top) + parseInt(target.style.height) > imgCurHeight) {
+          self.result.cropH = imgCurHeight - parseInt(target.style.top)
+        } else {
+          self.result.cropH = parseInt(target.style.height)
+        }
+
+        // document.ontouchmove = null
+        // document.ontouchend = null
       }
     }
   }
@@ -341,10 +350,9 @@ export default {
 
 <style lang="scss" scoped>
   .preview {
-    // position: fixed;
+    position: fixed;
     top: 0;
     left: 0;
-    bottom: 0;
     z-index: 999;
     width: 100vw;
     height: 100vh;
@@ -439,44 +447,44 @@ export default {
 
   #dragLeftTop {
     @extend %cut-block;
-    border-left: 10px solid #ffffff;
-    border-top: 10px solid #fff;
-    left: -6px;
-    top: -6px;
+    border-left: 14px solid #ffffff;
+    border-top: 14px solid #fff;
+    left: -8px;
+    top: -8px;
     cursor: nw-resize;
   }
 
   #dragLeftBot {
     @extend %cut-block;
-    border-bottom: 10px solid #fff;
-    border-left: 10px solid #fff;
-    left: -6px;
-    bottom: -6px;
+    border-bottom: 14px solid #fff;
+    border-left: 14px solid #fff;
+    left: -8px;
+    bottom: -8px;
     cursor: sw-resize;
   }
 
   #dragRightTop {
     @extend %cut-block;
-    border-top: 10px solid #fff;
-    border-right: 10px solid #fff;
-    right: -6px;
-    top: -6px;
+    border-top: 14px solid #fff;
+    border-right: 14px solid #fff;
+    right: -8px;
+    top: -8px;
     cursor: ne-resize;
   }
 
   #dragRightBot {
     @extend %cut-block;
-    border-right: 10px solid #fff;
-    border-bottom: 10px solid #fff;
-    right: -6px;
-    bottom: -6px;
+    border-right: 14px solid #fff;
+    border-bottom: 14px solid #fff;
+    right: -8px;
+    bottom: -8px;
     cursor: se-resize;
   }
 
   #dragTopCenter {
     @extend %cut-block;
-    border-top: 10px solid #fff;
-    top: -6px;
+    border-top: 14px solid #fff;
+    top: -8px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -488,8 +496,8 @@ export default {
 
   #dragBotCenter {
     @extend %cut-block;
-    border-bottom: 10px solid #fff;
-    bottom: -6px;
+    border-bottom: 14px solid #fff;
+    bottom: -8px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -501,8 +509,8 @@ export default {
 
   #dragRightCenter {
     @extend %cut-block;
-    border-right: 10px solid #fff;
-    right: -6px;
+    border-right: 14px solid #fff;
+    right: -8px;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -514,8 +522,8 @@ export default {
 
   #dragLeftCenter {
     @extend %cut-block;
-    border-left: 10px solid #fff;
-    left: -6px;
+    border-left: 14px solid #fff;
+    left: -8px;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);

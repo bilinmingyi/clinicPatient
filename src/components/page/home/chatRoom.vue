@@ -316,6 +316,20 @@ export default {
               }, 500)
             }, false)
           })
+          if (window.localStorage.getItem('clinicgzhDrugName')) {
+            let name = window.localStorage.getItem('clinicgzhDrugName')
+            let mobile = window.localStorage.getItem('clinicgzhDrugMobile')
+            let memo = window.localStorage.getItem('clinicgzhDrugMemo')
+            let imgUrl = window.localStorage.getItem('clinicgzhDrugImg')
+            this.sendMessage(1, '提交一个送药上门申请单\n患者：' + name + '\n' + '电话：' + mobile + '\n' + '备注：' + memo)
+            setTimeout(() => {
+              this.sendMessage(2, imgUrl)
+            }, 500)
+            window.localStorage.removeItem('clinicgzhDrugName')
+            window.localStorage.removeItem('clinicgzhDrugMobile')
+            window.localStorage.removeItem('clinicgzhDrugImg')
+            window.localStorage.removeItem('clinicgzhDrugMemo')
+          }
         } else {
           this.$Message.infor(res.msg)
         }
@@ -402,18 +416,6 @@ export default {
         })
       }
       this.$router.replace({name: 'chatRoom'})
-    }
-    if (window.localStorage.getItem('clinicgzhDrugName')) {
-      let name = window.localStorage.getItem('clinicgzhDrugName')
-      let mobile = window.localStorage.getItem('clinicgzhDrugMobile')
-      let memo = window.localStorage.getItem('clinicgzhDrugMemo')
-      let imgUrl = window.localStorage.getItem('clinicgzhDrugImg')
-      this.sendMessage(1, '提交一个送药上门申请单\n患者：' + name + '\n' + '电话：' + mobile + '\n' + '备注：' + memo)
-      this.sendMessage(2, imgUrl)
-      window.localStorage.removeItem('clinicgzhDrugName')
-      window.localStorage.removeItem('clinicgzhDrugMobile')
-      window.localStorage.removeItem('clinicgzhDrugImg')
-      window.localStorage.removeItem('clinicgzhDrugMemo')
     }
   },
   created () {

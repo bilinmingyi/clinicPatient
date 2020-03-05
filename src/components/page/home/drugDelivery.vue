@@ -25,11 +25,11 @@
           <span class="ml-16px">处方照片</span>
         </Small-title>
         <div class="photo-block">
-          <div class="photo-back" v-if="imgUrl==''" @click="fileClick">
+          <div class="photo-back" v-if="imgUrlResult==''" @click="fileClick">
             <img src="../../../assets/img/zhaopian@2x.png">
           </div>
           <div class="photo-img" v-else>
-            <img :src="imgUrl">
+            <img :src="imgUrlResult">
             <div class="close-block" @click="deleteImg">+</div>
           </div>
           <input accept="image/*" style="display: none;" name="img-get" type="file" id="img-get"
@@ -47,7 +47,8 @@
     <div class="add_block">
       <button class="add_btn" @click="sureOrder">提交申请</button>
     </div>
-    <!--    <img-preview :imgUrl="imgUrl" v-if="imgUrl!=''" @send="sureSelectImg" @cancel="cancelSelectImg"></img-preview>-->
+    <img-preview :imgUrl="imgUrl" btnText="确定" v-if="imgUrl!=''" @send="sureSelectImg"
+                 @cancel="cancelSelectImg"></img-preview>
     <Loading v-if="showLoad"></Loading>
   </div>
 </template>
@@ -55,7 +56,6 @@
 <script>
 import {Header, SmallTitle, imgPreview, Loading} from '@/components/common/index'
 import inputBlur from '@/assets/js/inputBlur'
-import {imgUpLoad} from '@/fetch/api.js'
 
 export default {
   name: 'drugDelivery',
@@ -73,7 +73,7 @@ export default {
       patientMobile: '',
       imgUrl: '',
       imgFile: null,
-      // imgUrlResult: '',
+      imgUrlResult: '',
       memo: ''
     }
   },
@@ -89,33 +89,19 @@ export default {
         this.$Message.infor('请先填写联系电话！')
         return
       }
-      if (!this.imgUrl) {
+      if (!this.imgUrlResult) {
         this.$Message.infor('请先点击上传处方照片！')
         return
       }
-      this.showLoad = true
-      let formData = new FormData()
-      formData.append('file', this.imgFile)
-      imgUpLoad(formData).then(res => {
-        if (res.code === 1000) {
-          window.localStorage.removeItem('clinicgzhDrugName')
-          window.localStorage.removeItem('clinicgzhDrugMobile')
-          window.localStorage.removeItem('clinicgzhDrugImg')
-          window.localStorage.removeItem('clinicgzhDrugMemo')
-          window.localStorage.setItem('clinicgzhDrugName', this.patientName)
-          window.localStorage.setItem('clinicgzhDrugMobile', this.patientMobile)
-          window.localStorage.setItem('clinicgzhDrugImg', res.data)
-          window.localStorage.setItem('clinicgzhDrugMemo', this.memo)
-          this.$router.replace({name: 'chatRoom', query: {}})
-        } else {
-          this.$Message.infor(res.msg)
-        }
-        this.showLoad = false
-      }).catch(error => {
-        console.log(error)
-        this.showLoad = false
-        this.$Message.infor('网络出错！')
-      })
+      window.localStorage.removeItem('clinicgzhDrugName')
+      window.localStorage.removeItem('clinicgzhDrugMobile')
+      window.localStorage.removeItem('clinicgzhDrugImg')
+      window.localStorage.removeItem('clinicgzhDrugMemo')
+      window.localStorage.setItem('clinicgzhDrugName', this.patientName)
+      window.localStorage.setItem('clinicgzhDrugMobile', this.patientMobile)
+      window.localStorage.setItem('clinicgzhDrugImg', this.imgUrlResult)
+      window.localStorage.setItem('clinicgzhDrugMemo', this.memo)
+      this.$router.replace({name: 'chatRoom', query: {}})
     },
     fileChange (el) {
       this.showLoad = true
@@ -152,15 +138,16 @@ export default {
     },
     deleteImg () {
       this.imgUrl = ''
+      this.imgUrlResult = ''
       this.imgFile = null
+    },
+    cancelSelectImg () {
+      this.imgUrl = ''
+    },
+    sureSelectImg (val) {
+      this.imgUrlResult = val
+      this.imgUrl = ''
     }
-    // cancelSelectImg () {
-    //   this.imgUrl = ''
-    // },
-    // sureSelectImg (val) {
-    //   this.imgUrlResult = val
-    //   this.imgUrl = ''
-    // }
   }
 }
 </script>
