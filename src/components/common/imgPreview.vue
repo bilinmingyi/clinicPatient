@@ -11,7 +11,7 @@
     <div class="img-block">
       <div class="img-content">
         <img :src="imgUrls" id="img-canvas"
-             :class="imgData.naturalWidth>=imgData.naturalHeight?'width-img':''"
+             :class="(imgData.naturalWidth/imgData.naturalHeight)>=0.5?'width-img':''"
              @load="loadImg($event)">
         <div v-show="waitCut" id="zxxCropBox">
           <div id="zxxDragBg"></div>
