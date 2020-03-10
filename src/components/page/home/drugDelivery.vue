@@ -47,7 +47,7 @@
     <div class="add_block">
       <button class="add_btn" @click="sureOrder">提交申请</button>
     </div>
-    <img-preview :imgUrl="imgUrl" btnText="确定" v-if="imgUrl!=''" @send="sureSelectImg"
+    <img-preview :imgUrl="imgUrl" btnText="确定" :fixed="true" v-if="imgUrl!=''" @send="sureSelectImg"
                  @cancel="cancelSelectImg"></img-preview>
     <Loading v-if="showLoad"></Loading>
   </div>

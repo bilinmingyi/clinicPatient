@@ -1,5 +1,5 @@
 <template>
-  <div class="preview">
+  <div class="preview" :style="{'position': fixed ? 'fixed' : 'unset'}">
     <div class="title-block bottom-link">
       <button class="title-btn" @click.stop="cancelSend"></button>
       <div class="title-text">
@@ -27,8 +27,8 @@
       </div>
     </div>
     <div class="bottom-block">
-      <div class="cut-btn" v-show="!waitCut" @click.stop="cutPhoto">裁剪</div>
-      <div class="cut-btn" v-show="!waitCut && canRestore" @click.stop="restorePhoto">还原</div>
+<!--      <div class="cut-btn" v-show="!waitCut" @click.stop="cutPhoto">裁剪</div>-->
+<!--      <div class="cut-btn" v-show="!waitCut && canRestore" @click.stop="restorePhoto">还原</div>-->
       <div class="cut-btn" v-show="waitCut" @click.stop="cancelCut">取消</div>
       <div class="cut-btn" v-show="waitCut" @click.stop="completeCut">完成</div>
     </div>
@@ -50,6 +50,10 @@ export default {
     btnText: {
       type: String,
       default: '发送'
+    },
+    fixed: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -350,9 +354,10 @@ export default {
 
 <style lang="scss" scoped>
   .preview {
-    position: fixed;
+    /*position: fixed;*/
     top: 0;
     left: 0;
+    bottom: 0;
     z-index: 999;
     width: 100vw;
     height: 100vh;
