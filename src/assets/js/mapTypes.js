@@ -3,7 +3,7 @@ let clinicId = 0
 try {
   channelId = window.baseInfo.channelId
 } catch (e) {
-  channelId = 0
+  channelId = 1
 }
 
 try {

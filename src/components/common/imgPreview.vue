@@ -139,13 +139,13 @@ export default {
           if (res.code === 1000) {
             this.$emit('send', res.data)
           } else {
-            self.$Message.infor(res.msg)
+            this.$Message.infor(res.msg)
           }
           this.showLoad = false
         }).catch(error => {
           console.log(error)
           this.showLoad = false
-          self.$Message.infor('网络出错！')
+          this.$Message.infor('网络出错！')
         })
       }).catch(error => {
         this.$Message.infor(error.message)

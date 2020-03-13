@@ -91,7 +91,6 @@ export default {
       return new Promise((resolve, reject) => {
         let index = this.allMsgList.length - 1
         let msgid = this.allMsgList.length > 0 ? this.allMsgList[index].msgid : null
-        console.log(index, msgid)
         let params = {}
         switch (type) {
           case 1:
@@ -161,7 +160,6 @@ export default {
             this.$Message.infor(res.msg)
           }
           this.isShowFuc = false
-          console.log(this.allMsgList)
           resolve()
         })
       })
@@ -328,9 +326,10 @@ export default {
           let mobile = window.localStorage.getItem('clinicgzhDrugMobile')
           let memo = window.localStorage.getItem('clinicgzhDrugMemo')
           let imgUrl = window.localStorage.getItem('clinicgzhDrugImg')
-          await this.sendMessage(1, '提交一个送药上门申请单\n患者：' + name + '\n' + '电话：' + mobile + '\n' + '备注：' + memo)
-          await this.sendMessage(2, imgUrl)
-
+          this.sendMessage(1, '提交一个送药上门申请单\n患者：' + name + '\n' + '电话：' + mobile + '\n' + '备注：' + memo)
+          setTimeout(() => {
+            this.sendMessage(2, imgUrl)
+          }, 500)
           window.localStorage.removeItem('clinicgzhDrugName')
           window.localStorage.removeItem('clinicgzhDrugMobile')
           window.localStorage.removeItem('clinicgzhDrugImg')
