@@ -6,7 +6,7 @@
         <img :src="clinic.banner">
         <div class="clinic-contact">
           <div class="displayFlex mb-8px">
-            <div class="label">诊所地址：</div>
+            <div class="label">机构地址：</div>
             <div class="content">{{clinic.provinceName}}省{{clinic.cityName}}市{{clinic.countyName}}区{{clinic.address}}
             </div>
           </div>
@@ -18,7 +18,7 @@
       </div>
       <div class="clinic-intro">
         <SmallTitle>
-          <span class="intro-title">诊所简介</span>
+          <span class="intro-title">机构简介</span>
         </SmallTitle>
         <div class="intro-content">
           深圳淳道门诊部是淳道中医健康旗下的中医品牌机构， 秉着传承中医国粹，匠心打造品质的精神，汇集省内外 中医专家，以“名医、良方、好药”为核心经营理念，为 广大患者和中医爱好者提供中医医疗服务和问道学习的 平台。

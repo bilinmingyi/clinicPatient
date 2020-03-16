@@ -63,7 +63,7 @@ export default {
       })
     },
     change (id) {
-      this.$Message.confirm('确定切换诊所？', () => {
+      this.$Message.confirm('确定切换机构？', () => {
         this.loadShow = true
         changeClinic({
           'id': id

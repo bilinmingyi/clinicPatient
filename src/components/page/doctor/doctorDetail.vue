@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :titleText="doctor.name+(clinic.serviceType == 6 ? '营养师' : '医生')" :canReturn="true"></Header>
+    <Header :titleText="doctor.name+(clinic.serviceType == 6 ? '营养师' : '专家')" :canReturn="true"></Header>
     <div class="mt-88px">
       <doctor-item :itemData="doctor" :canAppoint="false"></doctor-item>
       <div class="doctor-spec">

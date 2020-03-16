@@ -1,7 +1,7 @@
 <template>
   <div :class="['item-content',{'no-border-bottom':noLine}]">
     <div class="mb-8px item-line">
-      <span class="flexOne" v-if="isShowName">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}：{{itemData.doctor_name}}</span>
+      <span class="flexOne" v-if="isShowName">{{(clinic.serviceType == 6 ? '营养师' : '专家')}}：{{itemData.doctor_name}}</span>
       <span>{{itemData.create_time|dateFormat('yyyy/MM/dd hh:mm')}}</span>
     </div>
     <div class="item-line">

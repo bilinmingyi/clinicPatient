@@ -22,11 +22,11 @@
             <span class="label-two">{{orderDetail.chief_complaint}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}姓名：</span>
+            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '专家')}}姓名：</span>
             <span class="label-two">{{orderDetail.doctor_name}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}备注：</span>
+            <span class="label-three">{{(clinic.serviceType == 6 ? '营养师' : '专家')}}备注：</span>
             <span class="label-two">{{orderDetail.memo}}</span>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default {
             this.$Message.infor('网络出错！')
           })
         } else {
-          this.$Message.infor('该诊所未开通线上支付功能！')
+          this.$Message.infor('该机构未开通线上支付功能！')
         }
       } else {
         this.$router.go(-1)

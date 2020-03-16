@@ -2,7 +2,7 @@
   <div>
     <Header titleText="机构成员" :canReturn="true"></Header>
     <div class="mt-88px">
-      <Search :placeholder="'请输'+(clinic.serviceType == 6 ? '营养师' : '医生')+'名称'" @on-search="query"></Search>
+      <Search :placeholder="'请输'+(clinic.serviceType == 6 ? '营养师' : '专家')+'名称'" @on-search="query"></Search>
       <doctor-item v-for="item in doctorList" :key="item.id" :itemData="item"></doctor-item>
       <Load-more v-if="canShowAdd" @click.stop.native="addMore"></Load-more>
     </div>

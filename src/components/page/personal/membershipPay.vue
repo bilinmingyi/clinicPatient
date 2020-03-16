@@ -132,7 +132,7 @@ export default {
       if (this.clinic.szjkPayEnabled === 1) {
         this.toPay()
       } else {
-        this.$Message.infor('该诊所未开通线上支付功能！')
+        this.$Message.infor('该机构未开通线上支付功能！')
       }
     },
     toPay () {

@@ -12,7 +12,7 @@
         <section class="appoint-infor">
           <div class="mb-6px">
             <span class="label-four">{{item.doctor_name}}</span>
-            <!-- <span class="label-one">{{(clinic.serviceType == 6 ? '营养师' : '医生')}}</span> -->
+            <!-- <span class="label-one">{{(clinic.serviceType == 6 ? '营养师' : '专家')}}</span> -->
           </div>
           <div class="mb-8px">
             <span class="label-three">预约地点：</span>

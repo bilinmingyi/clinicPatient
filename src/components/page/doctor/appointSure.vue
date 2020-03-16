@@ -16,7 +16,7 @@
             <span class="label-two">{{treatDate|dateFormat('yyyy-MM-dd  W')}}&nbsp;&nbsp;{{startTime}}-{{endTime}}</span>
           </div>
           <div class="mb-8px">
-            <span class="label-three">预约{{(clinic.serviceType == 6 ? '营养师' : '医生')}}：</span>
+            <span class="label-three">预约{{(clinic.serviceType == 6 ? '营养师' : '专家')}}：</span>
             <span class="label-two">{{doctorName}}</span>
           </div>
           <div>
